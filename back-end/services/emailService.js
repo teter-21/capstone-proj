@@ -167,7 +167,8 @@ line-height:1.6;
 >
 
 If you have any questions, please contact
-Magno Dental Clinic.
+<u>magno.dental2026@gmail.com</u> <br>
+<u>0909090909090</u>
 
 </p>
 

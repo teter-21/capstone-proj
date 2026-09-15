@@ -404,7 +404,8 @@ exports.updateAppointmentStatus = (req, res) => {
 
         return res.json({
           message: `Appointment marked as ${status}.`,
-          patientCreated: status === "Approved" && Boolean(appointment.patient_id),
+          patientCreated:
+            status === "Approved" && Boolean(appointment.patient_id),
           patientId: appointment.patient_id || null,
         });
       } catch (error) {
