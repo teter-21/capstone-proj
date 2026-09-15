@@ -5,6 +5,7 @@ import ViewVisitModal from "./ViewVisitModal";
 import EditPatientModal from "./EditPatientModal";
 import CreateAccountModal from "./CreateAccountModal";
 import DentalChartModal from "./DentalChartModal";
+import { FaPlus, FaEye, FaEdit, FaTooth, FaUserPlus } from "react-icons/fa";
 
 import "../css/PatientRow.css";
 
@@ -47,29 +48,29 @@ function PatientRow({ patient, onSaveVisit, onUpdatePatient, onImageClick }) {
       {/* ACTION BUTTONS */}
       <span className="visit-actions">
         <button className="add-btn" onClick={() => setShowModal(true)}>
-          Add
+          <FaPlus />
         </button>
 
         <button className="view-btn" onClick={() => setShowViewModal(true)}>
-          View
+          <FaEye />
         </button>
 
         <button
           className="dental-chart-btn"
           onClick={() => setShowDentalChart(true)}
         >
-          Dental Chart
+          <FaTooth />
         </button>
 
         <button className="edit-btn" onClick={() => setShowEditModal(true)}>
-          Update
+          <FaEdit />
         </button>
 
         <button
           className="create-account-btn"
           onClick={() => setShowCreateAccount(true)}
         >
-          Create Account
+          <FaUserPlus />
         </button>
       </span>
 
