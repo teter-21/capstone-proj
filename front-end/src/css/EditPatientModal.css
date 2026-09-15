@@ -1,0 +1,203 @@
+/* Patient update modal. */
+.edit-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 35, 55, 0.58);
+  overflow-y: auto;
+}
+
+.edit-modal {
+  width: min(760px, 100%);
+  max-height: min(90vh, 820px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 18px 55px rgba(15, 35, 55, 0.2);
+  overflow: hidden;
+}
+
+.edit-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+  background: #f7fbfe;
+}
+
+.edit-modal-header h2 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 20px;
+}
+
+.edit-modal-header p {
+  margin: 5px 0 0;
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.edit-modal-close {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-heading);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.edit-modal-body {
+  padding: 22px 24px;
+  overflow-y: auto;
+}
+
+.edit-section-title {
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.edit-section-title:not(:first-child) {
+  margin-top: 22px;
+}
+
+.edit-name-grid,
+.edit-two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.edit-name-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.edit-field {
+  min-width: 0;
+}
+
+.edit-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-heading);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.edit-field input,
+.edit-field select,
+.edit-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  padding: 10px 11px;
+  background: #fff;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.edit-field textarea {
+  resize: vertical;
+  min-height: 78px;
+}
+
+.edit-field input:focus,
+.edit-field select:focus,
+.edit-field textarea:focus {
+  border-color: var(--color-primary);
+}
+
+.edit-current-image {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.edit-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 24px;
+  border-top: 1px solid var(--color-border);
+  background: #f8fafc;
+}
+
+.edit-modal-actions button {
+  min-width: 110px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-modal-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.save-btn {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.cancel-btn {
+  border: 1px solid var(--color-border) !important;
+  background: #fff;
+  color: var(--color-heading);
+}
+
+@media (max-width: 700px) {
+  .edit-modal-overlay {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .edit-modal {
+    max-height: 94vh;
+  }
+
+  .edit-modal-header,
+  .edit-modal-body {
+    padding: 18px;
+  }
+
+  .edit-name-grid,
+  .edit-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-modal-actions {
+    padding: 12px 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .edit-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .edit-modal-actions button {
+    width: 100%;
+  }
+}

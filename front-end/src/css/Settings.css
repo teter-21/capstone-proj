@@ -1,0 +1,251 @@
+/* Shared account settings style for the admin and patient portals. */
+
+.account-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 34px 45px;
+  box-sizing: border-box;
+}
+
+.account-header {
+  margin-bottom: 22px;
+}
+
+.account-header h1 {
+  margin: 0;
+  color: #24425f;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.account-header > div > p:last-child {
+  margin: 7px 0 0;
+  color: #7d8d9c;
+  font-size: 13px;
+}
+
+.account-form {
+  width: 100%;
+}
+
+.account-card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #dbe6ed;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(47, 83, 112, 0.07);
+}
+
+.account-profile-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 26px;
+  background: #f7fbfd;
+  border-bottom: 1px solid #dbe6ed;
+}
+
+.account-avatar {
+  width: 62px;
+  height: 62px;
+  flex: 0 0 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #eaf3fa;
+  color: #3d6f9f;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.account-profile-top h2 {
+  margin: 0;
+  color: #24425f;
+  font-size: 19px;
+}
+
+.account-profile-top p {
+  margin: 4px 0 8px;
+  color: #7d8d9c;
+  font-size: 12px;
+}
+
+.account-role {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #e9f5f0;
+  color: #4a8877;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.account-section {
+  padding: 24px 26px;
+  border-bottom: 1px solid #dbe6ed;
+}
+
+.account-section h3 {
+  margin: 0 0 16px;
+  color: #24425f;
+  font-size: 15px;
+}
+
+.account-help {
+  margin: -7px 0 16px;
+  color: #7d8d9c;
+  font-size: 12px;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px 20px;
+}
+
+.account-grid label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 6px;
+  color: #24425f;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.account-grid input,
+.account-grid select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 9px 11px;
+  border: 1px solid #dbe6ed;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: #536a7d;
+  font-size: 12px;
+}
+
+.account-grid input:focus,
+.account-grid select:focus {
+  border-color: #4f86c6;
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
+}
+
+.account-grid input:disabled {
+  background: #f4f8fb;
+  color: #7d8d9c;
+  cursor: not-allowed;
+}
+
+.account-full-width {
+  grid-column: 1 / -1;
+}
+
+.account-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 26px;
+  background: #fbfdfe;
+}
+
+.account-actions button {
+  min-width: 125px;
+  height: 40px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #4f86c6;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-actions button:hover {
+  background: #3d6f9f;
+}
+
+.account-actions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.account-alert {
+  margin: 0 0 16px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.account-success {
+  background: #e9f5f0;
+  color: #3f7969;
+  border: 1px solid #cbe5db;
+}
+
+.account-error {
+  background: #fdecec;
+  color: #b64545;
+  border: 1px solid #f2cccc;
+}
+
+.account-message {
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  box-sizing: border-box;
+  color: #7d8d9c;
+}
+
+@media (max-width: 800px) {
+  .account-page {
+    padding: 25px 20px 35px;
+  }
+
+  .account-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-full-width {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .account-page {
+    padding: 20px 14px 30px;
+  }
+
+  .account-header h1 {
+    font-size: 24px;
+  }
+
+  .account-profile-top,
+  .account-section,
+  .account-actions {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .account-profile-top {
+    align-items: flex-start;
+  }
+
+  .account-avatar {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    font-size: 20px;
+  }
+
+  .account-actions button {
+    width: 100%;
+  }
+}

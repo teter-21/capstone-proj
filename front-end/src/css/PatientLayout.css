@@ -1,0 +1,57 @@
+/* PATIENT PORTAL — LAYOUT Matches the admin portal structure and responsiveness */
+
+.patient-layout {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background: var(--color-page);
+}
+
+.patient-main-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 100vh;
+  background: var(--color-page);
+  overflow-x: hidden;
+}
+
+.patient-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 30px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Prevent child pages from accidentally creating a second full layout */
+.patient-main-content > * {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .patient-topbar {
+    padding: 0 22px;
+  }
+}
+
+@media (max-width: 700px) {
+  .patient-topbar {
+    min-height: 64px;
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .patient-topbar {
+    min-height: 60px;
+    padding: 0 12px;
+  }
+}

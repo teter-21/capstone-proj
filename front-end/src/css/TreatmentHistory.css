@@ -1,0 +1,259 @@
+.treatment-history-page {
+  min-height: 100vh;
+  padding: 35px 45px;
+  box-sizing: border-box;
+  background: var(--color-page);
+}
+
+.treatment-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.treatment-history-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.page-description {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.treatment-header-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-green-soft);
+  font-size: 23px;
+}
+
+.treatment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.treatment-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 15px;
+  padding: 24px;
+  box-shadow: 0 4px 18px rgba(20, 40, 60, 0.04);
+}
+
+.treatment-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.treatment-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  color: #91a0ad;
+}
+
+.treatment-card h2 {
+  margin: 0;
+  font-size: 19px;
+  color: var(--color-heading);
+}
+
+.treatment-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.treatment-date strong {
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.treatment-date span {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.treatment-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  padding: 22px 0;
+}
+
+.treatment-detail span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #99a4b0;
+}
+
+.treatment-detail strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.treatment-payment {
+  display: flex;
+  gap: 45px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.treatment-payment div {
+  display: flex;
+  flex-direction: column;
+}
+
+.treatment-payment span {
+  margin-bottom: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #99a4b0;
+}
+
+.treatment-payment strong {
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.treatment-payment strong.has-balance {
+  color: #c27a35;
+}
+
+.treatment-payment strong.paid {
+  color: #29835a;
+}
+
+.treatment-message {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+}
+
+.treatment-message.error {
+  color: var(--color-danger);
+}
+
+.treatment-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-green-muted);
+  border-radius: 50%;
+  animation: treatmentSpin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes treatmentSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.treatment-error-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fdeeee;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.empty-treatment {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 15px;
+  text-align: center;
+}
+
+.empty-treatment-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-green-soft);
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.empty-treatment h2 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 18px;
+}
+
+.empty-treatment p {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+@media (max-width: 700px) {
+  .treatment-history-page {
+    padding: 25px 20px;
+  }
+
+  .treatment-details {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 500px) {
+  .treatment-history-header {
+    align-items: flex-start;
+  }
+
+  .treatment-header-icon {
+    display: none;
+  }
+
+  .treatment-card-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .treatment-date {
+    align-items: flex-start;
+  }
+
+  .treatment-payment {
+    gap: 25px;
+  }
+}

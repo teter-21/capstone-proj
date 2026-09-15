@@ -1,0 +1,618 @@
+/* Dental chart modal and FDI odontogram */
+.dental-chart-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(20, 40, 58, 0.62);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow: auto;
+}
+.dental-chart-modal {
+  position: relative;
+  width: min(1280px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #d5e2eb;
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(18, 49, 73, 0.28);
+}
+.dental-chart-header {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #dce7ee;
+  background: linear-gradient(135deg, #fbfdff, #f1f8fc);
+}
+.dental-chart-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3f80bd;
+}
+.dental-chart-title-row svg {
+  font-size: 21px;
+}
+.dental-chart-title-row h2 {
+  margin: 0;
+  color: #234766;
+  font-size: 21px;
+  font-weight: 700;
+}
+.dental-chart-header p {
+  margin: 6px 0 0 31px;
+  color: #7d91a3;
+  font-size: 12px;
+}
+.dental-chart-close {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d7e3eb;
+  border-radius: 9px;
+  background: #fff;
+  color: #234766;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+.dental-chart-close:hover {
+  background: #eaf4fb;
+  color: #3477b3;
+  border-color: #bdd5e6;
+}
+.dental-chart-content {
+  min-height: 0;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 18px;
+  padding: 16px 20px;
+  overflow: auto;
+}
+.odontogram-panel,
+.tooth-editor {
+  min-width: 0;
+  border: 1px solid #d8e5ed;
+  border-radius: 14px;
+  background: #fff;
+}
+.odontogram-panel {
+  overflow: hidden;
+}
+.odontogram-section-title {
+  min-height: 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  background: #eaf4fb;
+  color: #254867;
+  font-size: 13px;
+  font-weight: 700;
+}
+.odontogram-section-title small {
+  color: #7c91a3;
+  font-size: 10px;
+  font-weight: 500;
+}
+.odontogram-scroll {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 18px 22px;
+  background: linear-gradient(180deg, #fff 0%, #fbfdfe 100%);
+  overflow-x: auto;
+}
+.reference-odontogram {
+  width: 100%;
+  min-width: 760px;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+.quadrant-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 26px 18px;
+}
+.tooth-quadrant {
+  min-width: 0;
+  padding: 2px 4px 6px;
+}
+.quadrant-label {
+  margin: 0 0 13px;
+  text-align: center;
+  color: #40576a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: lowercase;
+}
+.quadrant-teeth {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+  align-items: start;
+}
+.upper-right-quadrant,
+.lower-right-quadrant {
+  padding-right: 10px;
+}
+.upper-left-quadrant,
+.lower-left-quadrant {
+  padding-left: 10px;
+}
+.odontogram-tooth {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: 112px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #536a7d;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition:
+    transform 0.16s ease,
+    filter 0.16s ease;
+}
+.odontogram-tooth:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 3px 5px rgba(52, 88, 115, 0.15));
+}
+.odontogram-tooth:focus-visible {
+  border-radius: 8px;
+  box-shadow: 0 0 0 3px rgba(63, 128, 189, 0.18);
+}
+.odontogram-tooth.selected {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 0 5px rgba(63, 128, 189, 0.4));
+}
+.tooth-number {
+  display: block;
+  height: 18px;
+  margin: 0;
+  color: #52687a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+}
+.odontogram-tooth.selected .tooth-number {
+  color: #2f76b4;
+  font-weight: 700;
+}
+.tooth-drawing {
+  display: block;
+  overflow: visible;
+}
+.simple-tooth {
+  width: 42px;
+  height: 76px;
+  margin-top: 5px;
+}
+.tooth-outline {
+  fill: #fff;
+  stroke: #708799;
+  stroke-width: 2.1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.tooth-condition-mark {
+  fill: #d45b50;
+  stroke: #fff;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.odontogram-tooth.cavity .tooth-outline {
+  fill: #fff0ed;
+  stroke: #d14e42;
+}
+.odontogram-tooth.cavity .tooth-condition-mark {
+  fill: #d14e42;
+}
+.odontogram-tooth.filled .tooth-outline {
+  fill: #e8f5ef;
+  stroke: #55977f;
+}
+.odontogram-tooth.filled .tooth-condition-mark {
+  fill: #55977f;
+}
+.odontogram-tooth.missing .tooth-outline {
+  fill: #eef2f5;
+  stroke: #8998a3;
+  stroke-dasharray: 4 3;
+}
+.odontogram-tooth.missing .tooth-condition-mark {
+  fill: #8998a3;
+}
+.odontogram-tooth.extracted .tooth-outline {
+  fill: #f1edf6;
+  stroke: #7e6794;
+}
+.odontogram-tooth.extracted .tooth-condition-mark {
+  fill: #7e6794;
+}
+.odontogram-tooth.cracked .tooth-outline {
+  fill: #fff6e7;
+  stroke: #d39e32;
+}
+.odontogram-tooth.cracked .tooth-condition-mark {
+  fill: #d39e32;
+}
+.odontogram-tooth.impacted .tooth-outline {
+  fill: #f0edfa;
+  stroke: #7662a4;
+}
+.odontogram-tooth.impacted .tooth-condition-mark {
+  fill: #7662a4;
+}
+.odontogram-tooth.root-canal .tooth-outline {
+  fill: #eaf3fa;
+  stroke: #4f86c6;
+}
+.odontogram-tooth.root-canal .tooth-condition-mark {
+  fill: #4f86c6;
+}
+.odontogram-tooth.crown .tooth-outline {
+  fill: #f7f1df;
+  stroke: #b89945;
+}
+.odontogram-tooth.crown .tooth-condition-mark {
+  fill: #b89945;
+}
+.odontogram-tooth.other .tooth-outline {
+  fill: #eef6f7;
+  stroke: #5c9ca4;
+}
+.odontogram-tooth.other .tooth-condition-mark {
+  fill: #5c9ca4;
+}
+.odontogram-tooth.missing .tooth-drawing {
+  opacity: 0.72;
+}
+.odontogram-loading {
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+  color: #7d8d9c;
+  font-size: 12px;
+}
+.odontogram-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 11px 14px;
+  border-top: 1px solid #d8e5ed;
+  background: #f8fbfd;
+  color: #536a7d;
+  font-size: 10px;
+}
+.odontogram-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border-radius: 50%;
+}
+.legend-dot.healthy {
+  background: #8ca5b5;
+}
+.legend-dot.cavity {
+  background: #d76a5e;
+}
+.legend-dot.filled {
+  background: #5b9e8a;
+}
+.legend-dot.missing {
+  background: #8d99a3;
+}
+.legend-dot.cracked {
+  background: #d6a340;
+}
+.legend-dot.other {
+  background: #5c9ca4;
+}
+.tooth-editor {
+  padding: 17px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #fbfdfe, #f7fbfd);
+}
+.selected-tooth-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 19px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #dbe6ed;
+}
+.selected-tooth-heading span {
+  color: #7d8d9c;
+  font-size: 11px;
+}
+.selected-tooth-heading strong {
+  color: #3d6f9f;
+  font-size: 20px;
+}
+.tooth-editor label {
+  display: block;
+  margin: 13px 0 6px;
+  color: #24425f;
+  font-size: 11px;
+  font-weight: 700;
+}
+.tooth-editor select,
+.tooth-editor textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 11px;
+  border: 1px solid #dbe6ed;
+  border-radius: 8px;
+  background: #fff;
+  color: #24425f;
+  font-size: 12px;
+}
+.tooth-editor textarea {
+  resize: vertical;
+  line-height: 1.45;
+}
+.tooth-editor select:focus,
+.tooth-editor textarea:focus {
+  outline: none;
+  border-color: #4f86c6;
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.11);
+}
+.tooth-editor-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+.save-tooth-btn,
+.clear-tooth-btn {
+  min-height: 38px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.save-tooth-btn {
+  background: #4f86c6;
+  color: #fff;
+}
+.save-tooth-btn:hover {
+  background: #3d6f9f;
+}
+.clear-tooth-btn {
+  background: #edf1f4;
+  color: #24425f;
+}
+.clear-tooth-btn:hover {
+  background: #e0e7eb;
+}
+.save-tooth-btn:disabled,
+.clear-tooth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.tooth-editor-empty {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #7d8d9c;
+}
+.tooth-editor-empty svg {
+  margin-bottom: 12px;
+  color: #4f86c6;
+  font-size: 30px;
+}
+.tooth-editor-empty h3 {
+  margin: 0 0 6px;
+  color: #24425f;
+  font-size: 15px;
+}
+.tooth-editor-empty p {
+  max-width: 190px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.dental-chart-summary {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 20px 16px;
+  color: #536a7d;
+  font-size: 10px;
+}
+.dental-chart-summary strong {
+  margin-right: 5px;
+  color: #24425f;
+  font-size: 11px;
+}
+.dental-chart-summary span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #eaf3fa;
+  color: #3d6f9f;
+}
+
+/* Tablet layout */
+@media (max-width: 1100px) {
+  .dental-chart-content {
+    grid-template-columns: 1fr;
+  }
+  .tooth-editor {
+    min-height: 190px;
+  }
+  .tooth-editor-empty {
+    min-height: 190px;
+  }
+}
+
+/* Phone layout keeps the four FDI quadrants readable and scrolls the chart itself when needed */
+@media (max-width: 760px) {
+  .dental-chart-overlay {
+    padding: 8px;
+    align-items: flex-start;
+  }
+  .dental-chart-modal {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 16px);
+    margin: auto;
+    border-radius: 13px;
+  }
+  .dental-chart-header {
+    padding: 15px 14px;
+  }
+  .dental-chart-title-row h2 {
+    font-size: 18px;
+  }
+  .dental-chart-header p {
+    margin-left: 28px;
+    font-size: 11px;
+  }
+  .dental-chart-close {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+  .dental-chart-content {
+    padding: 10px;
+    gap: 12px;
+    overflow: auto;
+  }
+  .odontogram-section-title {
+    min-height: 42px;
+    padding: 0 12px;
+  }
+  .odontogram-section-title small {
+    display: none;
+  }
+  .odontogram-scroll {
+    padding: 17px 10px 18px;
+    overflow-x: auto;
+  }
+  .reference-odontogram {
+    min-width: 680px;
+  }
+  .quadrant-grid {
+    gap: 22px 12px;
+  }
+  .tooth-quadrant {
+    padding: 0 2px 5px;
+  }
+  .upper-right-quadrant,
+  .lower-right-quadrant,
+  .upper-left-quadrant,
+  .lower-left-quadrant {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .quadrant-label {
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .odontogram-tooth {
+    height: 112px;
+  }
+  .simple-tooth {
+    width: 40px;
+    height: 73px;
+    margin-top: 4px;
+  }
+  .tooth-number {
+    font-size: 11px;
+    height: 17px;
+    line-height: 17px;
+  }
+  .odontogram-legend {
+    gap: 7px 11px;
+    padding: 10px 12px;
+  }
+  .tooth-editor {
+    padding: 14px;
+  }
+  .dental-chart-summary {
+    padding: 10px 12px 14px;
+  }
+}
+
+/* Very small phones can still use the chart by scrolling only the odontogram */
+@media (max-width: 390px) {
+  .dental-chart-overlay {
+    padding: 5px;
+  }
+  .dental-chart-header {
+    padding: 13px 11px;
+  }
+  .dental-chart-content {
+    padding: 8px;
+  }
+  .odontogram-scroll {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  .reference-odontogram {
+    min-width: 650px;
+  }
+  .quadrant-grid {
+    gap: 20px 10px;
+  }
+  .simple-tooth {
+    width: 38px;
+    height: 70px;
+  }
+  .odontogram-tooth {
+    height: 108px;
+  }
+  .quadrant-label {
+    font-size: 12px;
+  }
+  .tooth-number {
+    font-size: 10px;
+  }
+  .odontogram-legend {
+    font-size: 9px;
+  }
+}

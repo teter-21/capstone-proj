@@ -1,0 +1,242 @@
+.reviews-admin-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 32px;
+  background: var(--color-page);
+}
+
+.reviews-admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.reviews-admin-header h1 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: clamp(25px, 3vw, 32px);
+}
+
+.reviews-admin-header p:last-child {
+  margin: 7px 0 0;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.reviews-admin-summary {
+  min-width: 100px;
+  padding: 13px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-white);
+  text-align: center;
+}
+
+.reviews-admin-summary strong,
+.reviews-admin-summary span {
+  display: block;
+}
+
+.reviews-admin-summary strong {
+  color: var(--color-primary);
+  font-size: 22px;
+}
+
+.reviews-admin-summary span {
+  margin-top: 2px;
+  color: var(--color-muted);
+  font-size: 10px;
+}
+
+.reviews-admin-alert {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  font-size: 13px;
+}
+
+.reviews-admin-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-review-card {
+  min-width: 0;
+  padding: 22px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-review-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-review-top h3 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 15px;
+}
+
+.admin-review-top span:not(.review-status-badge) {
+  display: block;
+  margin-top: 3px;
+  color: var(--color-muted);
+  font-size: 10px;
+}
+
+.review-status-badge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.review-status-badge.pending {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.review-status-badge.approved {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.review-status-badge.hidden {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.admin-review-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.admin-review-stars .filled {
+  color: #f5b942;
+}
+
+.admin-review-stars .empty {
+  color: #d5dee5;
+}
+
+.admin-review-comment {
+  min-height: 70px;
+  margin: 0 0 18px;
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.admin-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 15px;
+  border-top: 1px solid var(--color-border);
+}
+
+.review-action {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-white);
+  color: var(--color-text);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.review-action.approve:hover {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+.review-action.hide:hover {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+.review-action.pending:hover {
+  background: var(--color-blue-soft);
+  color: var(--color-primary);
+}
+.review-action.delete:hover {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.reviews-admin-empty {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 35px;
+  border: 1px dashed var(--color-blue-border);
+  border-radius: 14px;
+  background: var(--color-white);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.reviews-admin-empty svg {
+  color: #f5b942;
+}
+
+.reviews-admin-empty h3,
+.reviews-admin-empty p {
+  margin: 0;
+}
+
+.reviews-admin-empty h3 {
+  color: var(--color-heading);
+  font-size: 16px;
+}
+
+.reviews-admin-empty p {
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+  .reviews-admin-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .reviews-admin-page {
+    padding: 22px 16px 35px;
+  }
+
+  .reviews-admin-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reviews-admin-summary {
+    width: 100%;
+  }
+
+  .admin-review-card {
+    padding: 18px;
+  }
+}

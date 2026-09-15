@@ -1,0 +1,989 @@
+/* MAGNO DENTAL CLINIC — GLOBAL DESIGN SYSTEM Calming Blue • Crisp White • Soothing Green */
+
+:root {
+  --color-primary: #4f86c6;
+  --color-primary-dark: #3f6fa8;
+  --color-primary-soft: #6b9bcf;
+
+  --color-green: #5b9e8a;
+  --color-green-dark: #4a8877;
+  --color-green-muted: #6d9f95;
+
+  --color-orange: #b7791f;
+  --color-orange-soft: #e6cfa3;
+
+  --color-purple: #6b3fa0;
+  --color-purple-soft: #c9b3e0;
+
+  --color-heading: #24425f;
+  --color-text: #536a7d;
+  --color-muted: #748596;
+  --color-muted-light: #9aa9b6;
+
+  --color-white: #ffffff;
+  --color-page: #f5f9fb;
+  --color-surface-soft: #eef5f7;
+  --color-border: #dce7ed;
+
+  --color-blue-soft: #eaf3fa;
+  --color-blue-border: #c9dfee;
+
+  --color-green-soft: #e9f5f0;
+  --color-green-border: #c9e4d8;
+
+  --color-success: #4f8f7b;
+  --color-success-soft: #e9f5f0;
+  --color-warning: #b7791f;
+  --color-warning-soft: #fff5e3;
+  --color-danger: #c64a4a;
+  --color-danger-soft: #fdecec;
+
+  --font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --shadow-sm: 0 2px 10px rgba(36, 66, 95, 0.05);
+  --shadow-md: 0 8px 24px rgba(36, 66, 95, 0.08);
+  --shadow-lg: 0 16px 40px rgba(36, 66, 95, 0.12);
+
+  --transition: 180ms ease;
+}
+
+/* Global sizing and typography */
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-page);
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  min-height: 40px;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+input,
+select,
+textarea {
+  min-width: 0;
+  color: var(--color-heading);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    background-color var(--transition);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.13);
+}
+
+textarea {
+  resize: vertical;
+}
+
+img {
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+a {
+  color: inherit;
+}
+
+/* Shared professional surfaces */
+.card,
+.dashboard-card,
+.stat-card,
+.summary-card,
+.patient-card,
+.appointment-card,
+.visit-card,
+.report-card,
+.queue-card,
+.table-container,
+.content-card {
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.card:hover,
+.dashboard-card:hover,
+.stat-card:hover,
+.summary-card:hover,
+.patient-card:hover,
+.appointment-card:hover,
+.visit-card:hover,
+.report-card:hover,
+.queue-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Keep media inside containers */
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+/* Better mobile behavior for common grids */
+@media (max-width: 900px) {
+  .grid-4,
+  .stats-grid,
+  .dashboard-stats,
+  .report-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-4,
+  .grid-3,
+  .grid-2,
+  .stats-grid,
+  .dashboard-stats,
+  .report-stats,
+  .form-grid,
+  .form-row,
+  .appointment-details,
+  .patient-details {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-header,
+  .appointments-header,
+  .queue-header,
+  .dashboard-header,
+  .content-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .page-header button,
+  .appointments-header button,
+  .queue-header button {
+    width: 100%;
+  }
+
+  .table-container,
+  .responsive-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 650px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .modal,
+  .dialog,
+  .addv-modal,
+  .create-account-modal {
+    width: calc(100% - 24px) !important;
+    max-width: calc(100% - 24px) !important;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+  }
+
+  .modal-actions,
+  .footer,
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button,
+  .footer button,
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* GLOBAL RESPONSIVE TABLE SYSTEM Blue header • White rows • Soft alternating rows */
+
+.table-container,
+.table-wrapper,
+.responsive-table,
+.data-table-container,
+.table-responsive,
+.records-table-container,
+.patient-table-container,
+.appointments-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Any table inside a scrollable table container */
+.table-container table,
+.table-wrapper table,
+.responsive-table table,
+.data-table-container table,
+.table-responsive table,
+.records-table-container table,
+.patient-table-container table,
+.appointments-table-container table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--color-white);
+}
+
+/* Header */
+.table-container thead,
+.table-wrapper thead,
+.responsive-table thead,
+.data-table-container thead,
+.table-responsive thead,
+.records-table-container thead,
+.patient-table-container thead,
+.appointments-table-container thead {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.table-container thead th,
+.table-wrapper thead th,
+.responsive-table thead th,
+.data-table-container thead th,
+.table-responsive thead th,
+.records-table-container thead th,
+.patient-table-container thead th,
+.appointments-table-container thead th {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--color-primary-dark);
+  color: var(--color-white);
+  background: var(--color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Rounded table header corners */
+.table-container thead th:first-child,
+.table-wrapper thead th:first-child,
+.responsive-table thead th:first-child,
+.data-table-container thead th:first-child,
+.table-responsive thead th:first-child,
+.records-table-container thead th:first-child,
+.patient-table-container thead th:first-child,
+.appointments-table-container thead th:first-child {
+  border-top-left-radius: var(--radius-md);
+}
+
+.table-container thead th:last-child,
+.table-wrapper thead th:last-child,
+.responsive-table thead th:last-child,
+.data-table-container thead th:last-child,
+.table-responsive thead th:last-child,
+.records-table-container thead th:last-child,
+.patient-table-container thead th:last-child,
+.appointments-table-container thead th:last-child {
+  border-top-right-radius: var(--radius-md);
+}
+
+/* Body */
+.table-container tbody tr,
+.table-wrapper tbody tr,
+.responsive-table tbody tr,
+.data-table-container tbody tr,
+.table-responsive tbody tr,
+.records-table-container tbody tr,
+.patient-table-container tbody tr,
+.appointments-table-container tbody tr {
+  background: var(--color-white);
+  transition: background-color 150ms ease;
+}
+
+/* Alternating row color */
+.table-container tbody tr:nth-child(even),
+.table-wrapper tbody tr:nth-child(even),
+.responsive-table tbody tr:nth-child(even),
+.data-table-container tbody tr:nth-child(even),
+.table-responsive tbody tr:nth-child(even),
+.records-table-container tbody tr:nth-child(even),
+.patient-table-container tbody tr:nth-child(even),
+.appointments-table-container tbody tr:nth-child(even) {
+  background: var(--color-green-soft);
+}
+
+/* Hover */
+.table-container tbody tr:hover,
+.table-wrapper tbody tr:hover,
+.responsive-table tbody tr:hover,
+.data-table-container tbody tr:hover,
+.table-responsive tbody tr:hover,
+.records-table-container tbody tr:hover,
+.patient-table-container tbody tr:hover,
+.appointments-table-container tbody tr:hover {
+  background: var(--color-blue-soft);
+}
+
+/* Cells */
+.table-container tbody td,
+.table-wrapper tbody td,
+.responsive-table tbody td,
+.data-table-container tbody td,
+.table-responsive tbody td,
+.records-table-container tbody td,
+.patient-table-container tbody td,
+.appointments-table-container tbody td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 12px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Last row */
+.table-container tbody tr:last-child td,
+.table-wrapper tbody tr:last-child td,
+.responsive-table tbody tr:last-child td,
+.data-table-container tbody tr:last-child td,
+.table-responsive tbody tr:last-child td,
+.records-table-container tbody tr:last-child td,
+.patient-table-container tbody tr:last-child td,
+.appointments-table-container tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Strong text in tables */
+.table-container tbody td strong,
+.table-wrapper tbody td strong,
+.responsive-table tbody td strong,
+.data-table-container tbody td strong,
+.table-responsive tbody td strong,
+.records-table-container tbody td strong,
+.patient-table-container tbody td strong,
+.appointments-table-container tbody td strong {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+/* Small screens: table remains readable and scrolls horizontally */
+@media (max-width: 768px) {
+  .table-container,
+  .table-wrapper,
+  .responsive-table,
+  .data-table-container,
+  .table-responsive,
+  .records-table-container,
+  .patient-table-container,
+  .appointments-table-container {
+    border-radius: var(--radius-sm);
+  }
+
+  .table-container table,
+  .table-wrapper table,
+  .responsive-table table,
+  .data-table-container table,
+  .table-responsive table,
+  .records-table-container table,
+  .patient-table-container table,
+  .appointments-table-container table {
+    min-width: 620px;
+  }
+
+  .table-container thead th,
+  .table-wrapper thead th,
+  .responsive-table thead th,
+  .data-table-container thead th,
+  .table-responsive thead th,
+  .records-table-container thead th,
+  .patient-table-container thead th,
+  .appointments-table-container thead th {
+    padding: 11px 13px;
+    font-size: 10px;
+  }
+
+  .table-container tbody td,
+  .table-wrapper tbody td,
+  .responsive-table tbody td,
+  .data-table-container tbody td,
+  .table-responsive tbody td,
+  .records-table-container tbody td,
+  .patient-table-container tbody td,
+  .appointments-table-container tbody td {
+    padding: 11px 13px;
+    font-size: 11px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .table-container,
+  .table-wrapper,
+  .responsive-table,
+  .data-table-container,
+  .table-responsive,
+  .records-table-container,
+  .patient-table-container,
+  .appointments-table-container {
+    margin-right: -2px;
+    max-width: calc(100% + 4px);
+  }
+}
+
+/* Touch-friendly scrollbar */
+.table-container::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar,
+.responsive-table::-webkit-scrollbar,
+.data-table-container::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar,
+.records-table-container::-webkit-scrollbar,
+.patient-table-container::-webkit-scrollbar,
+.appointments-table-container::-webkit-scrollbar {
+  height: 7px;
+}
+
+.table-container::-webkit-scrollbar-thumb,
+.table-wrapper::-webkit-scrollbar-thumb,
+.responsive-table::-webkit-scrollbar-thumb,
+.data-table-container::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb,
+.records-table-container::-webkit-scrollbar-thumb,
+.patient-table-container::-webkit-scrollbar-thumb,
+.appointments-table-container::-webkit-scrollbar-thumb {
+  background: var(--color-primary-soft);
+  border-radius: 10px;
+}
+
+/* MAGNO DENTAL CLINIC — CONSISTENT ADMIN + PATIENT UI Calming Blue • Crisp White • Soothing Green */
+
+:root {
+  --clinic-blue: #4f86c6;
+  --clinic-blue-dark: #3d6f9f;
+  --clinic-blue-light: #eaf3fa;
+  --clinic-blue-border: #cddfeb;
+
+  --clinic-green: #5b9e8a;
+  --clinic-green-dark: #4a8877;
+  --clinic-green-light: #e9f5f0;
+
+  --clinic-white: #ffffff;
+  --clinic-page: #f4f8fb;
+  --clinic-surface: #f8fbfd;
+
+  --clinic-heading: #24425f;
+  --clinic-text: #536a7d;
+  --clinic-muted: #7d8d9c;
+  --clinic-border: #dbe6ed;
+
+  --clinic-shadow: 0 6px 20px rgba(47, 83, 112, 0.07);
+  --clinic-shadow-hover: 0 10px 28px rgba(47, 83, 112, 0.11);
+
+  --clinic-radius: 14px;
+}
+
+/* Base */
+body {
+  background: var(--clinic-page);
+  color: var(--clinic-text);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* SHARED CARD / PANEL LOOK */
+
+.card,
+.dashboard-card,
+.stat-card,
+.summary-card,
+.patient-card,
+.appointment-card,
+.visit-card,
+.report-card,
+.queue-card,
+.content-card,
+.panel,
+.section-card,
+.table-card {
+  background: var(--clinic-white);
+  border: 1px solid var(--clinic-border);
+  border-radius: var(--clinic-radius);
+  box-shadow: var(--clinic-shadow);
+}
+
+.card:hover,
+.dashboard-card:hover,
+.stat-card:hover,
+.summary-card:hover,
+.patient-card:hover,
+.appointment-card:hover,
+.visit-card:hover,
+.report-card:hover,
+.queue-card:hover {
+  box-shadow: var(--clinic-shadow-hover);
+}
+
+/* COMMON PAGE HEADERS */
+
+.page-header,
+.content-header,
+.dashboard-header,
+.appointments-header,
+.queue-header,
+.report-header {
+  color: var(--clinic-heading);
+}
+
+.page-header h1,
+.content-header h1,
+.dashboard-header h1,
+.appointments-header h1,
+.queue-header h1,
+.report-header h1 {
+  color: var(--clinic-heading);
+}
+
+.page-header p,
+.content-header p,
+.dashboard-header p,
+.appointments-header p,
+.queue-header p,
+.report-header p {
+  color: var(--clinic-muted);
+}
+
+/* PRIMARY BUTTONS */
+
+.btn-primary,
+.primary-btn,
+.save,
+.add-btn,
+.book-new-appointment-btn,
+.add-patient-btn {
+  background: var(--clinic-blue);
+  border-color: var(--clinic-blue);
+  color: var(--clinic-white);
+}
+
+.btn-primary:hover,
+.primary-btn:hover,
+.save:hover,
+.add-btn:hover,
+.book-new-appointment-btn:hover,
+.add-patient-btn:hover {
+  background: var(--clinic-blue-dark);
+  border-color: var(--clinic-blue-dark);
+}
+
+/* Green secondary/success actions */
+.btn-success,
+.success-btn,
+.confirm-btn,
+.check-in-btn {
+  background: var(--clinic-green);
+  border-color: var(--clinic-green);
+  color: var(--clinic-white);
+}
+
+.btn-success:hover,
+.success-btn:hover,
+.confirm-btn:hover,
+.check-in-btn:hover {
+  background: var(--clinic-green-dark);
+}
+
+/* TABLES — ALIGNED + BLUE HEADER */
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.table-container,
+.table-wrapper,
+.responsive-table,
+.data-table-container,
+.table-responsive,
+.records-table-container,
+.patient-table-container,
+.appointments-table-container,
+.queue-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--clinic-border);
+  border-radius: var(--clinic-radius);
+  background: var(--clinic-white);
+  box-shadow: var(--clinic-shadow);
+}
+
+/* Header */
+table thead th {
+  height: 46px;
+  padding: 12px 16px;
+  background: var(--clinic-blue) !important;
+  color: var(--clinic-white) !important;
+  border-bottom: 1px solid var(--clinic-blue-dark);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  line-height: 1.2;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* First/last header corners */
+table thead th:first-child {
+  border-top-left-radius: var(--clinic-radius);
+}
+
+table thead th:last-child {
+  border-top-right-radius: var(--clinic-radius);
+}
+
+/* Body */
+table tbody td {
+  min-height: 46px;
+  padding: 12px 16px;
+  color: var(--clinic-text);
+  border-bottom: 1px solid var(--clinic-border);
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Alternating rows */
+table tbody tr {
+  background: var(--clinic-white);
+}
+
+table tbody tr:nth-child(even) {
+  background: #f3f8f7;
+}
+
+table tbody tr:hover {
+  background: var(--clinic-blue-light);
+}
+
+table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Make text inside cells align naturally */
+table td strong,
+table td span,
+table td p {
+  vertical-align: middle;
+}
+
+table td p {
+  margin: 0;
+}
+
+/* Numeric / money columns can be right aligned when marked */
+table th.numeric,
+table td.numeric,
+table th.amount,
+table td.amount {
+  text-align: right;
+}
+
+/* Center action/status columns when marked */
+table th.center,
+table td.center,
+table th.actions,
+table td.actions,
+table th.status,
+table td.status {
+  text-align: center;
+}
+
+/* TABLE CONTROLS */
+
+.table-search input,
+.search-input,
+.filter-input,
+.filter-select,
+.table-filter select {
+  background: var(--clinic-white);
+  border: 1px solid var(--clinic-border);
+  color: var(--clinic-heading);
+}
+
+.table-search input:focus,
+.search-input:focus,
+.filter-input:focus,
+.filter-select:focus,
+.table-filter select:focus {
+  border-color: var(--clinic-blue);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.13);
+}
+
+/* STATUS BADGES */
+
+.status-active,
+.badge-active,
+.status-confirmed,
+.status-completed {
+  background: var(--clinic-green-light);
+  color: var(--clinic-green-dark);
+}
+
+.status-pending,
+.badge-pending {
+  background: #fff5e3;
+  color: #a96f1b;
+}
+
+.status-cancelled,
+.badge-cancelled {
+  background: #fdecec;
+  color: #c64a4a;
+}
+
+.status-rescheduled,
+.badge-rescheduled {
+  background: var(--clinic-blue-light);
+  color: var(--clinic-blue-dark);
+}
+
+/* ADMIN + PATIENT PORTAL SURFACES */
+
+.admin-layout,
+.patient-layout {
+  background: var(--clinic-page);
+}
+
+.admin-main-content,
+.patient-main-content {
+  background: var(--clinic-page);
+  color: var(--clinic-text);
+}
+
+/* Shared content spacing without forcing width */
+.admin-main-content > *,
+.patient-main-content > * {
+  min-width: 0;
+}
+
+/* SIDEBARS — SAME VISUAL LANGUAGE */
+
+.admin-sidebar,
+.patient-sidebar {
+  background: var(--clinic-white);
+  border-color: var(--clinic-border);
+  box-shadow: 2px 0 12px rgba(47, 83, 112, 0.035);
+}
+
+.admin-sidebar a,
+.patient-sidebar a {
+  color: var(--clinic-text);
+}
+
+.admin-sidebar a:hover,
+.patient-sidebar a:hover {
+  background: var(--clinic-surface);
+  color: var(--clinic-blue);
+}
+
+.admin-sidebar a.active,
+.patient-sidebar a.active {
+  background: var(--clinic-blue-light);
+  color: var(--clinic-blue-dark);
+}
+
+/* FORM ELEMENTS */
+
+input,
+select,
+textarea {
+  background: var(--clinic-white);
+  border: 1px solid var(--clinic-border);
+  color: var(--clinic-heading);
+  border-radius: 9px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a1aeb9;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--clinic-blue);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
+}
+
+/* RESPONSIVE TABLES */
+
+@media (max-width: 900px) {
+  .table-container,
+  .table-wrapper,
+  .responsive-table,
+  .data-table-container,
+  .table-responsive,
+  .records-table-container,
+  .patient-table-container,
+  .appointments-table-container,
+  .queue-table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 720px;
+  }
+}
+
+@media (max-width: 600px) {
+  table {
+    min-width: 650px;
+  }
+
+  table thead th {
+    height: 42px;
+    padding: 10px 12px;
+    font-size: 10px;
+  }
+
+  table tbody td {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+}
+
+/* RESPONSIVE CARDS / DASHBOARD */
+
+@media (max-width: 900px) {
+  .stats-grid,
+  .dashboard-stats,
+  .report-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid,
+  .dashboard-stats,
+  .report-stats {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card,
+  .dashboard-card,
+  .stat-card,
+  .summary-card,
+  .patient-card,
+  .appointment-card,
+  .visit-card,
+  .report-card,
+  .queue-card {
+    border-radius: 12px;
+  }
+}
+
+/* MOBILE PAGE PADDING */
+
+@media (max-width: 700px) {
+  .admin-main-content,
+  .patient-main-content {
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-main-content,
+  .patient-main-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

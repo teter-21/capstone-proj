@@ -1,0 +1,451 @@
+/* VIEW VISIT HISTORY MODAL */
+
+
+/* FULL PAGE BACKDROP */
+
+.viewv-modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(20, 40, 58, 0.58);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    z-index: 9999;
+
+    overflow-y: auto;
+
+}
+
+
+/* MODAL */
+
+.viewv-modal {
+
+    position: relative;
+
+    width: min(1000px,
+            calc(100vw - 40px));
+
+    max-height: calc(100vh - 40px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #cddfeb;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 25px 60px rgba(20, 40, 58, 0.25);
+
+    overflow: hidden;
+
+}
+
+
+/* HEADER */
+
+.viewv-modal .modal-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    flex-shrink: 0;
+
+    margin-bottom: 14px;
+
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid #dbe6ed;
+
+}
+
+
+.viewv-modal .modal-header h2 {
+
+    margin: 0;
+
+    color: #24425f;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+}
+
+
+.viewv-modal .modal-header p {
+
+    margin: 3px 0 0;
+
+    color: #7d8d9c;
+
+    font-size: 12px;
+
+    text-align: right;
+
+}
+
+
+/* TABLE CONTAINER */
+
+.viewv-modal .table-container {
+
+    width: 100%;
+
+    max-height: 480px;
+
+    min-height: 180px;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    border: 1px solid #cddfeb;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    box-shadow: none;
+
+}
+
+
+/* TABLE */
+
+.viewv-modal .visit-table {
+
+    width: 100%;
+
+    min-width: 760px;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    table-layout: fixed;
+
+}
+
+
+/* TABLE HEADER */
+
+.viewv-modal .visit-table th {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 2;
+
+    height: 42px;
+
+    padding: 10px 12px;
+
+    background: #4f86c6;
+
+    color: #ffffff;
+
+    border: 0;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-align: left;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+
+}
+
+
+/* Column widths */
+
+.viewv-modal .visit-table th:nth-child(1) {
+    width: 48px;
+    text-align: center;
+}
+
+.viewv-modal .visit-table th:nth-child(2) {
+    width: 100px;
+}
+
+.viewv-modal .visit-table th:nth-child(3) {
+    width: 90px;
+}
+
+.viewv-modal .visit-table th:nth-child(4) {
+    width: 150px;
+}
+
+.viewv-modal .visit-table th:nth-child(5) {
+    width: 140px;
+}
+
+.viewv-modal .visit-table th:nth-child(6) {
+    width: 220px;
+}
+
+.viewv-modal .visit-table th:nth-child(7) {
+    width: 100px;
+    text-align: right;
+}
+
+.viewv-modal .visit-table th:nth-child(8) {
+    width: 100px;
+    text-align: right;
+}
+
+
+/* TABLE BODY */
+
+.viewv-modal .visit-table td {
+
+    min-height: 44px;
+
+    padding: 11px 12px;
+
+    color: #536a7d;
+
+    border-bottom: 1px solid #dbe6ed;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    text-align: left;
+
+    vertical-align: middle;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+.viewv-modal .visit-table tbody tr {
+
+    background: #ffffff;
+
+}
+
+
+.viewv-modal .visit-table tbody tr:nth-child(even) {
+
+    background: #e9f5f0;
+
+}
+
+
+.viewv-modal .visit-table tbody tr:hover {
+
+    background: #eaf3fa;
+
+}
+
+
+.viewv-modal .visit-table td:first-child {
+
+    text-align: center;
+
+}
+
+
+.viewv-modal .visit-table .procedure {
+
+    color: #3d6f9f;
+
+    font-weight: 600;
+
+}
+
+
+.viewv-modal .visit-table .paid {
+
+    color: #4a8877;
+
+    font-weight: 700;
+
+    text-align: right;
+
+}
+
+
+.viewv-modal .visit-table .balance {
+
+    color: #c64a4a;
+
+    font-weight: 700;
+
+    text-align: right;
+
+}
+
+
+.viewv-modal .visit-table .no-data {
+
+    height: 150px;
+
+    padding: 30px;
+
+    color: #7d8d9c;
+
+    text-align: center;
+
+    vertical-align: middle;
+
+}
+
+
+/* FOOTER */
+
+.viewv-modal .modal-footer {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    flex-shrink: 0;
+
+    margin-top: 12px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #dbe6ed;
+
+}
+
+
+.viewv-modal .modal-footer button {
+
+    min-width: 72px;
+
+    min-height: 38px;
+
+    padding: 0 16px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #4f86c6;
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+}
+
+
+.viewv-modal .modal-footer button:hover {
+
+    background: #3d6f9f;
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .viewv-modal-overlay {
+
+        padding: 12px;
+
+    }
+
+
+    .viewv-modal {
+
+        width: calc(100vw - 24px);
+
+        max-height: calc(100vh - 24px);
+
+        padding: 16px;
+
+        border-radius: 13px;
+
+    }
+
+
+    .viewv-modal .modal-header {
+
+        flex-direction: column;
+
+        gap: 4px;
+
+    }
+
+
+    .viewv-modal .modal-header p {
+
+        text-align: left;
+
+    }
+
+
+    .viewv-modal .table-container {
+
+        max-height: calc(100vh - 190px);
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .viewv-modal {
+
+        padding: 14px;
+
+    }
+
+
+    .viewv-modal .modal-footer {
+
+        justify-content: stretch;
+
+    }
+
+
+    .viewv-modal .modal-footer button {
+
+        width: 100%;
+
+    }
+
+}

@@ -1,0 +1,278 @@
+/* TREATMENT / VISIT RECORD MODAL */
+
+.treatment-modal-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(20, 40, 58, 0.58);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    z-index: 9999;
+
+    overflow-y: auto;
+}
+
+.treatment-modal {
+    width: min(650px, calc(100vw - 40px));
+    max-height: calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    background: #ffffff;
+    border: 1px solid #cddfeb;
+    border-radius: 16px;
+
+    box-shadow:
+        0 25px 60px rgba(20, 40, 58, 0.25);
+}
+
+.treatment-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 22px 24px 18px;
+
+    border-bottom: 1px solid #dbe6ed;
+}
+
+.treatment-modal-label {
+    display: block;
+    margin-bottom: 4px;
+
+    color: #5b9e8a;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .8px;
+}
+
+.treatment-modal-header h2 {
+    margin: 0;
+    color: #24425f;
+    font-size: 20px;
+}
+
+.treatment-modal-header p {
+    margin: 5px 0 0;
+    color: #7d8d9c;
+    font-size: 12px;
+}
+
+.treatment-close {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #edf1f4;
+    color: #536a7d;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.treatment-close:hover {
+    background: #eaf3fa;
+    color: #3d6f9f;
+}
+
+.treatment-patient-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+
+    margin: 18px 24px 0;
+}
+
+.treatment-patient-summary>div {
+    min-width: 0;
+    padding: 12px;
+
+    background: #eaf3fa;
+    border: 1px solid #cddfeb;
+    border-radius: 10px;
+}
+
+.treatment-patient-summary span {
+    display: block;
+    margin-bottom: 4px;
+
+    color: #7d8d9c;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.treatment-patient-summary strong {
+    display: block;
+
+    color: #24425f;
+    font-size: 12px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.treatment-form {
+    padding: 20px 24px 24px;
+}
+
+.treatment-form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.treatment-form-group {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 14px;
+}
+
+.treatment-form-group label {
+    margin-bottom: 6px;
+
+    color: #24425f;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.treatment-form-group input,
+.treatment-form-group select,
+.treatment-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 10px 11px;
+
+    background: #ffffff;
+    border: 1px solid #dbe6ed;
+    border-radius: 8px;
+
+    color: #24425f;
+
+    outline: none;
+}
+
+.treatment-form-group input,
+.treatment-form-group select {
+    min-height: 40px;
+}
+
+.treatment-form-group textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.treatment-form-group input:focus,
+.treatment-form-group select:focus,
+.treatment-form-group textarea:focus {
+    border-color: #4f86c6;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 134, 198, .12);
+}
+
+.treatment-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 4px;
+    padding-top: 16px;
+
+    border-top: 1px solid #dbe6ed;
+}
+
+.treatment-form-actions button {
+    min-height: 40px;
+
+    padding: 0 17px;
+
+    border: 0;
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.treatment-cancel {
+    background: #edf1f4;
+    color: #24425f;
+}
+
+.treatment-cancel:hover {
+    background: #dfe8ee;
+}
+
+.treatment-save {
+    background: #5b9e8a;
+    color: #ffffff;
+}
+
+.treatment-save:hover {
+    background: #4a8877;
+}
+
+.treatment-form-actions button:disabled,
+.treatment-close:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 650px) {
+
+    .treatment-modal-overlay {
+        padding: 10px;
+    }
+
+    .treatment-modal {
+        width: calc(100vw - 20px);
+        max-height: calc(100vh - 20px);
+        border-radius: 13px;
+    }
+
+    .treatment-modal-header {
+        padding: 18px;
+    }
+
+    .treatment-patient-summary {
+        grid-template-columns: 1fr;
+        margin: 14px 18px 0;
+    }
+
+    .treatment-form {
+        padding: 16px 18px 18px;
+    }
+
+    .treatment-form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .treatment-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .treatment-form-actions button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,257 @@
+.patient-notification {
+    position: relative;
+    z-index: 1000;
+}
+
+.patient-notification-button {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 11px;
+    background: var(--color-green-soft);
+    color: #527f80;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.patient-notification-button:hover {
+    background: #e5f1f0;
+    color: #3f7374;
+}
+
+.notification-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: #d95c5c;
+    color: var(--color-white);
+    border: 2px solid var(--color-white);
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.patient-notification-dropdown {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    width: 370px;
+    max-height: 500px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 15px;
+    box-shadow: 0 12px 35px rgba(25, 45, 65, .14);
+    overflow: hidden;
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.notification-header h3 {
+    margin: 0;
+    color: var(--color-heading);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.notification-header span {
+    display: block;
+    margin-top: 4px;
+    color: #98a3af;
+    font-size: 10px;
+}
+
+.mark-all-button {
+    border: none;
+    background: none;
+    color: var(--color-green);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mark-all-button:hover {
+    text-decoration: underline;
+}
+
+.notification-list {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    gap: 13px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f2f4;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.notification-item:hover {
+    background: #f9fbfb;
+}
+
+.notification-item.unread {
+    background: #f5fafa;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-type-icon {
+    width: 37px;
+    height: 37px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--color-green-soft);
+    color: var(--color-green);
+    font-size: 13px;
+}
+
+.notification-type-icon.rescheduled {
+    background: var(--color-border);
+    color: var(--color-green-dark);
+}
+
+.notification-type-icon.approved {
+    background: var(--color-green-soft);
+    color: var(--color-success);
+}
+
+.notification-type-icon.cancelled {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+.notification-type-icon.completed {
+    background: var(--color-blue-soft);
+    color: var(--color-primary);
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.notification-title-row h4 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.unread-dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--color-green);
+}
+
+.notification-content p {
+    margin: 5px 0 8px;
+    color: #7b8796;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.notification-time {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #a1aab4;
+    font-size: 9px;
+}
+
+.notification-time svg {
+    font-size: 8px;
+}
+
+.notification-empty {
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.notification-empty-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: var(--color-green-soft);
+    color: var(--color-green-muted);
+}
+
+.notification-empty h4 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 13px;
+}
+
+.notification-empty p {
+    margin: 5px 0 0;
+    color: #9aa4ae;
+    font-size: 10px;
+}
+
+.notification-spinner {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 10px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-green-muted);
+    border-radius: 50%;
+    animation: notificationSpin .8s linear infinite;
+}
+
+@keyframes notificationSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media(max-width:550px) {
+
+    .patient-notification-dropdown {
+        position: fixed;
+        top: 70px;
+        left: 15px;
+        right: 15px;
+        width: auto;
+        max-height: 70vh;
+    }
+
+}

@@ -1,0 +1,455 @@
+/* MAGNO DENTAL CLINIC — CONSISTENT ADMIN + PATIENT UI Calming Blue • Crisp White • Soothing Green */
+
+:root {
+    --clinic-blue: #4f86c6;
+    --clinic-blue-dark: #3d6f9f;
+    --clinic-blue-light: #eaf3fa;
+    --clinic-blue-border: #cddfeb;
+
+    --clinic-green: #5b9e8a;
+    --clinic-green-dark: #4a8877;
+    --clinic-green-light: #e9f5f0;
+
+    --clinic-white: #ffffff;
+    --clinic-page: #f4f8fb;
+    --clinic-surface: #f8fbfd;
+
+    --clinic-heading: #24425f;
+    --clinic-text: #536a7d;
+    --clinic-muted: #7d8d9c;
+    --clinic-border: #dbe6ed;
+
+    --clinic-shadow: 0 6px 20px rgba(47, 83, 112, .07);
+    --clinic-shadow-hover: 0 10px 28px rgba(47, 83, 112, .11);
+
+    --clinic-radius: 14px;
+}
+
+/* Base */
+body {
+    background: var(--clinic-page);
+    color: var(--clinic-text);
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+/* SHARED CARD / PANEL LOOK */
+
+.card,
+.dashboard-card,
+.stat-card,
+.summary-card,
+.patient-card,
+.appointment-card,
+.visit-card,
+.report-card,
+.queue-card,
+.content-card,
+.panel,
+.section-card,
+.table-card {
+    background: var(--clinic-white);
+    border: 1px solid var(--clinic-border);
+    border-radius: var(--clinic-radius);
+    box-shadow: var(--clinic-shadow);
+}
+
+.card:hover,
+.dashboard-card:hover,
+.stat-card:hover,
+.summary-card:hover,
+.patient-card:hover,
+.appointment-card:hover,
+.visit-card:hover,
+.report-card:hover,
+.queue-card:hover {
+    box-shadow: var(--clinic-shadow-hover);
+}
+
+/* COMMON PAGE HEADERS */
+
+.page-header,
+.content-header,
+.dashboard-header,
+.appointments-header,
+.queue-header,
+.report-header {
+    color: var(--clinic-heading);
+}
+
+.page-header h1,
+.content-header h1,
+.dashboard-header h1,
+.appointments-header h1,
+.queue-header h1,
+.report-header h1 {
+    color: var(--clinic-heading);
+}
+
+.page-header p,
+.content-header p,
+.dashboard-header p,
+.appointments-header p,
+.queue-header p,
+.report-header p {
+    color: var(--clinic-muted);
+}
+
+/* PRIMARY BUTTONS */
+
+.btn-primary,
+.primary-btn,
+.save,
+.add-btn,
+.book-new-appointment-btn,
+.add-patient-btn {
+    background: var(--clinic-blue);
+    border-color: var(--clinic-blue);
+    color: var(--clinic-white);
+}
+
+.btn-primary:hover,
+.primary-btn:hover,
+.save:hover,
+.add-btn:hover,
+.book-new-appointment-btn:hover,
+.add-patient-btn:hover {
+    background: var(--clinic-blue-dark);
+    border-color: var(--clinic-blue-dark);
+}
+
+/* Green secondary/success actions */
+.btn-success,
+.success-btn,
+.confirm-btn,
+.check-in-btn {
+    background: var(--clinic-green);
+    border-color: var(--clinic-green);
+    color: var(--clinic-white);
+}
+
+.btn-success:hover,
+.success-btn:hover,
+.confirm-btn:hover,
+.check-in-btn:hover {
+    background: var(--clinic-green-dark);
+}
+
+/* TABLES — ALIGNED + BLUE HEADER */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+}
+
+.table-container,
+.table-wrapper,
+.responsive-table,
+.data-table-container,
+.table-responsive,
+.records-table-container,
+.patient-table-container,
+.appointments-table-container,
+.queue-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--clinic-border);
+    border-radius: var(--clinic-radius);
+    background: var(--clinic-white);
+    box-shadow: var(--clinic-shadow);
+}
+
+/* Header */
+table thead th {
+    height: 46px;
+    padding: 12px 16px;
+    background: var(--clinic-blue) !important;
+    color: var(--clinic-white) !important;
+    border-bottom: 1px solid var(--clinic-blue-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .35px;
+    line-height: 1.2;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* First/last header corners */
+table thead th:first-child {
+    border-top-left-radius: var(--clinic-radius);
+}
+
+table thead th:last-child {
+    border-top-right-radius: var(--clinic-radius);
+}
+
+/* Body */
+table tbody td {
+    min-height: 46px;
+    padding: 12px 16px;
+    color: var(--clinic-text);
+    border-bottom: 1px solid var(--clinic-border);
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Alternating rows */
+table tbody tr {
+    background: var(--clinic-white);
+}
+
+table tbody tr:nth-child(even) {
+    background: #f3f8f7;
+}
+
+table tbody tr:hover {
+    background: var(--clinic-blue-light);
+}
+
+table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Make text inside cells align naturally */
+table td strong,
+table td span,
+table td p {
+    vertical-align: middle;
+}
+
+table td p {
+    margin: 0;
+}
+
+/* Numeric / money columns can be right aligned when marked */
+table th.numeric,
+table td.numeric,
+table th.amount,
+table td.amount {
+    text-align: right;
+}
+
+/* Center action/status columns when marked */
+table th.center,
+table td.center,
+table th.actions,
+table td.actions,
+table th.status,
+table td.status {
+    text-align: center;
+}
+
+/* TABLE CONTROLS */
+
+.table-search input,
+.search-input,
+.filter-input,
+.filter-select,
+.table-filter select {
+    background: var(--clinic-white);
+    border: 1px solid var(--clinic-border);
+    color: var(--clinic-heading);
+}
+
+.table-search input:focus,
+.search-input:focus,
+.filter-input:focus,
+.filter-select:focus,
+.table-filter select:focus {
+    border-color: var(--clinic-blue);
+    box-shadow: 0 0 0 3px rgba(79, 134, 198, .13);
+}
+
+/* STATUS BADGES */
+
+.status-active,
+.badge-active,
+.status-confirmed,
+.status-completed {
+    background: var(--clinic-green-light);
+    color: var(--clinic-green-dark);
+}
+
+.status-pending,
+.badge-pending {
+    background: #fff5e3;
+    color: #a96f1b;
+}
+
+.status-cancelled,
+.badge-cancelled {
+    background: #fdecec;
+    color: #c64a4a;
+}
+
+.status-rescheduled,
+.badge-rescheduled {
+    background: var(--clinic-blue-light);
+    color: var(--clinic-blue-dark);
+}
+
+/* ADMIN + PATIENT PORTAL SURFACES */
+
+.admin-layout,
+.patient-layout {
+    background: var(--clinic-page);
+}
+
+.admin-main-content,
+.patient-main-content {
+    background: var(--clinic-page);
+    color: var(--clinic-text);
+}
+
+/* Shared content spacing without forcing width */
+.admin-main-content > *,
+.patient-main-content > * {
+    min-width: 0;
+}
+
+/* SIDEBARS — SAME VISUAL LANGUAGE */
+
+.admin-sidebar,
+.patient-sidebar {
+    background: var(--clinic-white);
+    border-color: var(--clinic-border);
+    box-shadow: 2px 0 12px rgba(47, 83, 112, .035);
+}
+
+.admin-sidebar a,
+.patient-sidebar a {
+    color: var(--clinic-text);
+}
+
+.admin-sidebar a:hover,
+.patient-sidebar a:hover {
+    background: var(--clinic-surface);
+    color: var(--clinic-blue);
+}
+
+.admin-sidebar a.active,
+.patient-sidebar a.active {
+    background: var(--clinic-blue-light);
+    color: var(--clinic-blue-dark);
+}
+
+/* FORM ELEMENTS */
+
+input,
+select,
+textarea {
+    background: var(--clinic-white);
+    border: 1px solid var(--clinic-border);
+    color: var(--clinic-heading);
+    border-radius: 9px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #a1aeb9;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--clinic-blue);
+    box-shadow: 0 0 0 3px rgba(79, 134, 198, .12);
+}
+
+/* RESPONSIVE TABLES */
+
+@media (max-width: 900px) {
+    .table-container,
+    .table-wrapper,
+    .responsive-table,
+    .data-table-container,
+    .table-responsive,
+    .records-table-container,
+    .patient-table-container,
+    .appointments-table-container,
+    .queue-table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 720px;
+    }
+}
+
+@media (max-width: 600px) {
+    table {
+        min-width: 650px;
+    }
+
+    table thead th {
+        height: 42px;
+        padding: 10px 12px;
+        font-size: 10px;
+    }
+
+    table tbody td {
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+}
+
+/* RESPONSIVE CARDS / DASHBOARD */
+
+@media (max-width: 900px) {
+    .stats-grid,
+    .dashboard-stats,
+    .report-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-grid,
+    .dashboard-stats,
+    .report-stats {
+        grid-template-columns: 1fr !important;
+    }
+
+    .card,
+    .dashboard-card,
+    .stat-card,
+    .summary-card,
+    .patient-card,
+    .appointment-card,
+    .visit-card,
+    .report-card,
+    .queue-card {
+        border-radius: 12px;
+    }
+}
+
+/* MOBILE PAGE PADDING */
+
+@media (max-width: 700px) {
+    .admin-main-content,
+    .patient-main-content {
+        overflow-x: hidden;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-main-content,
+    .patient-main-content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
