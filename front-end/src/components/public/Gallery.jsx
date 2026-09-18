@@ -4,7 +4,7 @@ import dentalClinicImage from "../../assets/images/dental-clinic.png";
 function Gallery() {
   return (
     <section className="gallery">
-      <h2>Our Clinic</h2>
+      <span className="section-title">OUR CLINIC</span>
 
       <div className="gallery-grid">
         <img src={dentalClinicImage} alt="Clinic" />

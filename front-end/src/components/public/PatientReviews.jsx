@@ -70,7 +70,7 @@ function PatientReviews() {
   return (
     <section className="patient-reviews" id="reviews">
       <div className="patient-reviews-heading">
-        <p className="reviews-eyebrow">Patient Experiences</p>
+        <p className="reviews-eyebrow">PATIENT EXPERIENCES</p>
         <h2>What Our Patients Say</h2>
         <p>
           Real experiences from patients who have visited Magno Dental Clinic.

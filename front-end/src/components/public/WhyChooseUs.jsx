@@ -28,7 +28,7 @@ function WhyChooseUs() {
 
   return (
     <section className="why-us">
-      <h2>Why Choose Magno Dental Clinic?</h2>
+      <span className="section-title">WHY CHOOSE US?</span>
 
       <div className="why-grid">
         {features.map((item, index) => (

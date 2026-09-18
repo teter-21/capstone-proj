@@ -3,7 +3,7 @@ import "../../css/Contact.css";
 function Contact() {
   return (
     <section id="contact" className="contact">
-      <h2>Visit Our Clinic</h2>
+      <span className="section-title">VISIT OUR CLINIC</span>
 
       <p>Magno Dental Clinic</p>
 

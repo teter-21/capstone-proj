@@ -5,8 +5,12 @@
   padding: 70px 10%;
 }
 
-.contact h2 {
+.contact .section-title {
   margin-bottom: 25px;
+  color: var(--color-white);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 20px;
 }
 
 .contact p {

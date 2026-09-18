@@ -3,29 +3,30 @@
   text-align: center;
 }
 
-.gallery h2 {
+.gallery .section-title {
   margin-bottom: 40px;
   color: var(--color-primary);
+  display: block;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 20px;
 }
 
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
   gap: 20px;
 }
 
 .gallery img {
   width: 100%;
   height: 260px;
-
   object-fit: cover;
-
-  border-radius: 12px;
-
   transition: 0.3s;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .gallery img:hover {
-  transform: scale(1.03);
+  transform: scale(1.01);
+  box-shadow: none;
 }

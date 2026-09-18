@@ -12,6 +12,9 @@
 
 .services .section-title {
   color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 20px;
 }
 
 .service-grid {
@@ -23,13 +26,23 @@
 .service-card {
   background: var(--color-white);
   padding: 35px 25px;
-  border-radius: 18px;
   transition: 0.3s;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .service-card:hover {
   transform: translateY(-8px);
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
+}
+
+.service-card:hover p {
+  color: var(--color-white);
+}
+
+.service-card:hover .service-icon img {
+  background: var(--color-white);
+  color: var(--color-primary-dark);
 }
 
 .service-icon img {

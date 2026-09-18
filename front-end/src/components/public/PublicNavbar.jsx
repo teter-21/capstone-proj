@@ -76,7 +76,7 @@ function PublicNavbar() {
               className="nav-action nav-book"
               onClick={closeMenu}
             >
-              Book Appointment
+              <FaBook />
             </Link>
           </li>
           <li>
@@ -85,7 +85,7 @@ function PublicNavbar() {
               className="nav-action nav-login"
               onClick={closeMenu}
             >
-              Login
+              <FaSignInAlt />
             </Link>
           </li>
         </ul>

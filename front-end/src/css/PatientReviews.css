@@ -13,8 +13,9 @@
 .reviews-eyebrow {
   margin: 0 0 10px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--color-primary);
+  font-size: 20px;
 }
 
 .patient-reviews-heading h2 {
@@ -50,8 +51,7 @@
   padding: 28px;
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 18px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   text-align: left;
 }
 
@@ -128,7 +128,7 @@
   border-radius: 50%;
   background: var(--color-white);
   color: var(--color-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .reviews-nav:hover {
