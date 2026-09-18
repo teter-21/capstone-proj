@@ -31,16 +31,19 @@
   height: 42px;
   padding: 0 18px;
   border: none;
-  border-radius: 8px;
-  background: #018ccc;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
   color: var(--color-white);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.walk-in-button:hover {
-  background: #3d7caf;
+.walk-in-button:active {
+  background: transparent;
+  color: var(--color-primary);
+  box-shadow: none;
 }
 
 .queue-stats {
@@ -57,8 +60,7 @@
   padding: 20px;
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(20, 40, 60, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .queue-stat-icon {
@@ -67,9 +69,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 11px;
   background: #eef6f6;
   color: #018ccc;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .queue-stat-card span {
@@ -88,8 +90,7 @@
 .queue-container {
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 15px;
-  box-shadow: 0 4px 18px rgba(20, 40, 60, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   overflow: hidden;
 }
 
@@ -557,19 +558,20 @@
   gap: 8px;
   height: 42px;
   padding: 0 17px;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid var(--color-primary);
   background: var(--color-primary);
   color: var(--color-white);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s ease;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.call-next-button:hover {
-  background: #345c87;
-  transform: translateY(-1px);
+.call-next-button:active {
+  background: transparent;
+  color: var(--color-primary);
+  box-shadow: none;
 }
 
 .call-next-button:disabled {
@@ -577,6 +579,8 @@
   color: var(--color-white);
   cursor: not-allowed;
   transform: none;
+  border: none;
+  box-shadow: none;
 }
 
 /* NOW SERVING */
@@ -590,8 +594,7 @@
   background: var(--color-white);
   border: 1px solid #dce9e8;
   border-left: 4px solid var(--color-green);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(20, 40, 60, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .now-serving-icon {

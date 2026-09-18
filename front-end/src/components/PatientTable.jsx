@@ -49,8 +49,6 @@ function PatientTable() {
 
   return (
     <div className="recent-patients">
-      {/* HEADER */}
-
       {/* TABLE */}
 
       <div className="recent-patient-table-wrapper">
@@ -170,8 +168,6 @@ function PatientTable() {
                         patient.status || "Active"
                       ).toLowerCase()}`}
                     >
-                      <span className="status-dot"></span>
-
                       {patient.status || "Active"}
                     </span>
                   </td>

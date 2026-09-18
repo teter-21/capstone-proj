@@ -1,198 +1,183 @@
 /* Overlay */
 .overlay {
-    /* position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.2); */
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    height: 100vh;
-
+  /* position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.2); */
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 100vh;
 }
 
 /* Modal */
 .overlay .modal {
-    background: var(--color-page);
-    width: 96%;
-    border-radius: 12px;
-    padding: 10px;
-    font-family: var(--font-family);
+  background: var(--color-page);
+  width: 96%;
+  border-radius: 12px;
+  padding: 10px;
+  font-family: var(--font-family);
 }
 
 /* Header */
 .overlay .modal .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .overlay .modal .header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .overlay .modal .header-left h2 {
-    font-size: 28px;
+  font-size: 28px;
 
-    font-weight: 700;
+  font-weight: 700;
 
-    color: var(--color-heading);
+  color: var(--color-heading);
 
-    margin-bottom: 6px;
-
+  margin-bottom: 6px;
 }
-
 
 /* Subtitle */
 .overlay .subtitle {
-    color: var(--color-muted);
-    margin: 10px 0 20px;
+  color: var(--color-muted);
+  margin: 10px 0 20px;
 }
 
 /* Section */
 .overlay .section {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .overlay .section-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 22px;
 }
 
 .overlay .section-title h4 {
-    color: var(--color-primary);
-    margin: 0;
+  color: var(--color-primary);
+  margin: 0;
 }
 
-
 .overlay .section-title span {
-    color: var(--color-heading);
-    margin: 0;
+  color: var(--color-heading);
+  margin: 0;
 }
 
 .overlay .line {
-    flex: 1;
-    height: 1px;
-    background: var(--color-border);
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
 }
 
 /* Grid */
 .overlay .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 /* Labels */
 .overlay label {
-    font-weight: bold;
-    font-size: 16px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 /* Inputs */
 input,
 select {
-    font-size: 18px;
-    font-family: var(--font-family);
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    margin-top: 4px;
-
+  font-size: 18px;
+  font-family: var(--font-family);
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  margin-top: 4px;
 }
 
 /* Radio */
 .overlay .radio-group {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    margin-top: 6px;
-    gap: 20px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 6px;
+  gap: 20px;
 }
 
 .overlay .radio-group label {
-    text-align: center;
+  text-align: center;
 }
-
-
 
 /* Footer buttons */
 .overlay .footer-save-canc {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .overlay .cancel {
-    background: var(--color-border);
-    border: none;
-    padding: 12px 18px;
-    border-radius: 6px;
-    font-size: 18px;
-    border: 1px solid var(--color-border);
+  background: var(--color-border);
+  border: none;
+  padding: 12px 18px;
+  font-size: 18px;
+  border: 1px solid var(--color-border);
 }
 
 .overlay .cancel:active {
-    background-color: transparent;
-    border: 1px solid var(--color-danger);
-    color: var(--color-border);
+  background-color: transparent;
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
 }
 
 .overlay .save {
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 6px;
-    border: 1px solid var(--color-primary);
-    font-size: 18px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border: 1px solid var(--color-primary);
+  font-size: 18px;
 }
 
 .overlay .save:active {
-    background-color: transparent;
-    color: var(--color-green-dark);
+  background-color: transparent;
+  color: var(--color-green-dark);
+  border: 1px solid var(--color-green-dark);
 }
 
-
-
 .name-row {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
-    gap: 15px;
+  gap: 15px;
 }
 
 .input-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-group label {
-    font-weight: 600;
-    color: var(--color-text);
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .input-group input {
-    width: 100%;
+  width: 100%;
 }
-
 
 .full-width {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
-@media(max-width:768px) {
-
-    .name-row {
-
-        grid-template-columns: 1fr;
-
-    }
-
+@media (max-width: 768px) {
+  .name-row {
+    grid-template-columns: 1fr;
+  }
 }

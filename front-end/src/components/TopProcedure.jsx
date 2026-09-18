@@ -31,7 +31,7 @@ function TopProcedure() {
   useAutoRefresh(loadProcedures);
 
   return (
-    <div className="card top-procedure">
+    <div className="procedure-card top-procedure">
       {/* HEADER */}
 
       <div className="procedure-card-header">

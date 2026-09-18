@@ -11,7 +11,7 @@
   overflow: hidden;
   background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
   border: 1px solid var(--clinic-blue-border);
-  box-shadow: var(--clinic-shadow);
+  border-radius: 0px !important;
 }
 
 /* Keep the header and rows on the same compact grid */
@@ -22,6 +22,7 @@
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .patient-container .table::-webkit-scrollbar {
@@ -39,7 +40,7 @@
 
 .patient-container .table-header,
 .patient-container .table-row {
-  --patient-grid: 60px 88px 145px 295px 120px 55px 125px 90px 120px 280px;
+  --patient-grid: 60px 88px 145px 295px 120px 55px 125px 90px 120px 320px;
   display: grid;
   grid-template-columns: var(--patient-grid);
   column-gap: 10px;
@@ -53,11 +54,11 @@
   min-height: 46px;
   margin-top: 10px;
   padding: 0 14px 8px;
-  color: var(--clinic-blue-dark);
+  color: var(--color-white);
   border-bottom: 1px solid var(--clinic-blue-border);
   font-size: 11px;
   font-weight: 700;
-  background: #f8fbfd;
+  background: var(--color-primary);
 }
 
 .patient-container .table-row {
@@ -194,14 +195,13 @@
   margin: 0;
   padding: 0 11px;
   border: 1px solid transparent;
-  border-radius: 8px;
   color: #fff !important;
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(36, 66, 95, 0.06);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   transition:
     transform 0.16s ease,
     background-color 0.16s ease,
@@ -257,9 +257,9 @@
   min-height: 44px;
   padding: 0 38px 0 12px;
   border: 1px solid var(--clinic-border);
-  border-radius: 9px;
   background: #fff;
   color: var(--clinic-heading);
+  margin-right: 8px;
 }
 
 .patient-container .search-box input::placeholder {

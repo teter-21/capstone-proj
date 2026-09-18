@@ -51,8 +51,7 @@
 .admin-account-card {
   background: #fff;
   border: 1px solid #dbe6ed;
-  border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(47, 83, 112, 0.07);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   overflow: hidden;
 }
 
@@ -129,17 +128,18 @@
   width: 100%;
   height: 41px;
   margin-top: 3px;
-  border: 0;
-  border-radius: 8px;
-  background: #4f86c6;
+  border: 1px solid var(--color-primary);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background: var(--color-primary);
   color: #fff;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
 
-.admin-account-form button:hover {
-  background: #3d6f9f;
+.admin-account-form button:active {
+  background: transparent;
+  color: var(--color-primary);
 }
 
 .admin-account-form button:disabled {

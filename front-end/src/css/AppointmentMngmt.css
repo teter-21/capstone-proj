@@ -43,15 +43,15 @@
 
   border: 1px solid var(--color-border);
 
-  border-radius: 12px;
-
   background: var(--color-white);
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .appointment-count span {
   display: block;
 
-  font-size: 10px;
+  font-size: 12px;
 
   color: var(--color-muted-light);
 
@@ -89,11 +89,9 @@
 
   border: 1px solid var(--color-border);
 
-  border-radius: 14px;
-
   overflow: hidden;
 
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .appointment-table-wrapper {
@@ -111,7 +109,7 @@
 }
 
 .appointment-table thead {
-  background: var(--color-page);
+  background: var(--color-primary-soft);
 }
 
 .appointment-table th {
@@ -125,7 +123,7 @@
 
   letter-spacing: 0.6px;
 
-  color: var(--color-muted-light);
+  color: var(--color-white);
 
   white-space: nowrap;
 }

@@ -933,81 +933,6 @@ textarea {
   font-family: inherit;
 }
 
-/* SHARED CARD / PANEL LOOK */
-
-.card,
-.dashboard-card,
-.stat-card,
-.summary-card,
-.patient-card,
-.appointment-card,
-.visit-card,
-.report-card,
-.queue-card,
-.content-card,
-.panel,
-.section-card,
-.table-card {
-  background: var(--clinic-white);
-  border: 1px solid var(--clinic-border);
-  border-radius: var(--clinic-radius);
-  box-shadow: var(--clinic-shadow);
-}
-
-.card:hover,
-.dashboard-card:hover,
-.stat-card:hover,
-.summary-card:hover,
-.patient-card:hover,
-.appointment-card:hover,
-.visit-card:hover,
-.report-card:hover,
-.queue-card:hover {
-  box-shadow: var(--clinic-shadow-hover);
-}
-
-/* COMMON PAGE HEADERS */
-
-.page-header,
-.content-header,
-.dashboard-header,
-.appointments-header,
-.queue-header,
-.report-header {
-  color: var(--clinic-heading);
-}
-
-.page-header h1,
-.content-header h1,
-.dashboard-header h1,
-.appointments-header h1,
-.queue-header h1,
-.report-header h1 {
-  color: var(--clinic-heading);
-}
-
-.page-header p,
-.content-header p,
-.dashboard-header p,
-.appointments-header p,
-.queue-header p,
-.report-header p {
-  color: var(--clinic-muted);
-}
-
-/* PRIMARY BUTTONS */
-
-.btn-primary,
-.primary-btn,
-.save,
-.add-btn,
-.book-new-appointment-btn,
-.add-patient-btn {
-  background: var(--clinic-blue);
-  border-color: var(--clinic-blue);
-  color: var(--clinic-white);
-}
-
 .btn-primary:hover,
 .primary-btn:hover,
 .save:hover,
@@ -1059,7 +984,6 @@ table {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--clinic-border);
-  border-radius: var(--clinic-radius);
   background: var(--clinic-white);
   box-shadow: var(--clinic-shadow);
 }
@@ -1078,15 +1002,6 @@ table thead th {
   text-align: left;
   vertical-align: middle;
   white-space: nowrap;
-}
-
-/* First/last header corners */
-table thead th:first-child {
-  border-top-left-radius: var(--clinic-radius);
-}
-
-table thead th:last-child {
-  border-top-right-radius: var(--clinic-radius);
 }
 
 /* Body */
@@ -1250,7 +1165,6 @@ textarea {
   background: var(--clinic-white);
   border: 1px solid var(--clinic-border);
   color: var(--clinic-heading);
-  border-radius: 9px;
 }
 
 input::placeholder,

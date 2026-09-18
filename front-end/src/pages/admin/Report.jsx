@@ -332,7 +332,7 @@ function Report() {
 
       {/* STATS */}
       <div className="reports-stats">
-        <div className="report-card blue">
+        <div className="reports-card blue">
           <h4>TOTAL PATIENTS</h4>
           <h2>
             {loading ? "—" : report.summary.totalPatients.toLocaleString()}
@@ -340,19 +340,19 @@ function Report() {
           <span>Registered in the system</span>
         </div>
 
-        <div className="report-card green">
+        <div className="reports-card green">
           <h4>VISITS</h4>
           <h2>{loading ? "—" : report.summary.totalVisits.toLocaleString()}</h2>
           <span>Within selected period</span>
         </div>
 
-        <div className="report-card revenue">
+        <div className="reports-card revenue">
           <h4>TOTAL REVENUE</h4>
           <h2>{loading ? "—" : currency(report.summary.totalRevenue)}</h2>
           <span>Payments recorded</span>
         </div>
 
-        <div className="report-card balance">
+        <div className="reports-card balance">
           <h4>OUTSTANDING BALANCE</h4>
           <h2>{loading ? "—" : currency(report.summary.outstandingBalance)}</h2>
           <span>Remaining patient balances</span>
@@ -362,7 +362,7 @@ function Report() {
       {/* CHARTS */}
       <div className="reports-charts">
         <div className="card report-chart-card">
-          <div className="report-card-heading">
+          <div className="reports-card-heading">
             <div>
               <h3>Revenue Overview</h3>
               <p>
@@ -396,7 +396,7 @@ function Report() {
         </div>
 
         <div className="card report-chart-card">
-          <div className="report-card-heading">
+          <div className="reports-card-heading">
             <div>
               <h3>Procedure Distribution</h3>
               <p>{procedureTotal} recorded visits</p>
@@ -438,7 +438,7 @@ function Report() {
 
       {/* TABLE */}
       <div className="card report-detail-card">
-        <div className="report-card-heading">
+        <div className="reports-card-heading">
           <div>
             <h3>Detailed Report</h3>
             <p>Actual visit and payment records from the database.</p>

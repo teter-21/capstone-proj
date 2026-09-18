@@ -64,15 +64,11 @@ function Dashboard() {
         <div>
           <h1>Dashboard</h1>
 
-          <p>
-            Welcome back, Dr. Magno. Here's what's happening at your clinic
-            today.
-          </p>
+          <p>Welcome back, Here's what's happening at your clinic today.</p>
         </div>
 
         <Link to="/Appointments" className="dashboard-action">
           View Appointments
-          <FaArrowRight />
         </Link>
       </div>
 

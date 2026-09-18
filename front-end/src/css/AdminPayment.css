@@ -32,10 +32,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
   background: var(--clinic-green-light, #e9f5f0);
   color: var(--clinic-green, #5b9e8a);
   font-size: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px px;
 }
 
 .billing-summary-grid {
@@ -49,8 +49,7 @@
   min-width: 0;
   padding: 18px;
   border: 1px solid var(--clinic-border, #dbe6ed);
-  border-radius: 14px;
-  box-shadow: var(--clinic-shadow, 0 6px 20px rgba(47, 83, 112, 0.07));
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background: #fff;
 }
 
@@ -101,8 +100,7 @@
 .billing-card {
   background: #fff;
   border: 1px solid var(--clinic-border, #dbe6ed);
-  border-radius: 15px;
-  box-shadow: var(--clinic-shadow, 0 6px 20px rgba(47, 83, 112, 0.07));
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   overflow: hidden;
 }
 
@@ -142,7 +140,6 @@
   gap: 9px;
   padding: 0 12px;
   border: 1px solid #dbe6ed;
-  border-radius: 9px;
   background: #fff;
 }
 
@@ -164,7 +161,6 @@
   height: 40px;
   padding: 0 11px;
   border: 1px solid #dbe6ed;
-  border-radius: 9px;
   background: #fff;
   color: #536a7d;
   font-size: 12px;

@@ -72,7 +72,7 @@ function MonthlyGraph() {
   };
 
   return (
-    <div className="card monthly-revenue-card">
+    <div className="monthly-card monthly-revenue-card">
       {/* HEADER */}
 
       <div className="card-header">
