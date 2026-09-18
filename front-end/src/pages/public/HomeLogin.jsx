@@ -85,8 +85,8 @@ function HomeLogin() {
       {/* RIGHT SIDE */}
       <div className="login-right">
         <div className="login-card">
-          <h2>Welcome Back</h2>
-          <p>Sign in to access your patient portal</p>
+          <h2>Welcome</h2>
+          <p>Sign in to access your portal</p>
 
           <form onSubmit={handleLogin}>
             <div className="form-group">

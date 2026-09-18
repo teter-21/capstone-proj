@@ -97,7 +97,7 @@ function AppointmentForm() {
 
   return (
     <section className="appointment">
-      <div className="appointment-card">
+      <div className="appointment-card-container">
         <h1>Book Appointment</h1>
 
         <p className="appointment-subtitle">
@@ -142,18 +142,19 @@ function AppointmentForm() {
           <input
             type="email"
             name="email"
-            placeholder="Email Address"
+            placeholder="Email Address(e.g., example@email.com)"
             value={formData.email}
             onChange={handleChange}
             required
           />
 
           <input
-            type="text"
+            type="number"
             name="phone"
-            placeholder="Phone Number"
+            placeholder="Phone Number(e.g., 09123456789)"
             value={formData.phone}
             onChange={handleChange}
+            maxLength={11}
             required
           />
 
@@ -206,7 +207,7 @@ function AppointmentForm() {
           <textarea
             name="reason"
             rows="5"
-            placeholder="Reason for Visit"
+            placeholder="Reason for Visit(e.g., toothache, routine check-up, etc.)"
             value={formData.reason}
             onChange={handleChange}
           />
