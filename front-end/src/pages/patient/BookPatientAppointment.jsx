@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../css/BookPatientAppointment.css";
+import { FaCalendarAlt } from "react-icons/fa";
 
 function BookPatientAppointment() {
   const navigate = useNavigate();
@@ -105,7 +106,9 @@ function BookPatientAppointment() {
           <p>Schedule your next dental visit with Magno Dental Clinic.</p>
         </div>
 
-        <div className="book-patient-icon">📅</div>
+        <div className="book-patient-icon">
+          <FaCalendarAlt />
+        </div>
       </div>
 
       <div className="book-patient-card">

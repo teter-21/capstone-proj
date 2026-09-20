@@ -1,233 +1,234 @@
 .book-patient-page {
-    min-height: 100vh;
-    padding: 35px 45px;
-    box-sizing: border-box;
-    background: var(--color-page);
+  min-height: 100vh;
+  padding: 35px 45px;
+  box-sizing: border-box;
+  background: var(--color-page);
 }
 
 .book-patient-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .book-patient-header h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--color-heading);
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-heading);
 }
 
 .book-patient-header p:not(.page-label) {
-    margin: 8px 0 0;
-    color: var(--color-muted);
-    font-size: 13px;
+  margin: 8px 0 0;
+  color: var(--color-muted);
+  font-size: 13px;
 }
 
 .book-patient-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-green-soft);
-    font-size: 23px;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-green-soft);
+  font-size: 23px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .page-label {
-    margin: 0 0 7px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: var(--color-green-muted);
+  margin: 0 0 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--color-green-muted);
 }
 
 .book-patient-card {
-    max-width: 96%;
-    margin: 0 auto;
-    background: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 4px 18px rgba(20, 40, 60, 0.04);
+  max-width: 96%;
+  margin: 0 auto;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+
+  padding: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .form-heading {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .form-heading h2 {
-    margin: 0;
-    color: var(--color-heading);
-    font-size: 20px;
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 20px;
 }
 
 .form-heading p {
-    margin: 6px 0 0;
-    color: var(--color-muted);
-    font-size: 12px;
+  margin: 6px 0 0;
+  color: var(--color-muted);
+  font-size: 12px;
 }
 
 .patient-form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .patient-form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .patient-form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-text);
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .patient-form-group label span {
-    margin-left: 3px;
-    color: #d85b5b;
+  margin-left: 3px;
+  color: #d85b5b;
 }
 
 .patient-form-group input,
 .patient-form-group select,
 .patient-form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #dfe5eb;
-    border-radius: 9px;
-    background: var(--color-white);
-    padding: 12px 13px;
-    font-family: inherit;
-    font-size: 13px;
-    color: var(--color-text);
-    outline: none;
-    transition: 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dfe5eb;
+  border-radius: 9px;
+  background: var(--color-white);
+  padding: 12px 13px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--color-text);
+  outline: none;
+  transition: 0.2s;
 }
 
 .patient-form-group input,
 .patient-form-group select {
-    height: 44px;
+  height: 44px;
 }
 
 .patient-form-group textarea {
-    resize: vertical;
-    min-height: 120px;
+  resize: vertical;
+  min-height: 120px;
 }
 
 .patient-form-group input:focus,
 .patient-form-group select:focus,
 .patient-form-group textarea:focus {
-    border-color: #76a9a7;
-    box-shadow: 0 0 0 3px rgba(118, 169, 167, 0.1);
+  border-color: #76a9a7;
+  box-shadow: 0 0 0 3px rgba(118, 169, 167, 0.1);
 }
 
 .patient-form-group input::placeholder,
 .patient-form-group textarea::placeholder {
-    color: #a5afb9;
+  color: #a5afb9;
 }
 
 .patient-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
 }
 
 .patient-cancel-btn,
 .patient-book-btn {
-    height: 42px;
-    padding: 0 20px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+  height: 42px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .patient-cancel-btn {
-    border: 1px solid var(--color-border);
-    background: var(--color-white);
-    color: #657387;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: #657387;
 }
 
-.patient-cancel-btn:hover {
-    background: #f7f9fb;
+.patient-cancel-btn:active {
+  background: transparent;
+  border: 1px solid var(--color-danger);
+  box-shadow: 0px;
+  color: var(--color-danger);
 }
 
 .patient-book-btn {
-    border: 0;
-    background: var(--color-green);
-    color: var(--color-white);
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-white);
 }
 
-.patient-book-btn:hover {
-    background: var(--color-green-dark);
+.patient-book-btn:active {
+  background: transparent;
+  box-shadow: 0px;
+  color: var(--color-primary);
 }
 
 .patient-book-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .appointment-success {
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    background: #e8f6ee;
-    border: 1px solid #c9e8d7;
-    color: #27774b;
-    font-size: 12px;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: #e8f6ee;
+  border: 1px solid #c9e8d7;
+  color: #27774b;
+  font-size: 12px;
 }
 
 .appointment-error {
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    background: #fdeeee;
-    border: 1px solid #f3d0d0;
-    color: #b84a4a;
-    font-size: 12px;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: #fdeeee;
+  border: 1px solid #f3d0d0;
+  color: #b84a4a;
+  font-size: 12px;
 }
 
-@media(max-width:700px) {
+@media (max-width: 700px) {
+  .book-patient-page {
+    padding: 25px 20px;
+  }
 
-    .book-patient-page {
-        padding: 25px 20px;
-    }
+  .patient-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 
-    .patient-form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .book-patient-card {
-        padding: 22px;
-    }
-
+  .book-patient-card {
+    padding: 22px;
+  }
 }
 
-@media(max-width:500px) {
+@media (max-width: 500px) {
+  .book-patient-header {
+    align-items: flex-start;
+  }
 
-    .book-patient-header {
-        align-items: flex-start;
-    }
+  .book-patient-icon {
+    display: none;
+  }
 
-    .book-patient-icon {
-        display: none;
-    }
+  .patient-form-actions {
+    flex-direction: column-reverse;
+  }
 
-    .patient-form-actions {
-        flex-direction: column-reverse;
-    }
-
-    .patient-cancel-btn,
-    .patient-book-btn {
-        width: 100%;
-    }
-
+  .patient-cancel-btn,
+  .patient-book-btn {
+    width: 100%;
+  }
 }

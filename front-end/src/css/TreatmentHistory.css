@@ -28,12 +28,12 @@
 .treatment-header-icon {
   width: 52px;
   height: 52px;
-  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-green-soft);
+  background: var(--color-blue-soft);
   font-size: 23px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .treatment-list {

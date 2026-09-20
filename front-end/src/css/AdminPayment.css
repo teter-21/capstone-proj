@@ -35,7 +35,7 @@
   background: var(--clinic-green-light, #e9f5f0);
   color: var(--clinic-green, #5b9e8a);
   font-size: 20px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .billing-summary-grid {

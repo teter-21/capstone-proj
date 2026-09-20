@@ -74,7 +74,7 @@ button {
 
   width: 100%;
 
-  background: var(--surface);
+  background: var(--color-heading);
 
   border-bottom: 1px solid var(--border);
 
@@ -91,6 +91,11 @@ button {
   top: 0;
 
   z-index: 100;
+
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 /* LEFT */
@@ -188,8 +193,6 @@ button {
 
   height: 40px;
 
-  border-radius: 10px;
-
   border: 1px solid transparent;
 
   background: transparent;
@@ -200,7 +203,7 @@ button {
 
   justify-content: center;
 
-  color: var(--color-text);
+  color: var(--color-white);
 
   position: relative;
 
@@ -208,8 +211,6 @@ button {
 }
 
 .notification-btn:hover {
-  background: var(--primary-light);
-
   color: var(--primary);
 }
 
@@ -315,7 +316,7 @@ button {
 
 .sidebar-brand span {
   font-size: 8px;
-  color: var(--text-muted);
+  color: var(--color-primary-dark);
   letter-spacing: 0.7px;
   margin-top: 3px;
 }
@@ -327,7 +328,7 @@ button {
 
   font-weight: 700;
 
-  color: var(--color-muted-light);
+  color: var(--color-primary-dark);
 
   letter-spacing: 1px;
 
@@ -363,8 +364,6 @@ button {
 
   padding: 0 12px;
 
-  border-radius: 9px;
-
   color: var(--color-text);
 
   font-size: 13px;
@@ -395,15 +394,15 @@ button {
 /* ACTIVE */
 
 .sidebar-menu li.active a {
-  background: var(--primary-light);
+  background: var(--color-heading);
 
-  color: var(--primary);
+  color: var(--color-white);
 
   font-weight: 600;
 }
 
 .sidebar-menu li.active .menu-icon {
-  color: var(--primary);
+  color: var(--color-white);
 }
 
 /* BOTTOM ADMIN */
@@ -421,8 +420,8 @@ button {
   align-items: center;
   gap: 10px;
   padding: 11px;
-  border-radius: 10px;
-  background: var(--color-primary-dark);
+  background: var(--color-heading);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .admin-details {
@@ -456,16 +455,17 @@ button {
   margin-top: 8px;
   padding: 0 12px;
   border: 1px solid var(--color-border);
-  border-radius: 9px;
   background: transparent;
   color: var(--color-muted);
   font-size: 12px;
   text-align: left;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.sidebar-logout:hover {
+.sidebar-logout:active {
   background: var(--color-danger-soft);
   color: var(--color-danger);
+  box-shadow: 0px !important;
 }
 
 /* CONTENT */
@@ -1129,32 +1129,6 @@ table td.status {
 .admin-main-content > *,
 .patient-main-content > * {
   min-width: 0;
-}
-
-/* SIDEBARS — SAME VISUAL LANGUAGE */
-
-.admin-sidebar,
-.patient-sidebar {
-  background: var(--clinic-white);
-  border-color: var(--clinic-border);
-  box-shadow: 2px 0 12px rgba(47, 83, 112, 0.035);
-}
-
-.admin-sidebar a,
-.patient-sidebar a {
-  color: var(--clinic-text);
-}
-
-.admin-sidebar a:hover,
-.patient-sidebar a:hover {
-  background: var(--clinic-surface);
-  color: var(--clinic-blue);
-}
-
-.admin-sidebar a.active,
-.patient-sidebar a.active {
-  background: var(--clinic-blue-light);
-  color: var(--clinic-blue-dark);
 }
 
 /* FORM ELEMENTS */

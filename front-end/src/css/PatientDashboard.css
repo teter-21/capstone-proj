@@ -1,78 +1,3 @@
-.patient-sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 5px 10px 25px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.patient-sidebar-logo img {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.patient-sidebar-logo h2 {
-  margin: 0;
-  font-size: 18px;
-  color: var(--color-heading);
-}
-
-.patient-sidebar-logo span {
-  display: block;
-  margin-top: 2px;
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: #8b98a8;
-}
-
-.patient-menu {
-  padding-top: 25px;
-}
-
-.patient-menu-title {
-  margin: 0 10px 12px;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: #9aa5b2;
-}
-
-.patient-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  height: 43px;
-  padding: 0 13px;
-  margin-bottom: 5px;
-  border-radius: 9px;
-  text-decoration: none;
-  color: #526176;
-  font-size: 13px;
-  transition: 0.2s;
-}
-
-.patient-menu-item svg {
-  width: 15px;
-}
-
-.patient-menu-item:hover {
-  background: #f0f6fc;
-  color: #1769aa;
-}
-
-.patient-menu-item.active {
-  background: var(--color-blue-soft);
-  color: #1769aa;
-  font-weight: 600;
-}
-
-.patient-sidebar-bottom {
-  margin-top: auto;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-border);
-}
-
 .patient-dashboard {
   width: 100%;
   min-height: 100vh;
@@ -96,7 +21,7 @@
 }
 
 .patient-dashboard-header h1 span {
-  color: var(--color-green);
+  color: var(--color-primary);
 }
 
 .patient-subtitle {
@@ -112,8 +37,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-green-soft);
-  color: #347b7b;
+  background: var(--color-primary-soft);
+  color: var(--color-white);
   font-size: 20px;
   font-weight: 700;
 }
@@ -132,8 +57,7 @@
   padding: 22px;
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(30, 45, 60, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .patient-stat-card.blue .patient-stat-icon {
@@ -157,13 +81,13 @@
 .patient-stat-icon {
   width: 46px;
   height: 46px;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--color-green-soft);
   color: var(--color-green);
   font-size: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .patient-stat-card p {
@@ -185,22 +109,21 @@
   margin-bottom: 22px;
 }
 
-.patient-card {
+.patientD-card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
-  box-shadow: 0 4px 18px rgba(30, 45, 60, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 24px;
 }
 
-.patient-card-header {
+.patientD-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 22px;
 }
 
-.patient-card-label {
+.patientD-card-label {
   margin: 0 0 5px;
   font-size: 10px;
   font-weight: 700;
@@ -208,7 +131,7 @@
   color: #8a95a5;
 }
 
-.patient-card-header h2 {
+.patientD-card-header h2 {
   margin: 0;
   font-size: 18px;
   color: var(--color-heading);
@@ -309,6 +232,8 @@
 .treatment-card {
   width: 100%;
   box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+  border-radius: 0px !important;
 }
 
 .treatment-table-wrapper {
@@ -502,7 +427,7 @@
     font-size: 12px;
   }
 
-  .patient-card {
+  .patientD-card {
     padding: 18px;
   }
 
@@ -510,7 +435,6 @@
     align-items: flex-start;
   }
 }
-
 
 /* Combined appointment list on the dashboard. */
 .appointments-section {
@@ -524,28 +448,21 @@
   justify-content: center;
   gap: 7px;
   border: 0;
-  border-radius: 8px;
   padding: 9px 13px;
-  background: var(--color-green);
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
   color: #fff;
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.patient-book-button:hover,
-.patient-text-button:hover {
-  background: var(--color-green-dark);
-}
-
-.patient-text-button {
+.patient-book-button:active,
+.patient-text-button:active {
   background: transparent;
+  box-shadow: 0px;
   color: var(--color-primary);
-}
-
-.patient-text-button:hover {
-  background: var(--color-blue-soft);
-  color: var(--color-primary-dark);
 }
 
 .dashboard-appointments-list {
@@ -581,9 +498,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
   background: var(--color-green-soft);
   color: var(--color-green);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .dashboard-appointment-main h3 {
@@ -646,7 +563,7 @@
     gap: 12px;
   }
 
-  .patient-card-header {
+  .patientD-card-header {
     gap: 12px;
     flex-wrap: wrap;
   }

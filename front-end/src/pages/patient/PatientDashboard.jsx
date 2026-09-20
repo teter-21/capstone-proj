@@ -187,10 +187,10 @@ function PatientDashboard() {
       </div>
 
       <div className="patient-main-grid">
-        <div className="patient-card upcoming-card">
-          <div className="patient-card-header">
+        <div className="patientD-card upcoming-card">
+          <div className="patientD-card-header">
             <div>
-              <p className="patient-card-label">NEXT APPOINTMENT</p>
+              <p className="patientD-card-label">NEXT APPOINTMENT</p>
               <h2>Upcoming Appointment</h2>
             </div>
           </div>
@@ -242,10 +242,10 @@ function PatientDashboard() {
           )}
         </div>
 
-        <div className="patient-card profile-summary">
-          <div className="patient-card-header">
+        <div className="patientD-card profile-summary">
+          <div className="patientD-card-header">
             <div>
-              <p className="patient-card-label">MY PROFILE</p>
+              <p className="patientD-card-label">MY PROFILE</p>
               <h2>Personal Information</h2>
             </div>
           </div>
@@ -271,10 +271,10 @@ function PatientDashboard() {
         </div>
       </div>
 
-      <div className="patient-card appointments-section">
-        <div className="patient-card-header">
+      <div className="patientD-card appointments-section">
+        <div className="patientD-card-header">
           <div>
-            <p className="patient-card-label">APPOINTMENTS</p>
+            <p className="patientD-card-label">APPOINTMENTS</p>
             <h2>My Appointments</h2>
           </div>
 
@@ -282,7 +282,7 @@ function PatientDashboard() {
             className="patient-book-button"
             onClick={() => navigate("/patient/book-appointment")}
           >
-            + Book Appointment
+            Book Appointment
           </button>
         </div>
 
@@ -309,9 +309,7 @@ function PatientDashboard() {
                       {formatDate(appointment.preferred_date)} •{" "}
                       {formatTime(appointment.preferred_time)}
                     </p>
-                    {appointment.reason && (
-                      <span>{appointment.reason}</span>
-                    )}
+                    {appointment.reason && <span>{appointment.reason}</span>}
                   </div>
                 </div>
 
@@ -325,9 +323,7 @@ function PatientDashboard() {
                   </span>
 
                   {appointment.queue_status && (
-                    <small>
-                      Queue: {appointment.queue_status}
-                    </small>
+                    <small>Queue: {appointment.queue_status}</small>
                   )}
                 </div>
               </div>
@@ -336,10 +332,10 @@ function PatientDashboard() {
         )}
       </div>
 
-      <div className="patient-card treatment-card">
-        <div className="patient-card-header">
+      <div className="patientD-card treatment-card">
+        <div className="patientD-card-header">
           <div>
-            <p className="patient-card-label">DENTAL RECORDS</p>
+            <p className="patientD-card-label">DENTAL RECORDS</p>
             <h2>Recent Treatment History</h2>
           </div>
 
@@ -347,13 +343,15 @@ function PatientDashboard() {
             className="patient-text-button"
             onClick={() => navigate("/patient/treatments")}
           >
-            View History <FaArrowRight />
+            View History
           </button>
         </div>
 
         {visits.length === 0 ? (
           <div className="empty-state">
-            <div>🦷</div>
+            <div>
+              <FaTooth />
+            </div>
             <h3>No treatment records</h3>
             <p>Your treatment history will appear here.</p>
           </div>

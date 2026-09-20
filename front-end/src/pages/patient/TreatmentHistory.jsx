@@ -103,7 +103,9 @@ function TreatmentHistory() {
 
       {!loading && !error && visits.length === 0 && (
         <div className="empty-treatment">
-          <div className="empty-treatment-icon">🦷</div>
+          <div className="empty-treatment-icon">
+            <FaTooth />
+          </div>
 
           <h2>No Treatment History</h2>
 
