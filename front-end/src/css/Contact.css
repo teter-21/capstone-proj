@@ -10,11 +10,16 @@
   color: var(--color-white);
   font-weight: 700;
   letter-spacing: 1px;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .contact p {
   margin: 10px 0;
+  font-size: 18px;
+}
+
+.contact .we_open p {
+  line-height: 16px;
 }
 
 .contact iframe {

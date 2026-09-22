@@ -12,6 +12,7 @@
   background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
   border: 1px solid var(--clinic-blue-border);
   border-radius: 0px !important;
+  padding: 22px;
 }
 
 /* Keep the header and rows on the same compact grid */

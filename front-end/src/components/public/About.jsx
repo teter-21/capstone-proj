@@ -1,5 +1,5 @@
 import "../../css/About.css";
-import clinicImage from "../../assets/images/dental-bg.png";
+import clinicImage from "../../assets/images/clinic-1.jpg";
 import { FaUserMd, FaSmile, FaTooth } from "react-icons/fa";
 
 function About() {

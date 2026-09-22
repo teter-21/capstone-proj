@@ -16,7 +16,6 @@ function Home() {
       <About />
       <Services />
       <WhyChooseUs />
-      <Gallery />
       <PatientReviews />
       <Contact />
       <Footer />

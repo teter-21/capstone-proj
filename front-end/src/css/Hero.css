@@ -1,10 +1,10 @@
 .hero {
   height: 90vh;
   background:
-    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url("../assets/images/dental-bg.png");
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.8)),
+    url("../assets/images/clinic-2.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: left;
   display: flex;
   align-items: center;
   justify-content: center;
