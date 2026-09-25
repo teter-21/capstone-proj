@@ -74,7 +74,7 @@
 .account-role {
   display: inline-block;
   padding: 5px 9px;
-  border-radius: 20px;
+  border-radius: 0px;
   background: #e9f5f0;
   color: #4a8877;
   font-size: 9px;
@@ -122,7 +122,7 @@
   box-sizing: border-box;
   padding: 9px 11px;
   border: 1px solid #dbe6ed;
-  border-radius: 8px;
+  border-radius: 0px;
   outline: none;
   background: #fff;
   color: #536a7d;
@@ -178,7 +178,7 @@
 .account-alert {
   margin: 0 0 16px;
   padding: 11px 14px;
-  border-radius: 8px;
+  border-radius: 0px;
   font-size: 12px;
 }
 

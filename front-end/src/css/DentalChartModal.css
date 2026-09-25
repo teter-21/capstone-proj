@@ -24,7 +24,6 @@
   overflow: hidden;
   background: #fff;
   border: 1px solid #d5e2eb;
-  border-radius: 18px;
   box-shadow: 0 24px 70px rgba(18, 49, 73, 0.28);
 }
 .dental-chart-header {
@@ -64,7 +63,7 @@
   display: grid;
   place-items: center;
   border: 1px solid #d7e3eb;
-  border-radius: 9px;
+  border-radius: 0px;
   background: #fff;
   color: #234766;
   cursor: pointer;
@@ -88,7 +87,7 @@
 .tooth-editor {
   min-width: 0;
   border: 1px solid #d8e5ed;
-  border-radius: 14px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background: #fff;
 }
 .odontogram-panel {
@@ -183,7 +182,7 @@
   filter: drop-shadow(0 3px 5px rgba(52, 88, 115, 0.15));
 }
 .odontogram-tooth:focus-visible {
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 0 0 3px rgba(63, 128, 189, 0.18);
 }
 .odontogram-tooth.selected {
@@ -376,7 +375,7 @@
   box-sizing: border-box;
   padding: 10px 11px;
   border: 1px solid #dbe6ed;
-  border-radius: 8px;
+  border-radius: 0px;
   background: #fff;
   color: #24425f;
   font-size: 12px;
@@ -405,7 +404,7 @@
   align-items: center;
   gap: 7px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 0px;
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
@@ -471,7 +470,7 @@
 }
 .dental-chart-summary span {
   padding: 6px 9px;
-  border-radius: 999px;
+  border-radius: 0px;
   background: #eaf3fa;
   color: #3d6f9f;
 }
@@ -500,7 +499,7 @@
     max-width: 100%;
     max-height: calc(100vh - 16px);
     margin: auto;
-    border-radius: 13px;
+    border-radius: 0px;
   }
   .dental-chart-header {
     padding: 15px 14px;

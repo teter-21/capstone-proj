@@ -25,7 +25,7 @@
   align-items: center;
   gap: 11px;
   padding: 4px 10px 25px;
-  border-bottom: 1px solid var(--color-border);
+
   flex-shrink: 0;
 }
 
@@ -109,7 +109,6 @@
 .patient-sidebar-bottom {
   margin-top: auto;
   padding-top: 20px;
-  border-top: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 

@@ -10,15 +10,15 @@
 
 .admin-notification-count {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 4px;
+  right: 4px;
   min-width: 17px;
   height: 17px;
   padding: 0 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 50%;
   background: #d95c5c;
   color: #fff;
   border: 2px solid #fff;
@@ -103,7 +103,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0px;
   background: #eaf3fb;
   color: #4f86c6;
   font-size: 13px;

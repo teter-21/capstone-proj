@@ -108,7 +108,7 @@ function HomeLogin() {
             </div>
 
             <button type="submit" className="login-btn">
-              Sign In →
+              Sign In
             </button>
 
             <button

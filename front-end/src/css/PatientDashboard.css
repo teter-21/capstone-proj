@@ -147,7 +147,7 @@
 .appointment-date-box {
   width: 64px;
   height: 70px;
-  border-radius: 12px;
+  border-radius: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -182,7 +182,7 @@
 .appointment-status-patient {
   display: inline-block;
   padding: 5px 10px;
-  border-radius: 20px;
+  border-radius: 0px;
   font-size: 10px;
   font-weight: 700;
   text-transform: capitalize;
@@ -357,7 +357,7 @@
   text-align: center;
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 0px;
   box-shadow: 0 4px 18px rgba(30, 45, 60, 0.05);
 }
 
@@ -376,7 +376,7 @@
 
 .patient-error-card button {
   border: none;
-  border-radius: 8px;
+  border-radius: 0px;
   padding: 10px 18px;
   background: var(--color-green);
   color: var(--color-white);

@@ -53,7 +53,7 @@
 .reviews-admin-alert {
   margin-bottom: 18px;
   padding: 12px 14px;
-  border-radius: 9px;
+  border-radius: 0px;
   background: var(--color-danger-soft);
   color: var(--color-danger);
   font-size: 13px;
@@ -189,9 +189,9 @@
   gap: 7px;
   padding: 35px;
   border: 1px dashed var(--color-blue-border);
-  border-radius: 14px;
   background: var(--color-white);
   color: var(--color-muted);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   text-align: center;
 }
 

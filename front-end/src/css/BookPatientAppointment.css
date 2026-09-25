@@ -25,17 +25,6 @@
   font-size: 13px;
 }
 
-.book-patient-icon {
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-green-soft);
-  font-size: 23px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
 .page-label {
   margin: 0 0 7px;
   font-size: 10px;
@@ -99,7 +88,7 @@
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #dfe5eb;
-  border-radius: 9px;
+  border-radius: 0px;
   background: var(--color-white);
   padding: 12px 13px;
   font-family: inherit;
@@ -182,7 +171,7 @@
 .appointment-success {
   padding: 12px 15px;
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-radius: 0px;
   background: #e8f6ee;
   border: 1px solid #c9e8d7;
   color: #27774b;
@@ -192,7 +181,7 @@
 .appointment-error {
   padding: 12px 15px;
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-radius: 0px;
   background: #fdeeee;
   border: 1px solid #f3d0d0;
   color: #b84a4a;
@@ -219,9 +208,6 @@
     align-items: flex-start;
   }
 
-  .book-patient-icon {
-    display: none;
-  }
 
   .patient-form-actions {
     flex-direction: column-reverse;

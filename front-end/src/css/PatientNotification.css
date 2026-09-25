@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   border: none;
-  background: var(--color-blue-soft);
+  background: none  ;
   color: #527f80;
   font-size: 16px;
   cursor: pointer;
@@ -19,14 +19,13 @@
 }
 
 .patient-notification-button:hover {
-  background: #e5f1f0;
   color: #3f7374;
 }
 
 .notification-count {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top:4px;
+  right: 4px;
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
@@ -127,7 +126,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 0px;
   background: var(--color-green-soft);
   color: var(--color-green);
   font-size: 13px;

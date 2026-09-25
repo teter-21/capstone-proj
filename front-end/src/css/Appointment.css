@@ -51,10 +51,10 @@
   width: 100%;
   padding: 14px 16px;
   border: 1px solid #d9d9d9;
-  border-radius: 10px;
   font-size: 15px;
   transition: 0.25s;
   margin-bottom: 15px;
+  border-radius: 0px;
 }
 
 .appointment-card-container input:focus,
@@ -235,7 +235,6 @@
   background: #f3f7fa !important;
   color: var(--color-primary) !important;
   border: 1px solid #dce7ee !important;
-  border-radius: 9px !important;
   font-size: 24px !important;
   line-height: 1;
   cursor: pointer;
@@ -243,8 +242,9 @@
 }
 
 .terms-close:hover {
-  background: #e8f1f7 !important;
+  background: var(--color-primary-soft) !important;
   transform: none !important;
+  color: #fff !important;
 }
 
 .terms-content {
@@ -356,7 +356,6 @@
   border: 1px solid #d7dee8;
   background: #ffffff;
   color: #2f3b4a;
-  border-radius: 8px;
   padding: 10px 16px;
   font-size: 14px;
   font-weight: 600;
@@ -367,7 +366,7 @@
 }
 
 .book-appointment-back-button:hover {
-  background: #f5f7fa;
+  background: var(--color-primary-soft);
   border-color: #bfc9d6;
 }
 

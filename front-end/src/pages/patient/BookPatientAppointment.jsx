@@ -106,9 +106,6 @@ function BookPatientAppointment() {
           <p>Schedule your next dental visit with Magno Dental Clinic.</p>
         </div>
 
-        <div className="book-patient-icon">
-          <FaCalendarAlt />
-        </div>
       </div>
 
       <div className="book-patient-card">

@@ -163,7 +163,7 @@
   justify-content: center;
   gap: 10px;
   border: 1px dashed var(--color-blue-border);
-  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background: var(--color-white);
   color: var(--color-muted);
 }

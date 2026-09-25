@@ -73,10 +73,6 @@ function TreatmentHistory() {
             View your previous dental visits, treatments, and payment records.
           </p>
         </div>
-
-        <div className="treatment-header-icon">
-          <FaTooth />
-        </div>
       </div>
 
       {/* LOADING */}

@@ -25,17 +25,6 @@
   font-size: 13px;
 }
 
-.treatment-header-icon {
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-blue-soft);
-  font-size: 23px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
 .treatment-list {
   display: flex;
   flex-direction: column;
@@ -45,7 +34,7 @@
 .treatment-card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 15px;
+  border-radius: 0px;
   padding: 24px;
   box-shadow: 0 4px 18px rgba(20, 40, 60, 0.04);
 }
@@ -196,7 +185,7 @@
   justify-content: center;
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: 15px;
+  border-radius: 0px;
   text-align: center;
 }
 
@@ -239,11 +228,6 @@
   .treatment-history-header {
     align-items: flex-start;
   }
-
-  .treatment-header-icon {
-    display: none;
-  }
-
   .treatment-card-header {
     flex-direction: column;
     gap: 12px;
