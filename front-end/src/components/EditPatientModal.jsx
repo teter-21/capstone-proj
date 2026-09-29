@@ -15,7 +15,7 @@ function EditPatientModal({ patient, onClose, onSave }) {
     address: patient.address || "",
     phone: patient.phone || "",
     gender: patient.gender || "",
-    status: patient.status || "Active",
+    status: patient.status || "",
     complain: patient.complain || "",
   });
 
@@ -190,14 +190,19 @@ function EditPatientModal({ patient, onClose, onSave }) {
 
           <div className="edit-two-column">
             <div className="edit-field">
-              <label>Status</label>
+              <label>Civil Status</label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
               >
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
+                <option value="">Select civil status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Annulled">Annulled</option>
               </select>
             </div>
 

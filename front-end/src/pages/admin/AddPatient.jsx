@@ -29,8 +29,7 @@ function AddPatient() {
 
     complaint: "",
 
-    /* New patients are Active by default */
-    status: "Active",
+    civilStatus: "Single",
   });
 
   const [image, setImage] = useState(null);
@@ -82,9 +81,9 @@ function AddPatient() {
 
     data.append("gender", formData.gender);
 
-    /* STATUS Only sends: Active or Inactive */
+    /* Send the selected civil status. */
 
-    data.append("status", formData.status);
+    data.append("status", formData.civilStatus);
 
     data.append("complain", formData.complaint);
 
@@ -350,19 +349,22 @@ function AddPatient() {
               />
             </div>
 
-            {/* STATUS */}
+            {/* CIVIL STATUS */}
 
             <div>
-              <label>Status</label>
+              <label>Civil Status</label>
 
               <select
-                name="status"
-                value={formData.status}
+                name="civilStatus"
+                value={formData.civilStatus}
                 onChange={handleChange}
               >
-                <option value="Active">Active</option>
-
-                <option value="Inactive">Inactive</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Annulled">Annulled</option>
               </select>
             </div>
           </div>

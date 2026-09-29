@@ -144,30 +144,7 @@
   box-shadow: 0 4px 12px rgba(36, 66, 95, 0.12);
 }
 
-/* Status and complaint */
-.patient-container .status {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 62px;
-  min-height: 27px;
-  padding: 4px 10px;
-  border-radius: 0px;
-  font-size: 10px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.patient-container .status.active {
-  background: var(--clinic-green-light);
-  color: var(--clinic-green-dark);
-}
-
-.patient-container .status.inactive {
-  background: #edf1f4;
-  color: var(--clinic-muted);
-}
-
+/* Complaint */
 .patient-container .complaint {
   color: #c64a4a;
   line-height: 1.35;
@@ -277,6 +254,37 @@
   color: var(--clinic-blue-dark);
 }
 
+/* Patient search, age filter, and sorting controls */
+.patient-filter-header {
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.patient-filter-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.patient-filter-select {
+  min-height: 44px;
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--clinic-border);
+  border-radius: 0;
+  background: #fff;
+  color: var(--clinic-heading);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.patient-filter-select:focus {
+  border-color: var(--clinic-blue);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
+  outline: none;
+}
+
 /* Footer */
 .patient-container .table-footer {
   display: flex;
@@ -327,6 +335,19 @@
 }
 
 @media (max-width: 700px) {
+  .patient-filter-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .patient-filter-controls .search-box {
+    flex: 1 1 100%;
+  }
+
+  .patient-filter-select {
+    flex: 1 1 150px;
+  }
+
   .patient-container .table-footer {
     align-items: flex-start;
     flex-direction: column;

@@ -1,3 +1,5 @@
+{ /* add visit modal commented
+
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useState } from "react";
 import axios from "axios";
@@ -143,4 +145,5 @@ function AddVisitModal({ patient, onClose, onSave }) {
   );
 }
 
-export default AddVisitModal;
+export default AddVisitModal; 
+*/}

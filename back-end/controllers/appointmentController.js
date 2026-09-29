@@ -265,7 +265,7 @@ const createPatientFromAppointment = (appointment) => {
         db.query(
           `INSERT INTO patients
             (name, address, phone, age, occupation, gender, status, complain, image)
-           VALUES (?, ?, ?, ?, ?, NULL, 'Active', ?, NULL)`,
+           VALUES (?, ?, ?, ?, ?, NULL, 'Single', ?, NULL)`,
           [
             appointment.fullname,
             "",

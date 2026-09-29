@@ -1,6 +1,8 @@
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useState } from "react";
-import AddVisitModal from "./AddVisitModal";
+{
+  /* import AddVisitModal from "./AddVisitModal"; */
+}
 import ViewVisitModal from "./ViewVisitModal";
 import EditPatientModal from "./EditPatientModal";
 import CreateAccountModal from "./CreateAccountModal";
@@ -35,21 +37,17 @@ function PatientRow({ patient, onSaveVisit, onUpdatePatient, onImageClick }) {
       <span>{patient.age}</span>
       <span>{patient.occupation}</span>
 
-      <span>
-        <span
-          className={`status ${patient.status.toLowerCase().replace(" ", "-")}`}
-        >
-          {patient.status}
-        </span>
-      </span>
+      <span>{patient.status || "—"}</span>
 
       <span className="complaint">{patient.complain}</span>
 
       {/* ACTION BUTTONS */}
       <span className="visit-actions">
-        <button className="add-btn" onClick={() => setShowModal(true)}>
+        {/*  <button className="add-btn" onClick={() => setShowModal(true)}>
           <FaPlus />
         </button>
+        commented
+        */}
 
         <button className="view-btn" onClick={() => setShowViewModal(true)}>
           <FaEye />
@@ -82,13 +80,16 @@ function PatientRow({ patient, onSaveVisit, onUpdatePatient, onImageClick }) {
         />
       )}
 
+      {/* 
+      commented 
       {showModal && (
         <AddVisitModal
           patient={patient}
           onClose={() => setShowModal(false)}
           onSave={onSaveVisit}
         />
-      )}
+      )} 
+      */}
 
       {showEditModal && (
         <EditPatientModal

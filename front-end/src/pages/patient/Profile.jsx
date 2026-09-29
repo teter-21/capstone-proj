@@ -249,8 +249,8 @@ function Profile() {
               </label>
 
               <label>
-                Status
-                <input value={profile?.status || "Active"} disabled />
+                Civil Status
+                <input value={profile?.status || "—"} disabled />
               </label>
             </div>
           </div>

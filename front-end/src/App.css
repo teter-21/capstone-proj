@@ -1032,8 +1032,6 @@ table td.status {
 
 /* STATUS BADGES */
 
-.status-active,
-.badge-active,
 .status-confirmed,
 .status-completed {
   background: var(--clinic-green-light);

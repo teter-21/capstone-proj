@@ -130,10 +130,6 @@
   word-break: break-word;
 }
 
-.profile-field .active-status {
-  color: var(--color-success);
-}
-
 .profile-message {
   min-height: 400px;
   display: flex;

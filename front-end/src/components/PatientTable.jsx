@@ -65,7 +65,7 @@ function PatientTable() {
 
               <th>Last Visit</th>
 
-              <th>Status</th>
+              <th>Civil Status</th>
             </tr>
           </thead>
 
@@ -160,17 +160,9 @@ function PatientTable() {
                     </div>
                   </td>
 
-                  {/* STATUS */}
+                  {/* CIVIL STATUS */}
 
-                  <td>
-                    <span
-                      className={`patient-status ${(
-                        patient.status || "Active"
-                      ).toLowerCase()}`}
-                    >
-                      {patient.status || "Active"}
-                    </span>
-                  </td>
+                  <td>{patient.status || "—"}</td>
                 </tr>
               ))}
           </tbody>

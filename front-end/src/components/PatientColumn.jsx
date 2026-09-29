@@ -34,7 +34,7 @@ function PatientColumn({ patients, onSaveVisit, onUpdatePatient }) {
         <span>Phone</span>
         <span>Age</span>
         <span>Occupation</span>
-        <span>Status</span>
+        <span>Civil Status</span>
         <span>Complaint</span>
         <span>Actions</span>
       </div>

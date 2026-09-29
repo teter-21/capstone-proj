@@ -551,38 +551,6 @@
   color: var(--color-muted);
 }
 
-/* STATUS */
-
-.patient-status {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  padding: 6px 10px;
-
-  font-size: 10px;
-
-  font-weight: 600;
-}
-
-/* ACTIVE */
-
-.patient-status.active {
-  background: var(--color-green-soft);
-
-  color: var(--color-success);
-}
-
-/* PENDING */
-
-.patient-status.pending {
-  background: var(--color-white) beb;
-
-  color: #b45309;
-}
-
 /* PATIENT IMAGE */
 
 .patient-avatar-image {
@@ -613,40 +581,6 @@
 
 .table-message.error {
   color: var(--color-danger) !important;
-}
-
-/* STATUS FALLBACK */
-
-.patient-status {
-  white-space: nowrap;
-}
-
-/* ACTIVE */
-
-.patient-status.active {
-  background: var(--color-green-soft);
-
-  color: var(--color-success);
-}
-
-/* PENDING */
-
-.patient-status.pending {
-  background: var(--color-white) beb;
-
-  color: #b45309;
-}
-
-/* INACTIVE */
-
-.patient-status.inactive {
-  background: var(--color-surface-soft);
-
-  color: var(--color-muted);
-}
-
-.patient-status.inactive .status-dot {
-  background: var(--color-muted-light);
 }
 
 /* DASHBOARD CHART */

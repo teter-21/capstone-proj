@@ -68,19 +68,13 @@ exports.getRecentPatients = (req, res) => {
 exports.addPatient = (req, res) => {
   const { name, age, phone, occupation, status, complain, address } = req.body;
 
-  if (
-    !name ||
-    !age ||
-    !phone ||
-    !occupation ||
-    !status ||
-    !complain ||
-    !address
-  ) {
+  if (!name || !age || !phone || !occupation || !complain || !address) {
     return res.status(400).json({
       message: "Please complete all required fields.",
     });
   }
+
+  const civilStatus = status || "Single";
 
   const image = req.file ? req.file.filename : null;
 
@@ -105,7 +99,7 @@ exports.addPatient = (req, res) => {
   db.query(
     sql,
 
-    [name, address, phone, age, occupation, status, complain, image],
+    [name, address, phone, age, occupation, civilStatus, complain, image],
 
     (err, result) => {
       if (err) {
@@ -166,7 +160,7 @@ exports.updatePatient = (req, res) => {
     address || null,
     phone || null,
     gender || null,
-    status || "Active",
+    status || null,
     complain || null,
   ];
 
