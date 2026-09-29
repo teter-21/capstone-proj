@@ -1,4 +1,5 @@
-{ /* add visit modal commented
+{
+  /* add visit modal commented
 
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useState } from "react";
@@ -74,12 +75,17 @@ function AddVisitModal({ patient, onClose, onSave }) {
     }
   };
 
+  */
+}
+
+{
+  /*
   return (
     <div className="addv-modal-overlay">
       <div className="addv-modal">
         <h2>Add Visit</h2>
 
-        {/* DATE & TIME */}
+   
         <div className="form-row">
           <div>
             <label>Date</label>
@@ -91,7 +97,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
           </div>
         </div>
 
-        {/* PROCEDURE */}
+        
         <label>Procedure</label>
         <select name="procedure_name" onChange={handleChange}>
           <option value="">Select Procedure</option>
@@ -102,7 +108,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
           ))}
         </select>
 
-        {/* COMPLAINT */}
+ 
         <label>Complaint</label>
         <input
           type="text"
@@ -111,7 +117,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
           onChange={handleChange}
         />
 
-        {/* DESCRIPTION */}
+       
         <label>Description</label>
         <textarea
           name="description"
@@ -119,7 +125,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
           onChange={handleChange}
         />
 
-        {/* PAYMENT */}
+   
         <div className="form-row">
           <div>
             <label>Amount Paid</label>
@@ -131,7 +137,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
           </div>
         </div>
 
-        {/* ACTIONS */}
+     
         <div className="modal-actions">
           <button className="save-btn" onClick={handleSubmit}>
             Save
@@ -146,4 +152,6 @@ function AddVisitModal({ patient, onClose, onSave }) {
 }
 
 export default AddVisitModal; 
-*/}
+
+*/
+}
