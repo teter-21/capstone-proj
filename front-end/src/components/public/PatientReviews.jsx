@@ -102,8 +102,8 @@ function PatientReviews() {
             spaceBetween={20}
             slidesPerView={1}
             breakpoints={{
-              768: { slidesPerView: 2 },
-              1100: { slidesPerView: 3 },
+              768: { slidesPerView: 1 },
+              1100: { slidesPerView: 2 },
             }}
             className="patient-reviews-swiper"
           >
