@@ -20,7 +20,7 @@ function ViewVisitModal({ patient, onClose }) {
     } catch (err) {
       console.error(err);
 
-      alert(err.response?.data?.message || "Unable to load visits.");
+      window.alert(err.response?.data?.message || "Unable to load visits.");
     }
   };
 

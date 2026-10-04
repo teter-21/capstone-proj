@@ -2,6 +2,7 @@ import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../css/Settings.css";
+import AdminAccountsSection from "../../components/AdminAccountsSection";
 
 function Settings() {
   const [account, setAccount] = useState(null);
@@ -33,10 +34,8 @@ function Settings() {
           email: response.data.email || "",
         }));
       } catch (err) {
-        setError(
-          err.response?.data?.message ||
-            "Unable to load your account information.",
-        );
+        window.alert(err.response?.data?.message ||
+            "Unable to load your account information.",);
       } finally {
         setLoading(false);
       }
@@ -58,12 +57,12 @@ function Settings() {
     setError("");
 
     if (form.newPassword && !form.currentPassword) {
-      setError("Enter your current password before changing it.");
+      window.alert("Enter your current password before changing it.");
       return;
     }
 
     if (form.newPassword && form.newPassword !== form.confirmPassword) {
-      setError("New password and confirmation do not match.");
+      window.alert("New password and confirmation do not match.");
       return;
     }
 
@@ -81,7 +80,7 @@ function Settings() {
         { headers },
       );
 
-      setMessage(response.data.message);
+      window.alert(response.data.message);
       setAccount((current) => ({
         ...current,
         fullname: form.fullname,
@@ -94,7 +93,7 @@ function Settings() {
         confirmPassword: "",
       }));
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to save your changes.");
+      window.alert(err.response?.data?.message || "Unable to save your changes.");
     } finally {
       setSaving(false);
     }
@@ -221,6 +220,12 @@ function Settings() {
           </div>
         </section>
       </form>
+
+      {localStorage.getItem("is_main_admin") === "1" && (
+        <section className="admin-settings-section">
+          <AdminAccountsSection />
+        </section>
+      )}
     </div>
   );
 }

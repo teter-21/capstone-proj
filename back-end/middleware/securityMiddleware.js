@@ -50,11 +50,67 @@ const createRateLimiter = ({ windowMs, max, message }) => {
   };
 };
 
-const loginLimiter = createRateLimiter({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: "Too many login attempts. Please try again later.",
-});
+/* Failed-login limiter: maximum 5 failed attempts per IP + email in 15 minutes.
+ * A sixth attempt while the window is active returns HTTP 429.
+ * Successful login clears the counter through req.clearLoginFailures().
+ */
+const failedLoginAttempts = new Map();
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const LOGIN_MAX_FAILURES = 5;
+
+const getLoginKey = (req) => {
+  const email = String(req.body?.email || "")
+    .trim()
+    .toLowerCase();
+  const ip = req.ip || req.socket?.remoteAddress || "unknown";
+  return `${ip}|${email || "unknown"}`;
+};
+
+const loginLimiter = (req, res, next) => {
+  const now = Date.now();
+  const key = getLoginKey(req);
+  const current = failedLoginAttempts.get(key);
+
+  if (current && now - current.firstAttempt >= LOGIN_WINDOW_MS) {
+    failedLoginAttempts.delete(key);
+  }
+
+  const entry = failedLoginAttempts.get(key);
+
+  if (entry && entry.count >= LOGIN_MAX_FAILURES) {
+    const retryAfter = Math.max(
+      1,
+      Math.ceil((LOGIN_WINDOW_MS - (now - entry.firstAttempt)) / 1000),
+    );
+
+    res.set("Retry-After", String(retryAfter));
+    return res.status(429).json({
+      message: "Too many failed login attempts. Please try again later.",
+      retryAfter,
+    });
+  }
+
+  req.recordLoginFailure = () => {
+    const timestamp = Date.now();
+    const existing = failedLoginAttempts.get(key);
+
+    if (!existing || timestamp - existing.firstAttempt >= LOGIN_WINDOW_MS) {
+      failedLoginAttempts.set(key, {
+        count: 1,
+        firstAttempt: timestamp,
+      });
+      return;
+    }
+
+    existing.count += 1;
+  };
+
+  req.clearLoginFailures = () => {
+    failedLoginAttempts.delete(key);
+  };
+
+  next();
+};
 
 const resetLimiter = createRateLimiter({
   windowMs: 15 * 60 * 1000,

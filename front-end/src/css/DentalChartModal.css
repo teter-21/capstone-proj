@@ -213,103 +213,13 @@
   height: 76px;
   margin-top: 5px;
 }
-.tooth-outline {
-  fill: #fff;
-  stroke: #708799;
-  stroke-width: 2.1;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-.tooth-condition-mark {
-  fill: #d45b50;
-  stroke: #fff;
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-}
-.odontogram-tooth.cavity .tooth-outline {
-  fill: #fff0ed;
-  stroke: #d14e42;
-}
-.odontogram-tooth.cavity .tooth-condition-mark {
-  fill: #d14e42;
-}
-.odontogram-tooth.filled .tooth-outline {
-  fill: #e8f5ef;
-  stroke: #55977f;
-}
-.odontogram-tooth.filled .tooth-condition-mark {
-  fill: #55977f;
-}
-.odontogram-tooth.missing .tooth-outline {
-  fill: #eef2f5;
-  stroke: #8998a3;
-  stroke-dasharray: 4 3;
-}
-.odontogram-tooth.missing .tooth-condition-mark {
-  fill: #8998a3;
-}
-.odontogram-tooth.extracted .tooth-outline {
-  fill: #f1edf6;
-  stroke: #7e6794;
-}
-.odontogram-tooth.extracted .tooth-condition-mark {
-  fill: #7e6794;
-}
-.odontogram-tooth.cracked .tooth-outline {
-  fill: #fff6e7;
-  stroke: #d39e32;
-}
-.odontogram-tooth.cracked .tooth-condition-mark {
-  fill: #d39e32;
-}
-.odontogram-tooth.impacted .tooth-outline {
-  fill: #f0edfa;
-  stroke: #7662a4;
-}
-.odontogram-tooth.impacted .tooth-condition-mark {
-  fill: #7662a4;
-}
-.odontogram-tooth.root-canal .tooth-outline {
-  fill: #eaf3fa;
-  stroke: #4f86c6;
-}
-.odontogram-tooth.root-canal .tooth-condition-mark {
-  fill: #4f86c6;
-}
-.odontogram-tooth.crown .tooth-outline {
-  fill: #f7f1df;
-  stroke: #b89945;
-}
-.odontogram-tooth.crown .tooth-condition-mark {
-  fill: #b89945;
-}
-.odontogram-tooth.other .tooth-outline {
-  fill: #eef6f7;
-  stroke: #5c9ca4;
-}
-.odontogram-tooth.other .tooth-condition-mark {
-  fill: #5c9ca4;
-}
-.odontogram-tooth.missing .tooth-drawing {
-  opacity: 0.72;
-}
+
 .odontogram-loading {
   min-height: 330px;
   display: grid;
   place-items: center;
   color: #7d8d9c;
   font-size: 12px;
-}
-.odontogram-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
-  padding: 11px 14px;
-  border-top: 1px solid #d8e5ed;
-  background: #f8fbfd;
-  color: #536a7d;
-  font-size: 10px;
 }
 .odontogram-legend span {
   display: inline-flex;
@@ -565,10 +475,6 @@
     height: 17px;
     line-height: 17px;
   }
-  .odontogram-legend {
-    gap: 7px 11px;
-    padding: 10px 12px;
-  }
   .tooth-editor {
     padding: 14px;
   }
@@ -611,7 +517,36 @@
   .tooth-number {
     font-size: 10px;
   }
-  .odontogram-legend {
-    font-size: 9px;
   }
+
+/* Minimal odontogram marking: conditions/actions are represented only by X. */
+.tooth-drawing.simple-tooth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+}
+
+.tooth-condition-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  color: currentColor;
+}
+
+.odontogram-tooth {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.odontogram-tooth.selected {
+  background: transparent;
+  box-shadow: none;
 }

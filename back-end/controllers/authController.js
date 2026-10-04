@@ -27,6 +27,7 @@ exports.login = (req, res) => {
       }
 
       if (result.length === 0) {
+        req.recordLoginFailure?.();
         return res.status(401).json({
           message: "Invalid email or password.",
         });
@@ -38,6 +39,7 @@ exports.login = (req, res) => {
         const match = await bcrypt.compare(password, user.password);
 
         if (!match) {
+          req.recordLoginFailure?.();
           return res.status(401).json({
             message: "Invalid email or password.",
           });
@@ -55,6 +57,8 @@ exports.login = (req, res) => {
             expiresIn: "1h",
           },
         );
+
+        req.clearLoginFailures?.();
 
         res.json({
           token,

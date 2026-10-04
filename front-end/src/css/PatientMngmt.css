@@ -266,6 +266,7 @@
   justify-content: flex-end;
   gap: 8px;
   flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .patient-filter-select {
@@ -337,15 +338,16 @@
 @media (max-width: 700px) {
   .patient-filter-controls {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: flex-end;
+    flex-direction: column-reverse;
   }
 
   .patient-filter-controls .search-box {
-    flex: 1 1 100%;
+    flex: 1 0 100%;
   }
 
   .patient-filter-select {
-    flex: 1 1 150px;
+    flex: 1 1 50px;
   }
 
   .patient-container .table-footer {

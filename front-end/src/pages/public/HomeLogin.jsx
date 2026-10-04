@@ -38,11 +38,11 @@ function HomeLogin() {
         } else if (res.data.role === "patient") {
           navigate("/patient/dashboard");
         } else {
-          alert("Unknown user role.");
+          window.alert("Unknown user role.");
         }
       })
       .catch((err) => {
-        alert("Invalid Email or Password");
+        window.alert("Invalid Email or Password");
         console.log(err);
       });
   };

@@ -48,7 +48,7 @@ function Profile() {
         await loadProfile();
       } catch (err) {
         console.error("Profile error:", err);
-        setError(err.response?.data?.message || "Unable to load your profile.");
+        window.alert(err.response?.data?.message || "Unable to load your profile.");
       } finally {
         setLoading(false);
       }
@@ -70,12 +70,12 @@ function Profile() {
     setError("");
 
     if (form.newPassword && !form.currentPassword) {
-      setError("Enter your current password before changing it.");
+      window.alert("Enter your current password before changing it.");
       return;
     }
 
     if (form.newPassword && form.newPassword !== form.confirmPassword) {
-      setError("New password and confirmation do not match.");
+      window.alert("New password and confirmation do not match.");
       return;
     }
 
@@ -104,11 +104,9 @@ function Profile() {
         { headers },
       );
 
-      setMessage(
-        accountResponse.data.message.includes("password")
+      window.alert(accountResponse.data.message.includes("password")
           ? "Profile information and password updated successfully."
-          : "Profile information updated successfully.",
-      );
+          : "Profile information updated successfully.",);
 
       await loadProfile();
 
@@ -119,7 +117,7 @@ function Profile() {
         confirmPassword: "",
       }));
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to save your changes.");
+      window.alert(err.response?.data?.message || "Unable to save your changes.");
     } finally {
       setSaving(false);
     }

@@ -1,9 +1,9 @@
-import API_BASE_URL from "../../config/apiBase.js";
+import API_BASE_URL from "../config/apiBase.js";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useAutoRefresh } from "../../utils/useAutoRefresh";
+import { useAutoRefresh } from "../utils/useAutoRefresh";
 import { FaUserShield, FaPlus, FaUsers } from "react-icons/fa";
-import "../../css/AdminAccounts.css";
+import "../css/AdminAccounts.css";
 
 const emptyForm = {
   fullname: "",
@@ -12,7 +12,7 @@ const emptyForm = {
   confirmPassword: "",
 };
 
-function AdminAccounts() {
+function AdminAccountsSection() {
   const [admins, setAdmins] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ function AdminAccounts() {
       });
       setAdmins(response.data);
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to load admin accounts.");
+      setError(err.response?.data?.message || "Unable to load admin accounts.");
     } finally {
       setLoading(false);
     }
@@ -57,12 +57,12 @@ function AdminAccounts() {
     setError("");
 
     if (form.password !== form.confirmPassword) {
-      window.alert("The passwords do not match.");
+      setError("The passwords do not match.");
       return;
     }
 
     if (form.password.length < 6) {
-      window.alert("Password must be at least 6 characters.");
+      setError("Password must be at least 6 characters.");
       return;
     }
 
@@ -79,11 +79,13 @@ function AdminAccounts() {
         { headers },
       );
 
-      window.alert(response.data.message);
+      setMessage(response.data.message);
       setForm(emptyForm);
       await loadAdmins();
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to create admin account.",);
+      setError(
+        err.response?.data?.message || "Unable to create admin account.",
+      );
     } finally {
       setSaving(false);
     }
@@ -226,4 +228,4 @@ function AdminAccounts() {
   );
 }
 
-export default AdminAccounts;
+export default AdminAccountsSection;

@@ -1,5 +1,6 @@
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useEffect, useState } from "react";
+import SERVICES from "../config/services";
 import axios from "axios";
 import "../css/TreatmentVisitModal.css";
 
@@ -76,7 +77,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
       !formData.visit_time ||
       !formData.procedure_name
     ) {
-      alert("Please complete the date, time, and procedure.");
+      window.alert("Please complete the date, time, and procedure.");
       return;
     }
 
@@ -96,7 +97,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
         },
       );
 
-      alert(response.data?.message || "Treatment completed and visit saved.");
+      window.alert(response.data?.message || "Treatment completed and visit saved.");
 
       if (onCompleted) {
         await onCompleted();
@@ -106,7 +107,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
     } catch (error) {
       console.error("Complete treatment error:", error);
 
-      alert(error.response?.data?.message || "Unable to complete treatment.");
+      window.alert(error.response?.data?.message || "Unable to complete treatment.");
     } finally {
       setSaving(false);
     }

@@ -33,19 +33,9 @@ function ToothDrawing({ condition }) {
   const marked = condition && condition !== "Healthy";
 
   return (
-    <svg
-      className="tooth-drawing simple-tooth"
-      viewBox="0 0 70 80"
-      aria-hidden="true"
-    >
-      <path
-        className="tooth-outline"
-        d="M35 5 C25 5 17 9 14 18 C11 27 15 37 19 45 C22 51 23 58 24 66 C25 73 29 76 33 72 C36 68 36 56 35 49 C34 43 32 36 35 32 C38 36 36 43 35 49 C34 56 34 68 37 72 C41 76 45 73 46 66 C47 58 48 51 51 45 C55 37 59 27 56 18 C53 9 45 5 35 5 Z"
-      />
-      {marked && (
-        <circle className="tooth-condition-mark" cx="35" cy="31" r="5" />
-      )}
-    </svg>
+    <span className="tooth-drawing simple-tooth" aria-hidden="true">
+      {marked && <span className="tooth-condition-x">X</span>}
+    </span>
   );
 }
 
@@ -74,7 +64,7 @@ function DentalChartModal({ patient, onClose }) {
       setRecords(mapped);
     } catch (err) {
       console.error("Get dental chart error:", err);
-      alert(err.response?.data?.message || "Unable to load dental chart.");
+      window.alert(err.response?.data?.message || "Unable to load dental chart.");
     } finally {
       setLoading(false);
     }
@@ -102,10 +92,10 @@ function DentalChartModal({ patient, onClose }) {
         ...prev,
         [String(selectedTooth)]: res.data.tooth,
       }));
-      alert(`Tooth #${selectedTooth} saved successfully.`);
+      window.alert(`Tooth #${selectedTooth} saved successfully.`);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Unable to save tooth condition.");
+      window.alert(err.response?.data?.message || "Unable to save tooth condition.");
     } finally {
       setSaving(false);
     }
@@ -127,15 +117,10 @@ function DentalChartModal({ patient, onClose }) {
       setNotes("");
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Unable to clear tooth condition.");
+      window.alert(err.response?.data?.message || "Unable to clear tooth condition.");
     } finally {
       setSaving(false);
     }
-  };
-
-  const conditionClass = (tooth) => {
-    const value = records[String(tooth)]?.condition_name || "Healthy";
-    return value.toLowerCase().replace(/\s+/g, "-");
   };
 
   const renderTooth = (tooth) => {
@@ -145,7 +130,7 @@ function DentalChartModal({ patient, onClose }) {
       <button
         key={tooth}
         type="button"
-        className={`odontogram-tooth ${conditionClass(tooth)} ${selectedTooth === tooth ? "selected" : ""}`}
+        className={`odontogram-tooth ${selectedTooth === tooth ? "selected" : ""}`}
         onClick={() => selectTooth(tooth)}
         title={`Tooth #${tooth} — ${value}`}
         aria-label={`Tooth ${tooth}, ${value}`}
@@ -234,26 +219,6 @@ function DentalChartModal({ patient, onClose }) {
             ) : (
               <div className="odontogram-scroll">{renderFourRows()}</div>
             )}
-            <div className="odontogram-legend">
-              <span>
-                <i className="legend-dot healthy" /> Healthy
-              </span>
-              <span>
-                <i className="legend-dot cavity" /> Cavity
-              </span>
-              <span>
-                <i className="legend-dot filled" /> Filled
-              </span>
-              <span>
-                <i className="legend-dot missing" /> Missing
-              </span>
-              <span>
-                <i className="legend-dot cracked" /> Cracked
-              </span>
-              <span>
-                <i className="legend-dot other" /> Other
-              </span>
-            </div>
           </section>
 
           <aside className="tooth-editor">

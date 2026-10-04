@@ -5,18 +5,16 @@ import {
   FaTachometerAlt,
   FaUserPlus,
   FaUsers,
-  FaFileAlt,
   FaCog,
   FaSignOutAlt,
   FaCalendarAlt,
   FaHeartbeat,
   FaListOl,
   FaMoneyBillWave,
-  FaUserShield,
   FaStar,
+  FaChartBar,
 } from "react-icons/fa";
 
-import adminPic from "../assets/images/dentist-pic.png";
 import dentalLogo from "../assets/images/60x60modal-logo.png";
 import api from "../api";
 
@@ -158,12 +156,13 @@ function Sidebar() {
           </Link>
         </li>
 
+
         {/* Reports */}
 
         <li className={isActive("/Report") ? "active" : ""}>
           <Link to="/Report">
             <span className="menu-icon">
-              <FaFileAlt />
+              <FaChartBar />
             </span>
 
             <span>Reports</span>
@@ -188,17 +187,6 @@ function Sidebar() {
       <div className="sidebar-section-title system-title">SYSTEM</div>
 
       <ul className="sidebar-menu">
-        {localStorage.getItem("is_main_admin") === "1" && (
-          <li className={isActive("/AdminAccounts") ? "active" : ""}>
-            <Link to="/AdminAccounts">
-              <span className="menu-icon">
-                <FaUserShield />
-              </span>
-
-              <span>Admin Accounts</span>
-            </Link>
-          </li>
-        )}
 
         <li className={isActive("/Settings") ? "active" : ""}>
           <Link to="/Settings">

@@ -22,9 +22,8 @@ import ResetPassword from "./pages/public/ResetPassword.jsx";
 import Dashboard from "./pages/admin/Dashbboard.jsx";
 import PatientMngmt from "./pages/admin/PatientMngmt.jsx";
 import AddPatient from "./pages/admin/AddPatient.jsx";
-import Report from "./pages/admin/Report.jsx";
 import Settings from "./pages/admin/Settings.jsx";
-import AdminAccounts from "./pages/admin/AdminAccounts.jsx";
+import Report from "./pages/admin/Report.jsx";
 import AppointmentMngmt from "./pages/admin/AppointmentMngmt";
 import QueueMngmt from "./pages/admin/QueueMngmt.jsx";
 import AdminPayment from "./pages/admin/Payment.jsx";
@@ -118,10 +117,6 @@ const router = createBrowserRouter([
         element: <AddPatient />,
       },
 
-      {
-        path: "Report",
-        element: <Report />,
-      },
 
       {
         path: "Payment",
@@ -134,14 +129,15 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "Report",
+        element: <Report />,
+      },
+
+      {
         path: "Settings",
         element: <Settings />,
       },
 
-      {
-        path: "AdminAccounts",
-        element: <AdminAccounts />,
-      },
     ],
   },
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { buildFullName } from "../../utils/nameFormatter";
 import { FaShieldAlt } from "react-icons/fa";
+import SERVICES from "../../config/services";
 
 function AppointmentForm() {
   const today = (() => {
@@ -47,7 +48,7 @@ function AppointmentForm() {
     e.preventDefault();
 
     if (!termsAccepted) {
-      alert(
+      window.alert(
         "Please read and agree to the Terms and Conditions before booking.",
       );
       return;
@@ -72,7 +73,7 @@ function AppointmentForm() {
         reason: formData.reason,
       });
 
-      alert(res.data.message);
+      window.alert(res.data.message);
 
       setFormData({
         lastName: "",
@@ -89,7 +90,7 @@ function AppointmentForm() {
       setTermsRead(false);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Unable to submit appointment.");
+      window.alert(err.response?.data?.message || "Unable to submit appointment.");
     } finally {
       setLoading(false);
     }
@@ -192,16 +193,12 @@ function AppointmentForm() {
             required
           >
             <option value="">Select Service</option>
-            <option value="Dental Check-up">Dental Check-up</option>
-            <option value="Teeth Cleaning">Teeth Cleaning</option>
-            <option value="Tooth Filling">Tooth Filling</option>
-            <option value="Tooth Extraction">Tooth Extraction</option>
-            <option value="Root Canal Treatment">Root Canal Treatment</option>
-            <option value="Teeth Whitening">Teeth Whitening</option>
-            <option value="Braces Consultation">Braces Consultation</option>
-            <option value="Dental Crown">Dental Crown</option>
-            <option value="Dental Bridge">Dental Bridge</option>
-            <option value="Dentures">Dentures</option>
+            <option value="">Select Service</option>
+            {SERVICES.map((service) => (
+              <option key={service} value={service}>
+                {service}
+              </option>
+            ))}
           </select>
 
           <textarea

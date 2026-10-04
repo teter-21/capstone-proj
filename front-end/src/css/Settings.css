@@ -249,3 +249,9 @@
     width: 100%;
   }
 }
+
+
+/* Admin account management is now part of Settings. */
+.admin-settings-section {
+  margin-top: 24px;
+}

@@ -179,7 +179,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 9px;
-  border-radius:0px;
+  border-radius: 0px;
   font-size: 10px;
   font-weight: 600;
 }
@@ -425,7 +425,7 @@
 
 .walk-in-form-group > label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 0px;
   color: var(--color-text);
   font-size: 10px;
   font-weight: 700;
@@ -476,7 +476,7 @@
 .priority-option {
   flex: 1;
   display: flex;
-  align-items:center;
+  align-items: center;
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: 0px;
@@ -484,7 +484,6 @@
   font-size: 11px;
   cursor: pointer;
 }
-
 
 .priority-option.urgent {
   color: #a85b5b;
@@ -861,4 +860,57 @@
 .queue-empty {
   height: auto !important;
   min-height: 180px !important;
+}
+
+/* Searchable patient selector for the walk-in modal */
+.walk-in-patient-combobox {
+  position: relative;
+  width: 100%;
+}
+
+.walk-in-patient-search {
+  width: 100%;
+}
+
+.walk-in-patient-results {
+  position: absolute;
+  z-index: 50;
+  top: calc(100%);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #d9e2ec;
+  border-radius: 0px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+.walk-in-patient-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 1px solid #eef2f7;
+  background: #fff;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.walk-in-patient-result:hover {
+  background: #f6f9fc;
+}
+
+.walk-in-patient-result small {
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.walk-in-patient-result.muted {
+  cursor: default;
+  color: #64748b;
 }

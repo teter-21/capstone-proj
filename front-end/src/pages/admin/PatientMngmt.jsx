@@ -34,7 +34,7 @@ function PatientMngmt() {
       setPatients(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Unable to load patients.");
+      window.alert(err.response?.data?.message || "Unable to load patients.");
     }
   };
 
@@ -93,9 +93,7 @@ function PatientMngmt() {
       const dateA = new Date(a.created_at || 0).getTime();
       const dateB = new Date(b.created_at || 0).getTime();
 
-      return sortBy === "registration-oldest"
-        ? dateA - dateB
-        : dateB - dateA;
+      return sortBy === "registration-oldest" ? dateA - dateB : dateB - dateA;
     });
   }, [patients, search, ageFilter, sortBy]);
 
@@ -221,10 +219,7 @@ function PatientMngmt() {
               Page {safeCurrentPage} of {totalPages}
             </span>
 
-            <button
-              onClick={goNext}
-              disabled={safeCurrentPage === totalPages}
-            >
+            <button onClick={goNext} disabled={safeCurrentPage === totalPages}>
               Next
             </button>
           </div>

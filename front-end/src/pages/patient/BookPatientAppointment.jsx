@@ -1,5 +1,6 @@
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
+import SERVICES from "../../config/services";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../css/BookPatientAppointment.css";
@@ -52,7 +53,7 @@ function BookPatientAppointment() {
       !formData.preferred_time ||
       !formData.service
     ) {
-      setError("Please complete the required fields.");
+      window.alert("Please complete the required fields.");
 
       return;
     }
@@ -74,9 +75,7 @@ function BookPatientAppointment() {
         },
       );
 
-      setMessage(
-        response.data.message || "Appointment submitted successfully.",
-      );
+      window.alert(response.data.message || "Appointment submitted successfully.",);
 
       setFormData({
         preferred_date: "",
@@ -87,9 +86,7 @@ function BookPatientAppointment() {
     } catch (err) {
       console.error("Patient appointment error:", err);
 
-      setError(
-        err.response?.data?.message || "Unable to book your appointment.",
-      );
+      window.alert(err.response?.data?.message || "Unable to book your appointment.",);
     } finally {
       setLoading(false);
     }
@@ -164,10 +161,8 @@ function BookPatientAppointment() {
             >
               <option value="">Select a service</option>
 
-              {services.map((service, index) => (
-                <option key={index} value={service}>
-                  {service}
-                </option>
+              {SERVICES.map((service, index) => (
+                <option key={service} value={service}>{service}</option>
               ))}
             </select>
           </div>

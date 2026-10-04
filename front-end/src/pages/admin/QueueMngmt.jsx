@@ -1,5 +1,6 @@
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useState } from "react";
+import SERVICES from "../../config/services";
 
 import axios from "axios";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
@@ -32,6 +33,7 @@ function QueueManagement() {
   const [patients, setPatients] = useState([]);
 
   const [patientsLoading, setPatientsLoading] = useState(false);
+  const [patientSearch, setPatientSearch] = useState("");
 
   const [walkInForm, setWalkInForm] = useState({
     patient_id: "",
@@ -95,7 +97,7 @@ function QueueManagement() {
     } catch (err) {
       console.error("Patients error:", err);
 
-      alert("Unable to load patients.");
+      window.alert("Unable to load patients.");
     } finally {
       setPatientsLoading(false);
     }
@@ -118,29 +120,30 @@ function QueueManagement() {
   };
 
   /* HANDLE WALK-IN FORM */
-
   const handleWalkInChange = (event) => {
     const { name, value } = event.target;
-
-    if (name === "patient_id") {
-      const selectedPatient = patients.find(
-        (patient) => String(patient.id) === String(value),
-      );
-
-      setWalkInForm((previous) => ({
-        ...previous,
-        patient_id: value,
-        patient_name: selectedPatient ? selectedPatient.name : "",
-      }));
-
-      return;
-    }
-
     setWalkInForm((previous) => ({
       ...previous,
       [name]: value,
     }));
   };
+
+  const selectWalkInPatient = (patient) => {
+    setWalkInForm((previous) => ({
+      ...previous,
+      patient_id: String(patient.id),
+      patient_name: patient.name || "",
+    }));
+    setPatientSearch("");
+  };
+
+  const filteredPatients = patients.filter((patient) => {
+    const term = patientSearch.trim().toLowerCase();
+    if (!term) return true;
+    const name = String(patient.name || "").toLowerCase();
+    const pid = String(patient.id || "").toLowerCase();
+    return name.includes(term) || pid.includes(term);
+  });
 
   /* ADD WALK-IN TO QUEUE */
 
@@ -148,13 +151,13 @@ function QueueManagement() {
     event.preventDefault();
 
     if (!walkInForm.patient_id) {
-      alert("Please select a patient.");
+      window.alert("Please select a patient.");
 
       return;
     }
 
     if (!walkInForm.service) {
-      alert("Please select a service.");
+      window.alert("Please select a service.");
 
       return;
     }
@@ -182,7 +185,7 @@ function QueueManagement() {
         },
       );
 
-      alert(response.data?.message || "Walk-in patient added to queue.");
+      window.alert(response.data?.message || "Walk-in patient added to queue.");
 
       setShowWalkInModal(false);
 
@@ -198,7 +201,7 @@ function QueueManagement() {
     } catch (err) {
       console.error("Add walk-in error:", err);
 
-      alert(err.response?.data?.message || "Unable to add walk-in patient.");
+      window.alert(err.response?.data?.message || "Unable to add walk-in patient.");
     } finally {
       setWalkInSubmitting(false);
     }
@@ -241,7 +244,7 @@ function QueueManagement() {
     } catch (err) {
       console.error(`Queue ${action} error:`, err);
 
-      alert(err.response?.data?.message || "Unable to update queue.");
+      window.alert(err.response?.data?.message || "Unable to update queue.");
     }
   };
 
@@ -249,7 +252,7 @@ function QueueManagement() {
 
   const callNextPatient = async () => {
     if (calledCount > 0 || treatmentCount > 0) {
-      alert("A patient is already called or in treatment.");
+      window.alert("A patient is already called or in treatment.");
 
       return;
     }
@@ -267,13 +270,13 @@ function QueueManagement() {
         },
       );
 
-      alert(response.data?.message || "Next patient called successfully.");
+      window.alert(response.data?.message || "Next patient called successfully.");
 
       await fetchQueue();
     } catch (err) {
       console.error("Call next error:", err);
 
-      alert(err.response?.data?.message || "Unable to call the next patient.");
+      window.alert(err.response?.data?.message || "Unable to call the next patient.");
     } finally {
       setCallingNext(false);
     }
@@ -644,23 +647,56 @@ function QueueManagement() {
               <div className="walk-in-form-group">
                 <label>Patient</label>
 
-                <select
-                  name="patient_id"
-                  value={walkInForm.patient_id}
-                  onChange={handleWalkInChange}
-                  disabled={patientsLoading}
-                  required
-                >
-                  <option value="">
-                    {patientsLoading ? "Loading patients..." : "Select patient"}
-                  </option>
-
-                  {patients.map((patient) => (
-                    <option key={patient.id} value={patient.id}>
-                      {patient.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="walk-in-patient-combobox">
+                  <input
+                    type="text"
+                    className="walk-in-patient-search"
+                    value={
+                      patientSearch ||
+                      (walkInForm.patient_id
+                        ? `${walkInForm.patient_name} (PID: ${walkInForm.patient_id})`
+                        : "")
+                    }
+                    onChange={(event) => {
+                      setPatientSearch(event.target.value);
+                      if (walkInForm.patient_id) {
+                        setWalkInForm((previous) => ({
+                          ...previous,
+                          patient_id: "",
+                          patient_name: "",
+                        }));
+                      }
+                    }}
+                    placeholder="Search patient name or PID..."
+                    autoComplete="off"
+                    disabled={patientsLoading}
+                  />
+                  {(patientSearch || !walkInForm.patient_id) && (
+                    <div className="walk-in-patient-results">
+                      {patientsLoading ? (
+                        <div className="walk-in-patient-result muted">
+                          Loading patients...
+                        </div>
+                      ) : filteredPatients.length > 0 ? (
+                        filteredPatients.slice(0, 50).map((patient) => (
+                          <button
+                            key={patient.id}
+                            type="button"
+                            className="walk-in-patient-result"
+                            onClick={() => selectWalkInPatient(patient)}
+                          >
+                            <span>{patient.name}</span>
+                            <small>PID: {patient.id}</small>
+                          </button>
+                        ))
+                      ) : (
+                        <div className="walk-in-patient-result muted">
+                          No matching patients found.
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* SERVICE */}
@@ -674,17 +710,13 @@ function QueueManagement() {
                   onChange={handleWalkInChange}
                   required
                 >
-                  <option value="">Select service</option>
-
-                  <option value="Dental Check-up">Dental Check-up</option>
-
-                  <option value="Tooth Filling">Tooth Filling</option>
-
-                  <option value="Tooth Extraction">Tooth Extraction</option>
-
-                  <option value="Teeth Cleaning">Teeth Cleaning</option>
-
-                  <option value="Consultation">Consultation</option>
+                  {" "}
+                  <option value="">Select service</option>{" "}
+                  {SERVICES.map((service) => (
+                    <option key={service} value={service}>
+                      {service}
+                    </option>
+                  ))}{" "}
                 </select>
               </div>
 

@@ -17,10 +17,8 @@ function Contact() {
 
       <div className="we_open">
         <p>
-          <FaClock /> Monday to Friday
+          <FaClock /> Monday to Friday | 10:00 AM - 6:00 PM
         </p>
-
-        <p>10am-6pm</p>
       </div>
 
       <br />
