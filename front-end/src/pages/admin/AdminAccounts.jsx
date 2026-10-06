@@ -30,7 +30,7 @@ function AdminAccounts() {
       });
       setAdmins(response.data);
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to load admin accounts.");
+      setError(err.response?.data?.message || "Unable to load admin accounts.");
     } finally {
       setLoading(false);
     }
@@ -57,12 +57,12 @@ function AdminAccounts() {
     setError("");
 
     if (form.password !== form.confirmPassword) {
-      window.alert("The passwords do not match.");
+      setError("The passwords do not match.");
       return;
     }
 
     if (form.password.length < 6) {
-      window.alert("Password must be at least 6 characters.");
+      setError("Password must be at least 6 characters.");
       return;
     }
 
@@ -79,11 +79,13 @@ function AdminAccounts() {
         { headers },
       );
 
-      window.alert(response.data.message);
+      setMessage(response.data.message);
       setForm(emptyForm);
       await loadAdmins();
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to create admin account.",);
+      setError(
+        err.response?.data?.message || "Unable to create admin account.",
+      );
     } finally {
       setSaving(false);
     }

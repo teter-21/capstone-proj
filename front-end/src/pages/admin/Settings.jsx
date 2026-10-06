@@ -34,8 +34,10 @@ function Settings() {
           email: response.data.email || "",
         }));
       } catch (err) {
-        window.alert(err.response?.data?.message ||
-            "Unable to load your account information.",);
+        setError(
+          err.response?.data?.message ||
+            "Unable to load your account information.",
+        );
       } finally {
         setLoading(false);
       }
@@ -57,12 +59,12 @@ function Settings() {
     setError("");
 
     if (form.newPassword && !form.currentPassword) {
-      window.alert("Enter your current password before changing it.");
+      setError("Enter your current password before changing it.");
       return;
     }
 
     if (form.newPassword && form.newPassword !== form.confirmPassword) {
-      window.alert("New password and confirmation do not match.");
+      setError("New password and confirmation do not match.");
       return;
     }
 
@@ -80,7 +82,7 @@ function Settings() {
         { headers },
       );
 
-      window.alert(response.data.message);
+      setMessage(response.data.message);
       setAccount((current) => ({
         ...current,
         fullname: form.fullname,
@@ -93,7 +95,7 @@ function Settings() {
         confirmPassword: "",
       }));
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to save your changes.");
+      setError(err.response?.data?.message || "Unable to save your changes.");
     } finally {
       setSaving(false);
     }

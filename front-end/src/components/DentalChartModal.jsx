@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import api from "../api";
 import { FaTimes, FaSave, FaTrash, FaTooth } from "react-icons/fa";
+import simpleTooth from "../assets/images/simple-tooth.png";
 import "../css/DentalChartModal.css";
 
 const CONDITIONS = [
@@ -29,11 +30,16 @@ function toothType(tooth) {
   return "molar";
 }
 
-function ToothDrawing({ condition }) {
+function ToothDrawing({ tooth, condition }) {
   const marked = condition && condition !== "Healthy";
+  const isLowerTooth = Number(tooth) >= 31;
 
   return (
-    <span className="tooth-drawing simple-tooth" aria-hidden="true">
+    <span
+      className={`tooth-drawing ${isLowerTooth ? "lower-tooth" : "upper-tooth"}`}
+      aria-hidden="true"
+    >
+      <img src={simpleTooth} alt="" draggable="false" />
       {marked && <span className="tooth-condition-x">X</span>}
     </span>
   );
@@ -64,7 +70,7 @@ function DentalChartModal({ patient, onClose }) {
       setRecords(mapped);
     } catch (err) {
       console.error("Get dental chart error:", err);
-      window.alert(err.response?.data?.message || "Unable to load dental chart.");
+      alert(err.response?.data?.message || "Unable to load dental chart.");
     } finally {
       setLoading(false);
     }
@@ -92,10 +98,10 @@ function DentalChartModal({ patient, onClose }) {
         ...prev,
         [String(selectedTooth)]: res.data.tooth,
       }));
-      window.alert(`Tooth #${selectedTooth} saved successfully.`);
+      alert(`Tooth #${selectedTooth} saved successfully.`);
     } catch (err) {
       console.error(err);
-      window.alert(err.response?.data?.message || "Unable to save tooth condition.");
+      alert(err.response?.data?.message || "Unable to save tooth condition.");
     } finally {
       setSaving(false);
     }
@@ -117,7 +123,7 @@ function DentalChartModal({ patient, onClose }) {
       setNotes("");
     } catch (err) {
       console.error(err);
-      window.alert(err.response?.data?.message || "Unable to clear tooth condition.");
+      alert(err.response?.data?.message || "Unable to clear tooth condition.");
     } finally {
       setSaving(false);
     }
@@ -136,7 +142,7 @@ function DentalChartModal({ patient, onClose }) {
         aria-label={`Tooth ${tooth}, ${value}`}
       >
         <span className="tooth-number">{tooth}</span>
-        <ToothDrawing condition={value} />
+        <ToothDrawing tooth={tooth} condition={value} />
       </button>
     );
   };

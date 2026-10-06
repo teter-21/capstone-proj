@@ -39,7 +39,7 @@ function EditPatientModal({ patient, onClose, onSave }) {
     );
 
     if (!fullname.trim()) {
-      window.alert("Please enter the patient's name.");
+      alert("Please enter the patient's name.");
       return;
     }
 
@@ -70,7 +70,7 @@ function EditPatientModal({ patient, onClose, onSave }) {
       onClose();
     } catch (err) {
       console.error("Update patient error:", err);
-      window.alert(err.response?.data?.message || "Unable to update patient.");
+      alert(err.response?.data?.message || "Unable to update patient.");
     } finally {
       setSaving(false);
     }

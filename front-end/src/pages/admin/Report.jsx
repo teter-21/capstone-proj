@@ -307,17 +307,6 @@ function Report() {
           </select>
         </div>
 
-        <div className="report-filter-group">
-          <label>Chart Grouping</label>
-          <select
-            value={group}
-            onChange={(event) => setGroup(event.target.value)}
-          >
-            <option value="day">Daily</option>
-            <option value="month">Monthly</option>
-          </select>
-        </div>
-
         <button
           className="filter-btn"
           onClick={loadReport}

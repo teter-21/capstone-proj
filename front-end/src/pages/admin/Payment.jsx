@@ -91,17 +91,17 @@ function AdminPayment() {
     const amount = Number(form.amount);
 
     if (!paymentVisit || !Number.isFinite(amount) || amount <= 0) {
-      window.alert("Enter a valid payment amount.");
+      alert("Enter a valid payment amount.");
       return;
     }
 
     if (amount > Number(paymentVisit.balance || 0)) {
-      window.alert("Payment cannot exceed the remaining balance.");
+      alert("Payment cannot exceed the remaining balance.");
       return;
     }
 
     if (referenceRequired && !form.reference_number.trim()) {
-      window.alert(
+      alert(
         "Reference number is required for GCash, Card, or Bank Transfer payments.",
       );
       return;
@@ -116,12 +116,12 @@ function AdminPayment() {
         reference_number: form.reference_number.trim() || null,
         notes: form.notes,
       });
-      window.alert(response.data?.message || "Payment recorded successfully.");
+      alert(response.data?.message || "Payment recorded successfully.");
       closePayment();
       await loadBilling();
     } catch (err) {
       console.error("Record payment error:", err);
-      window.alert(err.response?.data?.message || "Unable to record payment.");
+      alert(err.response?.data?.message || "Unable to record payment.");
     } finally {
       setSaving(false);
     }

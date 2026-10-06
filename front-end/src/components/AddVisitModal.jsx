@@ -61,7 +61,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
 
       console.log(res.data);
 
-      window.alert("Visit added successfully!");
+      alert("Visit added successfully!");
 
       if (onSave) {
         onSave();
@@ -71,7 +71,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
     } catch (err) {
       console.error(err);
 
-      window.alert(err.response?.data?.message || "Failed to save visit.");
+      alert(err.response?.data?.message || "Failed to save visit.");
     }
   };
 

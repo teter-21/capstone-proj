@@ -21,7 +21,7 @@ function ResetPassword() {
     const verify = async () => {
       if (!token) {
         setValid(false);
-        window.alert("This reset link is invalid or missing.");
+        setError("This reset link is invalid or missing.");
         return;
       }
 
@@ -32,8 +32,10 @@ function ResetPassword() {
         setValid(true);
       } catch (err) {
         setValid(false);
-        window.alert(err.response?.data?.message ||
-            "This reset link is invalid or has expired.",);
+        setError(
+          err.response?.data?.message ||
+            "This reset link is invalid or has expired.",
+        );
       }
     };
 
@@ -46,12 +48,12 @@ function ResetPassword() {
     setError("");
 
     if (password.length < 6) {
-      window.alert("Password must be at least 6 characters.");
+      setError("Password must be at least 6 characters.");
       return;
     }
 
     if (password !== confirmPassword) {
-      window.alert("Passwords do not match.");
+      setError("Passwords do not match.");
       return;
     }
 
@@ -62,10 +64,10 @@ function ResetPassword() {
         token,
         newPassword: password,
       });
-      window.alert(response.data.message);
+      setMessage(response.data.message);
       setTimeout(() => navigate("/login"), 1800);
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to reset the password.");
+      setError(err.response?.data?.message || "Unable to reset the password.");
     } finally {
       setLoading(false);
     }

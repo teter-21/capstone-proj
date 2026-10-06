@@ -24,9 +24,9 @@ function ForgotPassword() {
       const response = await axios.post(API_BASE_URL + "/forgot-password", {
         email,
       });
-      window.alert(response.data.message);
+      setMessage(response.data.message);
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to send the reset link.");
+      setError(err.response?.data?.message || "Unable to send the reset link.");
     } finally {
       setLoading(false);
     }

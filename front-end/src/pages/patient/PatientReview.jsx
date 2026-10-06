@@ -21,7 +21,7 @@ function PatientReview() {
       setRating(Number(data?.rating || 0));
       setComment(data?.comment || "");
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to load your review.");
+      setError(err.response?.data?.message || "Unable to load your review.");
     } finally {
       setLoading(false);
     }
@@ -37,17 +37,17 @@ function PatientReview() {
     setError("");
 
     if (!rating) {
-      window.alert("Please select a rating from 1 to 5 stars.");
+      setError("Please select a rating from 1 to 5 stars.");
       return;
     }
 
     setSaving(true);
     try {
       const response = await api.post("/patient/review", { rating, comment });
-      window.alert(response.data.message);
+      setMessage(response.data.message);
       await loadReview();
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to submit your review.");
+      setError(err.response?.data?.message || "Unable to submit your review.");
     } finally {
       setSaving(false);
     }

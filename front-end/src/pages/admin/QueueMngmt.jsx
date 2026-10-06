@@ -97,7 +97,7 @@ function QueueManagement() {
     } catch (err) {
       console.error("Patients error:", err);
 
-      window.alert("Unable to load patients.");
+      alert("Unable to load patients.");
     } finally {
       setPatientsLoading(false);
     }
@@ -151,13 +151,13 @@ function QueueManagement() {
     event.preventDefault();
 
     if (!walkInForm.patient_id) {
-      window.alert("Please select a patient.");
+      alert("Please select a patient.");
 
       return;
     }
 
     if (!walkInForm.service) {
-      window.alert("Please select a service.");
+      alert("Please select a service.");
 
       return;
     }
@@ -185,7 +185,7 @@ function QueueManagement() {
         },
       );
 
-      window.alert(response.data?.message || "Walk-in patient added to queue.");
+      alert(response.data?.message || "Walk-in patient added to queue.");
 
       setShowWalkInModal(false);
 
@@ -201,7 +201,7 @@ function QueueManagement() {
     } catch (err) {
       console.error("Add walk-in error:", err);
 
-      window.alert(err.response?.data?.message || "Unable to add walk-in patient.");
+      alert(err.response?.data?.message || "Unable to add walk-in patient.");
     } finally {
       setWalkInSubmitting(false);
     }
@@ -244,7 +244,7 @@ function QueueManagement() {
     } catch (err) {
       console.error(`Queue ${action} error:`, err);
 
-      window.alert(err.response?.data?.message || "Unable to update queue.");
+      alert(err.response?.data?.message || "Unable to update queue.");
     }
   };
 
@@ -252,7 +252,7 @@ function QueueManagement() {
 
   const callNextPatient = async () => {
     if (calledCount > 0 || treatmentCount > 0) {
-      window.alert("A patient is already called or in treatment.");
+      alert("A patient is already called or in treatment.");
 
       return;
     }
@@ -270,13 +270,13 @@ function QueueManagement() {
         },
       );
 
-      window.alert(response.data?.message || "Next patient called successfully.");
+      alert(response.data?.message || "Next patient called successfully.");
 
       await fetchQueue();
     } catch (err) {
       console.error("Call next error:", err);
 
-      window.alert(err.response?.data?.message || "Unable to call the next patient.");
+      alert(err.response?.data?.message || "Unable to call the next patient.");
     } finally {
       setCallingNext(false);
     }

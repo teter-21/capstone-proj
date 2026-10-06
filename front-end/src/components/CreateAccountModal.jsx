@@ -28,10 +28,10 @@ function CreateAccountModal({ patient, onClose }) {
         },
       );
 
-      window.alert(res.data.message);
+      alert(res.data.message);
       onClose();
     } catch (err) {
-      window.alert(err.response?.data?.message || "Unable to create account.");
+      alert(err.response?.data?.message || "Unable to create account.");
     }
   };
 

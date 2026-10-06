@@ -34,7 +34,7 @@ function PatientMngmt() {
       setPatients(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
-      window.alert(err.response?.data?.message || "Unable to load patients.");
+      alert(err.response?.data?.message || "Unable to load patients.");
     }
   };
 

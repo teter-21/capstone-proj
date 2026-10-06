@@ -77,7 +77,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
       !formData.visit_time ||
       !formData.procedure_name
     ) {
-      window.alert("Please complete the date, time, and procedure.");
+      alert("Please complete the date, time, and procedure.");
       return;
     }
 
@@ -97,7 +97,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
         },
       );
 
-      window.alert(response.data?.message || "Treatment completed and visit saved.");
+      alert(response.data?.message || "Treatment completed and visit saved.");
 
       if (onCompleted) {
         await onCompleted();
@@ -107,7 +107,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
     } catch (error) {
       console.error("Complete treatment error:", error);
 
-      window.alert(error.response?.data?.message || "Unable to complete treatment.");
+      alert(error.response?.data?.message || "Unable to complete treatment.");
     } finally {
       setSaving(false);
     }

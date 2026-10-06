@@ -20,7 +20,7 @@ function ViewVisitModal({ patient, onClose }) {
     } catch (err) {
       console.error(err);
 
-      window.alert(err.response?.data?.message || "Unable to load visits.");
+      alert(err.response?.data?.message || "Unable to load visits.");
     }
   };
 
@@ -29,7 +29,7 @@ function ViewVisitModal({ patient, onClose }) {
       <div className="viewv-modal">
         {/* HEADER */}
         <div className="modal-header">
-          <h2>Visit History</h2>
+          <h2>Treatment History</h2>
           <p>{patient?.name}</p>
         </div>
 
@@ -66,7 +66,7 @@ function ViewVisitModal({ patient, onClose }) {
               ) : (
                 <tr>
                   <td colSpan="8" className="no-data">
-                    No visit history
+                    No treatment history
                   </td>
                 </tr>
               )}

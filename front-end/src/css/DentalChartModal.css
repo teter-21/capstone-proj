@@ -504,11 +504,7 @@
   .quadrant-grid {
     gap: 20px 10px;
   }
-  .simple-tooth {
-    width: 38px;
-    height: 70px;
-  }
-  .odontogram-tooth {
+    .odontogram-tooth {
     height: 108px;
   }
   .quadrant-label {
@@ -519,34 +515,59 @@
   }
   }
 
-/* Minimal odontogram marking: conditions/actions are represented only by X. */
-.tooth-drawing.simple-tooth {
+/* Tooth picture: based directly on the simple tooth image supplied for the odontogram. */
+.tooth-drawing {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: 0;
+  width: 52px;
+  height: 58px;
+  margin-top: 4px;
+  overflow: visible;
 }
-
+.tooth-drawing img {
+  display: block;
+  width: 50px;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+/* The supplied reference tooth has roots pointing down. Flip lower teeth so
+   the roots point toward the lower jaw while keeping the exact same picture. */
+.tooth-drawing.lower-tooth img {
+  transform: rotate(180deg);
+}
 .tooth-condition-x {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #3477b3;
+  font-size: 21px;
   font-weight: 700;
   line-height: 1;
-  color: currentColor;
+  pointer-events: none;
 }
 
-.odontogram-tooth {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
+
+@media (max-width: 760px) {
+  .tooth-drawing {
+    width: 48px;
+    height: 54px;
+  }
+  .tooth-drawing img {
+    width: 46px;
+  }
 }
 
-.odontogram-tooth.selected {
-  background: transparent;
-  box-shadow: none;
+@media (max-width: 390px) {
+  .tooth-drawing {
+    width: 44px;
+    height: 50px;
+  }
+  .tooth-drawing img {
+    width: 42px;
+  }
 }

@@ -118,14 +118,14 @@ function AddPatient() {
 
       console.log(res.data);
 
-      window.alert("Patient Added Successfully!");
+      alert("Patient Added Successfully!");
 
       /* Go to the patient list; it fetches the latest records automatically. */
       navigate("/PatientMngmt");
     } catch (err) {
       console.error("Add patient error:", err);
 
-      window.alert(err.response?.data?.message || "Unable to add patient.");
+      alert(err.response?.data?.message || "Unable to add patient.");
     }
   };
 

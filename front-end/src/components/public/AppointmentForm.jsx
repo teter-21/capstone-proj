@@ -48,7 +48,7 @@ function AppointmentForm() {
     e.preventDefault();
 
     if (!termsAccepted) {
-      window.alert(
+      alert(
         "Please read and agree to the Terms and Conditions before booking.",
       );
       return;
@@ -73,7 +73,7 @@ function AppointmentForm() {
         reason: formData.reason,
       });
 
-      window.alert(res.data.message);
+      alert(res.data.message);
 
       setFormData({
         lastName: "",
@@ -90,7 +90,7 @@ function AppointmentForm() {
       setTermsRead(false);
     } catch (err) {
       console.error(err);
-      window.alert(err.response?.data?.message || "Unable to submit appointment.");
+      alert(err.response?.data?.message || "Unable to submit appointment.");
     } finally {
       setLoading(false);
     }

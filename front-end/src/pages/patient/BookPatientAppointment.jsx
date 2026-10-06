@@ -53,7 +53,7 @@ function BookPatientAppointment() {
       !formData.preferred_time ||
       !formData.service
     ) {
-      window.alert("Please complete the required fields.");
+      setError("Please complete the required fields.");
 
       return;
     }
@@ -75,7 +75,9 @@ function BookPatientAppointment() {
         },
       );
 
-      window.alert(response.data.message || "Appointment submitted successfully.",);
+      setMessage(
+        response.data.message || "Appointment submitted successfully.",
+      );
 
       setFormData({
         preferred_date: "",
@@ -86,7 +88,9 @@ function BookPatientAppointment() {
     } catch (err) {
       console.error("Patient appointment error:", err);
 
-      window.alert(err.response?.data?.message || "Unable to book your appointment.",);
+      setError(
+        err.response?.data?.message || "Unable to book your appointment.",
+      );
     } finally {
       setLoading(false);
     }

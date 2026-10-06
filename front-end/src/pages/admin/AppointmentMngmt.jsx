@@ -105,7 +105,7 @@ function AppointmentMngmt() {
     } catch (err) {
       console.error(err);
 
-      window.alert(err.response?.data?.message || "Unable to update appointment.");
+      alert(err.response?.data?.message || "Unable to update appointment.");
     }
   };
 
@@ -121,13 +121,13 @@ function AppointmentMngmt() {
     try {
       const response = await api.post(`/queue/appointment/${appointmentId}`);
 
-      window.alert(response.data?.message || "Patient checked in successfully.");
+      alert(response.data?.message || "Patient checked in successfully.");
 
       await loadAppointments();
     } catch (err) {
       console.error("Check-in error:", err);
 
-      window.alert(err.response?.data?.message || "Unable to check in patient.");
+      alert(err.response?.data?.message || "Unable to check in patient.");
     }
   };
 
@@ -163,7 +163,7 @@ function AppointmentMngmt() {
     e.preventDefault();
 
     if (!newDate || !newTime) {
-      window.alert("Please select a date and time.");
+      alert("Please select a date and time.");
 
       return;
     }
@@ -179,7 +179,7 @@ function AppointmentMngmt() {
         },
       );
 
-      window.alert("Appointment rescheduled successfully.");
+      alert("Appointment rescheduled successfully.");
 
       setShowReschedule(false);
 
@@ -189,7 +189,7 @@ function AppointmentMngmt() {
     } catch (err) {
       console.error(err);
 
-      window.alert(err.response?.data?.message || "Unable to reschedule appointment.");
+      alert(err.response?.data?.message || "Unable to reschedule appointment.");
     }
   };
 
