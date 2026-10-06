@@ -5,7 +5,7 @@ import api from "../../api";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 
 import MonthlyGraph from "../../components/MonthlyGraph";
-import TopProcedure from "../../components/TopProcedure";
+import AppointmentCalendar from "../../components/AppointmentCalendar";
 import PatientManagement from "../../components/PatientTable";
 
 import {
@@ -145,7 +145,7 @@ function Dashboard() {
       <div className="dashboard-grid">
         <MonthlyGraph />
 
-        <TopProcedure />
+        <AppointmentCalendar />
       </div>
 
       {/* PATIENT TABLE */}

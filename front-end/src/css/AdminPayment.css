@@ -265,7 +265,7 @@
   align-items: center;
   gap: 6px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 0px;
   padding: 8px 10px;
   background: #4f86c6;
   color: #fff;
@@ -294,7 +294,7 @@
   margin: 14px 20px 0;
   padding: 10px 12px;
   border: 1px solid #efcaca;
-  border-radius: 8px;
+  border-radius: 0px;
   background: #fdecec;
   color: #a83f3f;
   font-size: 12px;
@@ -318,7 +318,7 @@
   overflow-y: auto;
   background: #fff;
   border: 1px solid #dbe6ed;
-  border-radius: 16px;
+  border-radius: 0px;
   box-shadow: 0 20px 60px rgba(24, 43, 60, 0.22);
 }
 
@@ -331,7 +331,7 @@
 }
 
 .payment-modal-header span {
-  color: #5b9e8a;
+  color: var(--color-primary);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 1.2px;
@@ -347,7 +347,7 @@
   width: 34px;
   height: 34px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 0px;
   background: #f4f8fb;
   color: #536a7d;
   cursor: pointer;
@@ -360,7 +360,7 @@
   margin: 18px 20px;
   padding: 14px;
   border: 1px solid #dbe6ed;
-  border-radius: 10px;
+  border-radius: 0px;
   background: #f4f8fb;
 }
 
@@ -406,7 +406,7 @@
   width: 100%;
   padding: 10px 11px;
   border: 1px solid #dbe6ed;
-  border-radius: 8px;
+  border-radius: 0px;
   background: #fff;
   color: #24425f;
   font-size: 12px;
@@ -436,7 +436,7 @@
   min-height: 40px;
   padding: 0 14px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 0px;
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
@@ -451,12 +451,12 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: #5b9e8a;
+  background: var(--color-primary-dark);
   color: #fff;
 }
 
 .payment-save-btn:hover {
-  background: #4a8877;
+  background: var(--color-primary);
 }
 
 .payment-cancel-btn:disabled,
