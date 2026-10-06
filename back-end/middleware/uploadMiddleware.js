@@ -1,18 +1,16 @@
 const multer = require("multer");
 const path = require("path");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const extension = path.extname(file.originalname).toLowerCase();
-    cb(null, `${uniqueName}${extension}`);
-  },
-});
+/*
+ * Store the uploaded image temporarily in memory.
+ * It will be uploaded to Cloudinary by the controller.
+ */
+const storage = multer.memoryStorage();
 
-/* Accept only common raster image formats. SVG is intentionally excluded. */
+/*
+ * Accept only common raster image formats.
+ * SVG is intentionally excluded.
+ */
 const fileFilter = (req, file, cb) => {
   const allowed = {
     ".jpg": "image/jpeg",
@@ -20,6 +18,7 @@ const fileFilter = (req, file, cb) => {
     ".png": "image/png",
     ".gif": "image/gif",
   };
+
   const extension = path.extname(file.originalname).toLowerCase();
 
   if (allowed[extension] !== file.mimetype) {
@@ -33,7 +32,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 2 * 1024 * 1024,
+    fileSize: 2 * 1024 * 1024, // 2 MB
     files: 1,
   },
 });

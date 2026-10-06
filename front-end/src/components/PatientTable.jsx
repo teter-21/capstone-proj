@@ -116,7 +116,7 @@ function PatientTable() {
 
                       {patient.image ? (
                         <img
-                          src={`${API_BASE_URL}/uploads/${patient.image}`}
+                          src={patient.image}
                           alt={patient.name}
                           className="patient-avatar-image"
                         />

@@ -24,9 +24,10 @@ function PatientRow({ patient, onSaveVisit, onUpdatePatient, onImageClick }) {
 
       <span>
         <img
-          src={`${API_BASE_URL}/uploads/${patient.image}`}
+           src={patient.image}
           width="80"
           className="avatar"
+          alt={patient.name}
           onClick={() => onImageClick?.(patient.image)}
         />
       </span>

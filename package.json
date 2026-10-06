@@ -2,6 +2,7 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
+    "cloudinary": "^2.11.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
