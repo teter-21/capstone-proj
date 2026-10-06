@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import PatientRow from "./PatientRow";
 import "../css/ViewVisitModal.css";
-import "../css/addVisitModal.css";
 
 function PatientColumn({ patients, onSaveVisit, onUpdatePatient }) {
   const [selectedImage, setSelectedImage] = useState(null);
