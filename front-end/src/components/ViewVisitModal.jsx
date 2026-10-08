@@ -7,22 +7,14 @@ function ViewVisitModal({ patient, onClose }) {
   const [visits, setVisits] = useState([]);
 
   useEffect(() => {
-    if (patient?.id) {
-      loadVisits();
-    }
-  }, [patient]);
+    if (!patient?.id) return;
+    let active = true;
+    api.get(`/visits/${patient.id}`).then((res) => { if (active) setVisits(res.data); })
+      .catch((error) => { if (active) window.alert(error.response?.data?.message || "Unable to load visits."); });
+    return () => { active = false; };
+  }, [patient?.id]);
 
-  const loadVisits = async () => {
-    try {
-      const res = await api.get(`/visits/${patient.id}`);
 
-      setVisits(res.data);
-    } catch (err) {
-      console.error(err);
-
-      alert(err.response?.data?.message || "Unable to load visits.");
-    }
-  };
 
   return (
     <div className="viewv-modal-overlay">

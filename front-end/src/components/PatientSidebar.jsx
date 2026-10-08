@@ -1,4 +1,4 @@
-import API_BASE_URL from "../config/apiBase.js";
+import { patientImageUrl } from "../utils/patientImage.js";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -130,7 +130,7 @@ function PatientSidebar() {
           <div className="patient-user-icon">
             {profile?.image ? (
               <img
-                src={`${API_BASE_URL}/uploads/${profile.image}`}
+                src={patientImageUrl(profile.image)}
                 alt={profile.name || "Patient"}
                 className="patient-sidebar-avatar"
               />

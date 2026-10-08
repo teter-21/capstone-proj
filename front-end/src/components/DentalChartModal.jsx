@@ -22,14 +22,6 @@ const CONDITIONS = [
 const UPPER = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
 const LOWER = [38, 37, 36, 35, 34, 33, 32, 31, 41, 42, 43, 44, 45, 46, 47, 48];
 
-function toothType(tooth) {
-  const number = Number(String(tooth).slice(-1));
-  if (number <= 2) return "incisor";
-  if (number === 3) return "canine";
-  if (number <= 5) return "premolar";
-  return "molar";
-}
-
 function ToothDrawing({ tooth, condition }) {
   const marked = condition && condition !== "Healthy";
   const isLowerTooth = Number(tooth) >= 31;
@@ -56,10 +48,7 @@ function DentalChartModal({ patient, onClose }) {
   const allTeeth = useMemo(() => [...UPPER, ...LOWER], []);
 
   useEffect(() => {
-    loadChart();
-  }, [patient.id]);
-
-  const loadChart = async () => {
+    const loadChart = async () => {
     try {
       setLoading(true);
       const res = await api.get(`/dental-chart/${patient.id}`);
@@ -75,6 +64,9 @@ function DentalChartModal({ patient, onClose }) {
       setLoading(false);
     }
   };
+
+    loadChart();
+  }, [patient.id]);
 
   const selectTooth = (tooth) => {
     const record = records[String(tooth)];

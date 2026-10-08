@@ -57,6 +57,12 @@ const createRateLimiter = ({ windowMs, max, message }) => {
 const failedLoginAttempts = new Map();
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_MAX_FAILURES = 5;
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, value] of failedLoginAttempts) {
+    if (now - value.firstAttempt >= LOGIN_WINDOW_MS) failedLoginAttempts.delete(key);
+  }
+}, 60000).unref();
 
 const getLoginKey = (req) => {
   const email = String(req.body?.email || "")

@@ -11,7 +11,7 @@
 .login-left {
   min-width: 0;
   min-height: 100svh;
-  background: url("../assets/images/dental-bg.png") center / cover no-repeat;
+  background: url("../assets/images/dental-bg.webp") center / cover no-repeat;
   position: relative;
   color: #fff;
 }

@@ -35,24 +35,30 @@ const uploadToCloudinary = (buffer) => {
    GET ALL PATIENTS
 ========================================================= */
 
-exports.getPatients = (req, res) => {
-  const sql = `
-    SELECT *
-    FROM patients
-    ORDER BY id DESC
-  `;
-
-  db.query(sql, (err, result) => {
-    if (err) {
-      console.error("Get patients error:", err);
-
-      return res.status(500).json({
-        message: "Failed to retrieve patients.",
-      });
-    }
-
-    res.status(200).json(result);
-  });
+exports.getPatients = async (req, res) => {
+  // Keep the legacy array response for older consumers; new screens request pages.
+  const paginated = req.query.page !== undefined;
+  const page = Math.max(1, Number.parseInt(req.query.page,10) || 1);
+  const size = Math.min(100, Math.max(1, Number.parseInt(req.query.page_size,10) || 10));
+  const search = String(req.query.search || "").trim().slice(0,150);
+  const conditions = [];
+  const params = [];
+  if (search) { conditions.push("(name LIKE ? OR CAST(id AS CHAR) LIKE ? OR occupation LIKE ?)"); params.push(...Array(3).fill(`%${search}%`)); }
+  const ages = { "under-18": "age < 18", "18-30": "age BETWEEN 18 AND 30", "31-50": "age BETWEEN 31 AND 50", "51-65": "age BETWEEN 51 AND 65", "66-plus": "age >= 66" };
+  if (Object.hasOwn(ages, req.query.age)) conditions.push(ages[req.query.age]);
+  const sorts = { "name-az": "name ASC, id ASC", "name-za": "name DESC, id DESC", "registration-oldest": "created_at ASC, id ASC", "registration-newest": "created_at DESC, id DESC" };
+  const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  const sort = Object.hasOwn(sorts, req.query.sort) ? sorts[req.query.sort] : "id DESC";
+  try {
+    if (!paginated) { const [rows] = await db.promise().query(`SELECT * FROM patients ${where} ORDER BY ${sort}`,params); return res.json(rows); }
+    const [[count]] = await db.promise().query(`SELECT COUNT(*) AS total FROM patients ${where}`,params);
+    const total = Number(count.total);
+    const pages = Math.max(1,Math.ceil(total/size));
+    const effectivePage = Math.min(page,pages);
+    const columns = req.query.compact === "true" ? "id, name" : "*";
+    const [items] = await db.promise().query(`SELECT ${columns} FROM patients ${where} ORDER BY ${sort} LIMIT ? OFFSET ?`,[...params,size,(effectivePage-1)*size]);
+    return res.json({items,total,page:effectivePage,totalPages:pages});
+  } catch (error) { console.error("Patient list failed:",error.code); return res.status(500).json({message:"Unable to retrieve patients."}); }
 };
 
 /* =========================================================

@@ -32,7 +32,10 @@ function AppointmentCalendar() {
   const loadAppointments = async () => {
     try {
       setError("");
-      const res = await api.get("/appointments");
+      const res = await api.get("/appointments", { params: {
+        start_date: toDateKey(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)),
+        end_date: toDateKey(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)),
+      } });
       setAppointments(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Appointment calendar error:", err);
@@ -44,7 +47,9 @@ function AppointmentCalendar() {
 
   useEffect(() => {
     loadAppointments();
-  }, []);
+  // Month changes intentionally reload the displayed range.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentMonth]);
 
   useAutoRefresh(loadAppointments);
 

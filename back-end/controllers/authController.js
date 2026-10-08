@@ -439,7 +439,7 @@ exports.forgotPassword = async (req, res) => {
                 }
 
                 const frontendUrl =
-                  process.env.FRONTEND_URL || "http://localhost:5173";
+                  (process.env.FRONTEND_URL || "http://localhost:5173").split(",")[0].trim().replace(/\/$/, "");
                 const resetUrl = `${frontendUrl}/reset-password?token=${rawToken}`;
 
                 try {
@@ -516,80 +516,25 @@ exports.verifyResetToken = (req, res) => {
 exports.resetPassword = async (req, res) => {
   const rawToken = String(req.body.token || "");
   const newPassword = String(req.body.newPassword || "");
-
-  if (!rawToken || !newPassword) {
-    return res
-      .status(400)
-      .json({ message: "Reset token and new password are required." });
-  }
-
-  if (newPassword.length < 6) {
-    return res
-      .status(400)
-      .json({ message: "New password must be at least 6 characters." });
-  }
-
-  const crypto = require("crypto");
-  const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
-
+  if (!rawToken || !newPassword) return res.status(400).json({ message: "Reset token and new password are required." });
+  if (newPassword.length < 6) return res.status(400).json({ message: "New password must be at least 6 characters." });
+  const tokenHash = require("node:crypto").createHash("sha256").update(rawToken).digest("hex");
+  let connection;
   try {
-    db.query(
-      `SELECT id, user_id FROM password_reset_tokens
-             WHERE token_hash = ? AND used_at IS NULL AND expires_at > NOW()
-             LIMIT 1`,
-      [tokenHash],
-      async (err, results) => {
-        if (err) {
-          console.error("Reset password lookup error:", err);
-          return res
-            .status(500)
-            .json({ message: "Unable to reset the password." });
-        }
-
-        if (results.length === 0) {
-          return res
-            .status(400)
-            .json({ message: "This reset link is invalid or has expired." });
-        }
-
-        const resetRecord = results[0];
-        const hashedPassword = await bcrypt.hash(newPassword, 12);
-
-        db.query(
-          "UPDATE users SET password = ? WHERE id = ?",
-          [hashedPassword, resetRecord.user_id],
-          (updateErr) => {
-            if (updateErr) {
-              console.error("Password update error:", updateErr);
-              return res
-                .status(500)
-                .json({ message: "Unable to reset the password." });
-            }
-
-            db.query(
-              "UPDATE password_reset_tokens SET used_at = NOW() WHERE id = ?",
-              [resetRecord.id],
-              (tokenErr) => {
-                if (tokenErr) {
-                  console.error("Reset token update error:", tokenErr);
-                  return res.status(500).json({
-                    message:
-                      "Password changed, but the reset link could not be closed.",
-                  });
-                }
-
-                return res.json({
-                  message:
-                    "Password changed successfully. You can now sign in.",
-                });
-              },
-            );
-          },
-        );
-      },
-    );
+    // Hash before acquiring a connection so CPU work does not hold a database lock.
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    connection = await db.promise().getConnection();
+    await connection.beginTransaction();
+    const [tokens] = await connection.execute(`SELECT id, user_id FROM password_reset_tokens
+      WHERE token_hash = ? AND used_at IS NULL AND expires_at > NOW() LIMIT 1 FOR UPDATE`, [tokenHash]);
+    if (!tokens.length) { await connection.rollback(); return res.status(400).json({ message: "This reset link is invalid or has expired." }); }
+    await connection.execute("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, tokens[0].user_id]);
+    await connection.execute("UPDATE password_reset_tokens SET used_at = NOW() WHERE user_id = ? AND used_at IS NULL", [tokens[0].user_id]);
+    await connection.commit();
+    return res.json({ message: "Password changed successfully. You can now sign in." });
   } catch (error) {
-    console.error("Reset password error:", error);
+    if (connection) await connection.rollback().catch(() => {});
+    console.error("Reset password failed:", error.code || error.name);
     return res.status(500).json({ message: "Unable to reset the password." });
-  }
+  } finally { if (connection) connection.release(); }
 };

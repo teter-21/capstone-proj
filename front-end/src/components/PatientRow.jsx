@@ -1,4 +1,4 @@
-import API_BASE_URL from "../config/apiBase.js";
+import { patientImageUrl } from "../utils/patientImage.js";
 import React, { useState } from "react";
 {
   /* import AddVisitModal from "./AddVisitModal"; */
@@ -11,8 +11,7 @@ import { FaPlus, FaEye, FaEdit, FaTooth, FaUserPlus } from "react-icons/fa";
 
 import "../css/PatientRow.css";
 
-function PatientRow({ patient, onSaveVisit, onUpdatePatient, onImageClick }) {
-  const [showModal, setShowModal] = useState(false);
+function PatientRow({ patient, onUpdatePatient, onImageClick }) {
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateAccount, setShowCreateAccount] = useState(false);
@@ -24,7 +23,7 @@ function PatientRow({ patient, onSaveVisit, onUpdatePatient, onImageClick }) {
 
       <span>
         <img
-           src={patient.image}
+           src={patientImageUrl(patient.image)}
           width="80"
           className="avatar"
           alt={patient.name}

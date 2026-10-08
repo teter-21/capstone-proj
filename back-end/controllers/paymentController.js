@@ -106,161 +106,41 @@ exports.getBillingSummary = (req, res) => {
 };
 
 /* |||||| ADMIN - RECORD PAYMENT Adds a payment transaction and reduces the visit balance. |||||| */
-exports.recordPayment = (req, res) => {
+exports.recordPayment = async (req, res) => {
   const visitId = Number(req.body.visit_id);
   const amount = toMoney(req.body.amount);
-  const paymentMethod = String(req.body.payment_method || "Cash").trim();
-  const referenceNumber = String(req.body.reference_number || "").trim();
+  const method = String(req.body.payment_method || "Cash").trim();
+  const reference = String(req.body.reference_number || "").trim();
   const notes = String(req.body.notes || "").trim();
-
-  const methodsRequiringReference = ["GCash", "Card", "Bank Transfer"];
-
-  if (methodsRequiringReference.includes(paymentMethod) && !referenceNumber) {
-    return res.status(400).json({
-      message:
-        "Reference number is required for GCash, Card, or Bank Transfer payments.",
-    });
-  }
-
-  if (!Number.isInteger(visitId) || visitId <= 0) {
-    return res.status(400).json({ message: "A valid visit is required." });
-  }
-
-  if (!Number.isFinite(amount) || amount <= 0) {
-    return res
-      .status(400)
-      .json({ message: "Payment amount must be greater than zero." });
-  }
-
-  const allowedMethods = ["Cash", "GCash", "Card", "Bank Transfer"];
-  if (!allowedMethods.includes(paymentMethod)) {
-    return res.status(400).json({ message: "Invalid payment method." });
-  }
-
-  db.beginTransaction((transactionError) => {
-    if (transactionError) {
-      console.error("Payment transaction start error:", transactionError);
-      return res
-        .status(500)
-        .json({ message: "Unable to start payment transaction." });
+  if (!Number.isInteger(visitId) || visitId <= 0) return res.status(400).json({ message: "A valid visit is required." });
+  if (!Number.isFinite(amount) || amount <= 0) return res.status(400).json({ message: "Payment amount must be greater than zero." });
+  if (!["Cash", "GCash", "Card", "Bank Transfer"].includes(method)) return res.status(400).json({ message: "Invalid payment method." });
+  if (method !== "Cash" && !reference) return res.status(400).json({ message: "Reference number is required for GCash, Card, or Bank Transfer payments." });
+  let connection;
+  try {
+    connection = await db.promise().getConnection();
+    await connection.beginTransaction();
+    const [visits] = await connection.execute(`SELECT id, patient_id, COALESCE(amount_paid,0) AS amount_paid,
+      COALESCE(balance,0) AS balance FROM visits WHERE id = ? FOR UPDATE`, [visitId]);
+    if (!visits.length) { await connection.rollback(); return res.status(404).json({ message: "Visit record not found." }); }
+    const visit = visits[0];
+    const balance = toMoney(visit.balance);
+    if (balance <= 0 || amount > balance) {
+      await connection.rollback();
+      return res.status(400).json({ message: balance <= 0 ? "This visit has no remaining balance." : `Payment cannot exceed the remaining balance of ₱${balance.toFixed(2)}.` });
     }
-
-    const visitSql = `
-            SELECT id, patient_id, COALESCE(amount_paid, 0) AS amount_paid, COALESCE(balance, 0) AS balance
-            FROM visits
-            WHERE id = ?
-            FOR UPDATE
-        `;
-
-    db.query(visitSql, [visitId], (visitError, visits) => {
-      if (visitError) {
-        return db.rollback(() => {
-          console.error("Payment visit lookup error:", visitError);
-          res.status(500).json({ message: "Unable to retrieve the visit." });
-        });
-      }
-
-      if (!visits.length) {
-        return db.rollback(() => {
-          res.status(404).json({ message: "Visit record not found." });
-        });
-      }
-
-      const visit = visits[0];
-      const currentBalance = Number(visit.balance || 0);
-
-      if (currentBalance <= 0) {
-        return db.rollback(() => {
-          res
-            .status(400)
-            .json({ message: "This visit has no remaining balance." });
-        });
-      }
-
-      if (amount > currentBalance) {
-        return db.rollback(() => {
-          res.status(400).json({
-            message: `Payment cannot exceed the remaining balance of ₱${currentBalance.toFixed(2)}.`,
-          });
-        });
-      }
-
-      const newPaid = Number(visit.amount_paid || 0) + amount;
-      const newBalance = Math.max(0, currentBalance - amount);
-
-      const updateVisitSql = `
-                UPDATE visits
-                SET amount_paid = ?, balance = ?
-                WHERE id = ?
-            `;
-
-      db.query(
-        updateVisitSql,
-        [newPaid, newBalance, visitId],
-        (updateError) => {
-          if (updateError) {
-            return db.rollback(() => {
-              console.error("Payment visit update error:", updateError);
-              res
-                .status(500)
-                .json({ message: "Unable to update the visit balance." });
-            });
-          }
-
-          const insertPaymentSql = `
-                    INSERT INTO payments
-                    (visit_id, patient_id, amount, payment_method, reference_number, notes, paid_at)
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())
-                `;
-
-          db.query(
-            insertPaymentSql,
-            [
-              visitId,
-              visit.patient_id,
-              amount,
-              paymentMethod,
-              referenceNumber || null,
-              notes || null,
-            ],
-            (insertError, paymentResult) => {
-              if (insertError) {
-                return db.rollback(() => {
-                  console.error("Payment insert error:", insertError);
-                  res.status(500).json({
-                    message:
-                      "Unable to save the payment. No balance changes were made.",
-                  });
-                });
-              }
-
-              db.commit((commitError) => {
-                if (commitError) {
-                  return db.rollback(() => {
-                    console.error("Payment commit error:", commitError);
-                    res
-                      .status(500)
-                      .json({ message: "Unable to complete the payment." });
-                  });
-                }
-
-                res.status(201).json({
-                  message: "Payment recorded successfully.",
-                  payment: {
-                    id: paymentResult.insertId,
-                    visit_id: visitId,
-                    amount,
-                    payment_method: paymentMethod,
-                    reference_number: referenceNumber || null,
-                    amount_paid: newPaid,
-                    balance: newBalance,
-                  },
-                });
-              });
-            },
-          );
-        },
-      );
-    });
-  });
+    const paid = toMoney(Number(visit.amount_paid) + amount);
+    const remaining = toMoney(balance - amount);
+    await connection.execute("UPDATE visits SET amount_paid = ?, balance = ? WHERE id = ?", [paid, remaining, visitId]);
+    const [payment] = await connection.execute(`INSERT INTO payments
+      (visit_id, patient_id, amount, payment_method, reference_number, notes, paid_at) VALUES (?, ?, ?, ?, ?, ?, NOW())`,
+      [visitId, visit.patient_id, amount, method, reference || null, notes || null]);
+    await connection.commit();
+    return res.status(201).json({ message: "Payment recorded successfully.", payment: { id: payment.insertId,
+      visit_id: visitId, amount, payment_method: method, reference_number: reference || null, amount_paid: paid, balance: remaining } });
+  } catch (error) {
+    if (connection) await connection.rollback().catch(() => {});
+    console.error("Payment transaction failed:", error.code || error.name);
+    return res.status(500).json({ message: "Unable to complete the payment. Refresh the visit before retrying." });
+  } finally { if (connection) connection.release(); }
 };

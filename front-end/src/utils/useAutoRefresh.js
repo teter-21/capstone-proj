@@ -1,60 +1,35 @@
 import { useEffect, useRef } from "react";
-
-/*
- * Automatically refresh data without jumping the page
- * back to the top.
- */
-export const useAutoRefresh = (loadData, interval = 10000) => {
+// Keep background refresh quiet; initial loading remains the page's responsibility.
+export const useAutoRefresh = (loadData, interval = 30000) => {
   const loadRef = useRef(loadData);
-
+  useEffect(() => { loadRef.current = loadData; }, [loadData]);
   useEffect(() => {
-    loadRef.current = loadData;
-  }, [loadData]);
-
-  useEffect(() => {
+    let active = true;
+    let pending = false;
     const refresh = async () => {
-      // Remember current scroll position
+      if (!active || pending || document.visibilityState === "hidden") return;
+      pending = true;
       const scrollY = window.scrollY;
-
-      try {
-        await loadRef.current?.();
-      } finally {
-        // Restore scroll position after data refresh
-        requestAnimationFrame(() => {
-          window.scrollTo({
-            top: scrollY,
-            behavior: "instant",
-          });
+      try { await loadRef.current?.(); }
+      catch (error) { console.error("Background refresh failed:", error); }
+      finally {
+        pending = false;
+        // Do not undo a scroll the user made while the request was in progress.
+        if (active && window.scrollY === scrollY) requestAnimationFrame(() => {
+          if (active && window.scrollY === scrollY) window.scrollTo({ top: scrollY, behavior: "instant" });
         });
       }
     };
-
-    const handleDataUpdated = () => refresh();
-
-    const handleFocus = () => refresh();
-
-    const handleVisibility = () => {
-      if (document.visibilityState === "visible") {
-        refresh();
-      }
-    };
-
-    window.addEventListener("clinic:data-updated", handleDataUpdated);
-
-    window.addEventListener("focus", handleFocus);
-
-    document.addEventListener("visibilitychange", handleVisibility);
-
+    const visible = () => { if (document.visibilityState === "visible") void refresh(); };
+    window.addEventListener("clinic:data-updated", refresh);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", visible);
     const timer = setInterval(refresh, interval);
-
     return () => {
-      window.removeEventListener("clinic:data-updated", handleDataUpdated);
-
-      window.removeEventListener("focus", handleFocus);
-
-      document.removeEventListener("visibilitychange", handleVisibility);
-
-      clearInterval(timer);
+      active = false; clearInterval(timer);
+      window.removeEventListener("clinic:data-updated", refresh);
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", visible);
     };
   }, [interval]);
 };

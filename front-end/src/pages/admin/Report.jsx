@@ -162,56 +162,15 @@ function Report() {
     }
   };
 
-  const exportReport = () => {
-    const rows = report.details || [];
-
-    const header = [
-      "Date",
-      "Time",
-      "Patient",
-      "Procedure",
-      "Amount Paid",
-      "Balance",
-      "Complaint",
-      "Description",
-    ];
-
-    const escapeCsv = (value) => {
-      const text = String(value ?? "");
-      return `"${text.replaceAll('"', '""')}"`;
-    };
-
-    const csv = [
-      header.map(escapeCsv).join(","),
-      ...rows.map((row) =>
-        [
-          row.visit_date,
-          row.visit_time,
-          row.patient,
-          row.procedure_name,
-          row.amount_paid,
-          row.balance,
-          row.complain,
-          row.description,
-        ]
-          .map(escapeCsv)
-          .join(","),
-      ),
-    ].join("\n");
-
-    const blob = new Blob([csv], {
-      type: "text/csv;charset=utf-8;",
-    });
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = `magno-dental-report-${startDate}-to-${endDate}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
+  const exportReport = async () => {
+    try {
+      const response = await api.get("/reports/export", { params: {start_date:startDate,end_date:endDate,procedure}, responseType:"blob", timeout:60000 });
+      const url = URL.createObjectURL(response.data);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `magno-dental-report-${startDate}-to-${endDate}.csv`;
+      document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    } catch (error) { console.error("Report export failed:",error); window.alert("Unable to export the report. Please try again."); }
   };
 
   const procedureTotal = useMemo(() => {
@@ -434,7 +393,7 @@ function Report() {
           </div>
 
           <span className="report-record-count">
-            {report.details.length} records
+            {report.details.length} records{report.detailsTruncated ? " (preview only; CSV includes all matching visits)" : ""}
           </span>
         </div>
 

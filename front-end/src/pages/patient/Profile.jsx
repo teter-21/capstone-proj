@@ -1,5 +1,5 @@
 import API_BASE_URL from "../../config/apiBase.js";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useMemo, useEffect, useState } from "react";
 import axios from "axios";
 import "../../css/Settings.css";
 
@@ -22,9 +22,9 @@ function Profile() {
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
-  const loadProfile = async () => {
+  const loadProfile = useCallback(async () => {
     const [profileResponse, accountResponse] = await Promise.all([
       axios.get(API_BASE_URL + "/patient/profile", { headers }),
       axios.get(API_BASE_URL + "/account", { headers }),
@@ -40,7 +40,7 @@ function Profile() {
       occupation: profileResponse.data.occupation || "",
       gender: profileResponse.data.gender || "",
     }));
-  };
+  }, [headers]);
 
   useEffect(() => {
     const load = async () => {
@@ -55,7 +55,7 @@ function Profile() {
     };
 
     load();
-  }, []);
+  }, [loadProfile]);
 
   const handleChange = (event) => {
     setForm((current) => ({

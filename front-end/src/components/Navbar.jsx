@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import AdminNotification from "./AdminNotification";
@@ -10,43 +10,18 @@ function Navbar() {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
 
-  const loadPatients = async () => {
-    try {
-      const res = await api.get("/patients");
-      setPatients(Array.isArray(res.data) ? res.data : []);
-    } catch (error) {
-      console.error("Unable to load patients for navbar search:", error);
-    }
-  };
-
   useEffect(() => {
-    loadPatients();
-
-    const handleDataUpdate = () => loadPatients();
-    const handleWindowFocus = () => loadPatients();
-
-    window.addEventListener("clinic:data-updated", handleDataUpdate);
-    window.addEventListener("focus", handleWindowFocus);
-
-    return () => {
-      window.removeEventListener("clinic:data-updated", handleDataUpdate);
-      window.removeEventListener("focus", handleWindowFocus);
-    };
-  }, []);
-
-  const matchingPatients = useMemo(() => {
-    const query = search.trim().toLowerCase();
-
-    if (!query) return [];
-
-    return patients
-      .filter((patient) =>
-        String(patient.name || "")
-          .toLowerCase()
-          .includes(query),
-      )
-      .slice(0, 8);
-  }, [patients, search]);
+    let active = true;
+    const controller = new AbortController();
+    if (!search.trim()) return;
+    const timer = setTimeout(() => {
+      api.get("/patients", { params: { page: 1, page_size: 8, search, compact: true }, signal: controller.signal })
+        .then((res) => { if (active) setPatients(res.data.items || []); })
+        .catch((error) => { if (error.code !== "ERR_CANCELED") console.error("Patient search failed:", error); });
+    }, 250);
+    return () => { active = false; clearTimeout(timer); controller.abort(); };
+  }, [search]);
+  const matchingPatients = search.trim() ? patients : [];
 
   const openPatientManagement = (value = search) => {
     const query = value.trim();

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaMoneyBillWave, FaSearch, FaPlus, FaTimes } from "react-icons/fa";
 import api from "../../api";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
@@ -35,7 +35,7 @@ function AdminPayment() {
   });
   const [saving, setSaving] = useState(false);
 
-  const loadBilling = async () => {
+  const loadBilling = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -55,14 +55,14 @@ function AdminPayment() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, status]);
 
   useAutoRefresh(loadBilling);
 
   useEffect(() => {
     const timer = setTimeout(loadBilling, 250);
     return () => clearTimeout(timer);
-  }, [search, status]);
+  }, [loadBilling]);
 
   const visibleRecords = useMemo(() => records, [records]);
 

@@ -1,4 +1,5 @@
-import { StrictMode } from "react";
+import "./App.css";
+import { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
@@ -11,31 +12,31 @@ import AuthLayout from "./layout/AuthLayout.jsx";
 
 /* PUBLIC PAGES */
 
-import Home from "./pages/public/Home.jsx";
-import HomeLogin from "./pages/public/HomeLogin.jsx";
-import BookAppointment from "./pages/public/BookAppointment";
-import ForgotPassword from "./pages/public/ForgotPassword.jsx";
-import ResetPassword from "./pages/public/ResetPassword.jsx";
+const Home = lazy(() => import("./pages/public/Home.jsx"));
+const HomeLogin = lazy(() => import("./pages/public/HomeLogin.jsx"));
+const BookAppointment = lazy(() => import("./pages/public/BookAppointment"));
+const ForgotPassword = lazy(() => import("./pages/public/ForgotPassword.jsx"));
+const ResetPassword = lazy(() => import("./pages/public/ResetPassword.jsx"));
 
 /* ADMIN PAGES */
 
-import Dashboard from "./pages/admin/Dashbboard.jsx";
-import PatientMngmt from "./pages/admin/PatientMngmt.jsx";
-import AddPatient from "./pages/admin/AddPatient.jsx";
-import Settings from "./pages/admin/Settings.jsx";
-import Report from "./pages/admin/Report.jsx";
-import AppointmentMngmt from "./pages/admin/AppointmentMngmt";
-import QueueMngmt from "./pages/admin/QueueMngmt.jsx";
-import AdminPayment from "./pages/admin/Payment.jsx";
-import Reviews from "./pages/admin/Reviews.jsx";
+const Dashboard = lazy(() => import("./pages/admin/Dashbboard.jsx"));
+const PatientMngmt = lazy(() => import("./pages/admin/PatientMngmt.jsx"));
+const AddPatient = lazy(() => import("./pages/admin/AddPatient.jsx"));
+const Settings = lazy(() => import("./pages/admin/Settings.jsx"));
+const Report = lazy(() => import("./pages/admin/Report.jsx"));
+const AppointmentMngmt = lazy(() => import("./pages/admin/AppointmentMngmt"));
+const QueueMngmt = lazy(() => import("./pages/admin/QueueMngmt.jsx"));
+const AdminPayment = lazy(() => import("./pages/admin/Payment.jsx"));
+const Reviews = lazy(() => import("./pages/admin/Reviews.jsx"));
 
 /* PATIENT PAGES */
 
-import PatientDashboard from "./pages/patient/PatientDashboard.jsx";
-import BookPatientAppointment from "./pages/patient/BookPatientAppointment.jsx";
-import TreatmentHistory from "./pages/patient/TreatmentHistory.jsx";
-import Profile from "./pages/patient/Profile.jsx";
-import PatientReview from "./pages/patient/PatientReview.jsx";
+const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard.jsx"));
+const BookPatientAppointment = lazy(() => import("./pages/patient/BookPatientAppointment.jsx"));
+const TreatmentHistory = lazy(() => import("./pages/patient/TreatmentHistory.jsx"));
+const Profile = lazy(() => import("./pages/patient/Profile.jsx"));
+const PatientReview = lazy(() => import("./pages/patient/PatientReview.jsx"));
 
 /* ROUTE PROTECTION */
 
@@ -188,6 +189,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Suspense fallback={<div role="status" style={{ padding: "2rem" }}>Loading page…</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
   </StrictMode>,
 );

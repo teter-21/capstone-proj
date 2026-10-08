@@ -1,5 +1,5 @@
 import API_BASE_URL from "../../config/apiBase.js";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useMemo, useEffect, useState } from "react";
 import axios from "axios";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import { FaUserShield, FaPlus, FaUsers } from "react-icons/fa";
@@ -21,9 +21,9 @@ function AdminAccounts() {
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
-  const loadAdmins = async () => {
+  const loadAdmins = useCallback(async () => {
     try {
       const response = await axios.get(API_BASE_URL + "/admin-accounts", {
         headers,
@@ -34,11 +34,11 @@ function AdminAccounts() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [headers]);
 
   useEffect(() => {
     loadAdmins();
-  }, []);
+  }, [loadAdmins]);
 
   useAutoRefresh(loadAdmins);
 

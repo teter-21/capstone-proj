@@ -20,20 +20,6 @@ function BookPatientAppointment() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const services = [
-    "Dental Check-up",
-    "Teeth Cleaning",
-    "Tooth Extraction",
-    "Wisdom Tooth Removal",
-    "Tooth Filling",
-    "Root Canal Treatment",
-    "Braces Adjustment",
-    "Teeth Whitening",
-    "Dental Crown",
-    "Dental Bridge",
-    "Dentures",
-    "X-Ray",
-  ];
 
   const handleChange = (e) => {
     setFormData({
@@ -165,7 +151,7 @@ function BookPatientAppointment() {
             >
               <option value="">Select a service</option>
 
-              {SERVICES.map((service, index) => (
+              {SERVICES.map((service) => (
                 <option key={service} value={service}>{service}</option>
               ))}
             </select>

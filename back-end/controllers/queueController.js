@@ -203,25 +203,12 @@ exports.callNextPatient = (req, res) => {
 /* |||||| GET NEXT QUEUE NUMBER |||||| */
 
 const getNextQueueNumber = (callback) => {
-  const sql = `
-        SELECT
-            COALESCE(
-                MAX(queue_number),
-                0
-            ) + 1 AS next_number
-
-        FROM queue
-
-        WHERE queue_date = CURDATE()
-    `;
-
-  db.query(sql, (err, result) => {
-    if (err) {
-      return callback(err, null);
-    }
-
-    callback(null, result[0].next_number);
-  });
+  // LAST_INSERT_ID is returned in this statement's result; no second pooled query.
+  const sql = `INSERT INTO queue_daily_sequence (queue_date, last_number)
+    SELECT CURDATE(), LAST_INSERT_ID(COALESCE(MAX(queue_number),0) + 1)
+    FROM queue WHERE queue_date = CURDATE()
+    ON DUPLICATE KEY UPDATE last_number = LAST_INSERT_ID(last_number + 1)`;
+  db.query(sql, (error, result) => callback(error, error ? null : Number(result.insertId)));
 };
 
 /* |||||| CHECK IN APPOINTMENT |||||| */

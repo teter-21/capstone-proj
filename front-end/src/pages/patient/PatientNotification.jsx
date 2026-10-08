@@ -1,3 +1,4 @@
+import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -44,24 +45,10 @@ function PatientNotifications() {
 
   /* LOAD ON START */
 
-  useEffect(() => {
-    fetchNotifications();
+  useEffect(() => { fetchNotifications(); }, []);
+  useAutoRefresh(fetchNotifications);
 
-    const notificationInterval = setInterval(() => {
-      fetchNotifications();
-    }, 10000); // every 10 seconds
 
-    return () => {
-      clearInterval(notificationInterval);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleDataUpdated = () => fetchNotifications();
-    window.addEventListener("clinic:data-updated", handleDataUpdated);
-    return () =>
-      window.removeEventListener("clinic:data-updated", handleDataUpdated);
-  }, []);
 
   /* CLOSE WHEN CLICKING OUTSIDE */
 

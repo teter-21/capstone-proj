@@ -1,3 +1,4 @@
+import { useAutoRefresh } from "../utils/useAutoRefresh";
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,11 +37,8 @@ function AdminNotification() {
     }
   };
 
-  useEffect(() => {
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, 10000);
-    return () => clearInterval(interval);
-  }, []);
+  useEffect(() => { fetchNotifications(); }, []);
+  useAutoRefresh(fetchNotifications);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -55,12 +53,7 @@ function AdminNotification() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    const handleDataUpdated = () => fetchNotifications();
-    window.addEventListener("clinic:data-updated", handleDataUpdated);
-    return () =>
-      window.removeEventListener("clinic:data-updated", handleDataUpdated);
-  }, []);
+
 
   const unreadCount = notifications.filter(
     (item) => Number(item.is_read) === 0,

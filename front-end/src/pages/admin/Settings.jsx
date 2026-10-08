@@ -1,5 +1,5 @@
 import API_BASE_URL from "../../config/apiBase.js";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import axios from "axios";
 import "../../css/Settings.css";
 import AdminAccountsSection from "../../components/AdminAccountsSection";
@@ -19,7 +19,7 @@ function Settings() {
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
   useEffect(() => {
     const loadAccount = async () => {
@@ -44,7 +44,7 @@ function Settings() {
     };
 
     loadAccount();
-  }, []);
+  }, [headers]);
 
   const handleChange = (event) => {
     setForm((current) => ({

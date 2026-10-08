@@ -66,3 +66,11 @@ desktop.ini
 *.bak
 *.backup
 *.old
+
+# All environment files contain secrets; examples are safe to track.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example

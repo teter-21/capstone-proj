@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
-import modalHeaderIcon from "../../assets/images/60x60modal-logo.png";
 import "../../css/AddPatient.css";
 
 import { FaUser, FaMapMarkerAlt, FaInfoCircle } from "react-icons/fa";

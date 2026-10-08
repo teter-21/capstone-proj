@@ -1,29 +1,7 @@
-const nodemailer = require("nodemailer");
-
-/*  GMAIL TRANSPORTER  */
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-/*  VERIFY EMAIL CONNECTION  */
-
-const verifyEmailConnection = async () => {
-  try {
-    await transporter.verify();
-
-    console.log("Email service connected successfully.");
-  } catch (error) {
-    console.error("Email service connection failed:");
-
-    console.error(error.message);
-  }
-};
+const { sendMail, verifyEmailConnection } = require("./emailTransport");
+const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({
+  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+})[c]);
 
 /*  BASE EMAIL STYLE  */
 
@@ -300,7 +278,7 @@ color:#0f172a;
 "
 >
 
-${appointment.fullname}
+${escapeHtml(appointment.fullname)}
 
 </td>
 
@@ -329,7 +307,7 @@ color:#0f172a;
 "
 >
 
-${formatEmailDate(appointment.preferred_date)}
+${escapeHtml(formatEmailDate(appointment.preferred_date))}
 
 </td>
 
@@ -358,7 +336,7 @@ color:#0f172a;
 "
 >
 
-${formatEmailTime(appointment.preferred_time)}
+${escapeHtml(formatEmailTime(appointment.preferred_time))}
 
 </td>
 
@@ -387,7 +365,7 @@ color:#0f172a;
 "
 >
 
-${appointment.service}
+${escapeHtml(appointment.service)}
 
 </td>
 
@@ -404,7 +382,7 @@ ${appointment.service}
 const sendAppointmentSubmittedEmail = async (appointment) => {
   const details = appointmentDetails(appointment);
 
-  await transporter.sendMail({
+  return await sendMail({
     from: `"Magno Dental Clinic" <${process.env.EMAIL_USER}>`,
 
     to: appointment.email,
@@ -415,7 +393,7 @@ const sendAppointmentSubmittedEmail = async (appointment) => {
       "Appointment Request Received",
 
       `
-                Hello ${appointment.fullname},
+                Hello ${escapeHtml(appointment.fullname)},
                 <br><br>
 
                 Thank you for requesting an
@@ -436,7 +414,7 @@ const sendAppointmentSubmittedEmail = async (appointment) => {
 const sendAppointmentApprovedEmail = async (appointment) => {
   const details = appointmentDetails(appointment);
 
-  await transporter.sendMail({
+  return await sendMail({
     from: `"Magno Dental Clinic" <${process.env.EMAIL_USER}>`,
 
     to: appointment.email,
@@ -447,7 +425,7 @@ const sendAppointmentApprovedEmail = async (appointment) => {
       "Appointment Approved",
 
       `
-                Hello ${appointment.fullname},
+                Hello ${escapeHtml(appointment.fullname)},
                 <br><br>
 
                 Good news! Your appointment with
@@ -469,7 +447,7 @@ const sendAppointmentApprovedEmail = async (appointment) => {
 const sendAppointmentCancelledEmail = async (appointment) => {
   const details = appointmentDetails(appointment);
 
-  await transporter.sendMail({
+  return await sendMail({
     from: `"Magno Dental Clinic" <${process.env.EMAIL_USER}>`,
 
     to: appointment.email,
@@ -480,7 +458,7 @@ const sendAppointmentCancelledEmail = async (appointment) => {
       "Appointment Cancelled",
 
       `
-                Hello ${appointment.fullname},
+                Hello ${escapeHtml(appointment.fullname)},
                 <br><br>
 
                 We are sorry to inform you that
@@ -503,7 +481,7 @@ const sendAppointmentCancelledEmail = async (appointment) => {
 const sendAppointmentRescheduledEmail = async (appointment) => {
   const details = appointmentDetails(appointment);
 
-  await transporter.sendMail({
+  return await sendMail({
     from: `"Magno Dental Clinic" <${process.env.EMAIL_USER}>`,
 
     to: appointment.email,
@@ -514,7 +492,7 @@ const sendAppointmentRescheduledEmail = async (appointment) => {
       "Appointment Rescheduled",
 
       `
-                Hello ${appointment.fullname},
+                Hello ${escapeHtml(appointment.fullname)},
                 <br><br>
 
                 Your appointment has been
@@ -532,18 +510,18 @@ const sendAppointmentRescheduledEmail = async (appointment) => {
 
 /* Send the password reset link to the user's email. */
 const sendPasswordResetEmail = async (user, resetUrl) => {
-  await transporter.sendMail({
+  return await sendMail({
     from: `"Magno Dental Clinic" <${process.env.EMAIL_USER}>`,
     to: user.email,
     subject: "Reset Your Password - Magno Dental Clinic",
     html: emailTemplate(
       "Reset Your Password",
       `
-            Hello ${user.fullname},
+            Hello ${escapeHtml(user.fullname)},
             <br><br>
             We received a request to reset your Magno Dental Clinic account password.
             <br><br>
-            <a href="${resetUrl}" style="display:inline-block;padding:12px 20px;background:#4d87c7;color:#fff;text-decoration:none;border-radius:7px;">Reset Password</a>
+            <a href="${escapeHtml(resetUrl)}" style="display:inline-block;padding:12px 20px;background:#4d87c7;color:#fff;text-decoration:none;border-radius:7px;">Reset Password</a>
             <br><br>
             This link will expire in 1 hour. If you did not request this, you can safely ignore this email.
             `,

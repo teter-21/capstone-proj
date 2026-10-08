@@ -20,6 +20,7 @@ const notifyDataUpdated = (config) => {
 
 const api = axios.create({
   baseURL: API_BASE_URL + "",
+  timeout: 20000,
 });
 
 api.interceptors.request.use(
@@ -55,8 +56,8 @@ const clearExpiredSession = (error) => {
 
     // Send the user back to login once the stored JWT is no longer valid.
     if (typeof window !== "undefined" && window.location.pathname !== "/") {
-      window.location.replace("/");
       window.alert("Your session has expired. Please log in again.");
+      window.location.replace("/login");
     }
   }
 

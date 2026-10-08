@@ -1,9 +1,10 @@
+import { createElement } from "react";
 function StatCard({ title, value, icon: Icon, color, tag }) {
   return (
     <div className={`stat-card ${color}`}>
       <div className="stat-top">
         <div className="stat-icon">
-          <Icon />
+          {createElement(Icon)}
         </div>
         {tag && <span className="stat-tag">{tag}</span>}
       </div>

@@ -1,4 +1,4 @@
-import API_BASE_URL from "../config/apiBase.js";
+import { patientImageUrl } from "../utils/patientImage.js";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -116,7 +116,7 @@ function PatientTable() {
 
                       {patient.image ? (
                         <img
-                          src={patient.image}
+                          src={patientImageUrl(patient.image)}
                           alt={patient.name}
                           className="patient-avatar-image"
                         />

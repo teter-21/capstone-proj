@@ -1,4 +1,4 @@
-import API_BASE_URL from "../config/apiBase.js";
+import { patientImageUrl } from "../utils/patientImage.js";
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import PatientRow from "./PatientRow";
@@ -73,7 +73,7 @@ function PatientColumn({ patients, onSaveVisit, onUpdatePatient }) {
                 ×
               </button>
               <img
-                src={`${API_BASE_URL}/uploads/${selectedImage}`}
+                src={patientImageUrl(selectedImage)}
                 alt="Patient preview"
               />
             </div>

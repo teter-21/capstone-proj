@@ -1,5 +1,5 @@
 import "../../css/Gallery.css";
-import dentalClinicImage from "../../assets/images/dental-clinic.png";
+import dentalClinicImage from "../../assets/images/dental-clinic.webp";
 
 function Gallery() {
   return (

@@ -7,6 +7,7 @@ const reportController = require("../controllers/reportController");
 
 /*  ADMIN REPORTS  */
 router.get("/reports", auth, admin, reportController.getReports);
+router.get("/reports/export", auth, admin, reportController.exportReports);
 
 router.get(
   "/report-procedures",

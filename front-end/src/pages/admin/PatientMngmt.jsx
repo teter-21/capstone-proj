@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../../api";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
@@ -8,131 +8,54 @@ import "../../css/PatientMngmt.css";
 
 function PatientMngmt() {
   const [patients, setPatients] = useState([]);
-  const [search, setSearch] = useState("");
+  const [pageInfo, setPageInfo] = useState({ total: 0, page: 1, totalPages: 1 });
   const [ageFilter, setAgeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("registration-newest");
   const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
 
   /* Pagination */
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10;
 
-  useEffect(() => {
-    loadPatients();
-  }, []);
-
-  // Apply searches coming from the admin navbar.
-  useEffect(() => {
-    const navbarSearch = searchParams.get("search") || "";
-    setSearch(navbarSearch);
-    setCurrentPage(1);
-  }, [searchParams]);
-
-  const loadPatients = async () => {
+  const loadPatients = useCallback(async () => {
     try {
-      const res = await api.get("/patients");
-      setPatients(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Unable to load patients.");
-    }
-  };
-
+      const res = await api.get("/patients", { params: { page: currentPage, page_size: recordsPerPage,
+        search, age: ageFilter, sort: sortBy } });
+      setPatients(res.data.items || []);
+      setPageInfo(res.data);
+    } catch (error) { console.error(error); window.alert(error.response?.data?.message || "Unable to load patients."); }
+  }, [currentPage, recordsPerPage, search, ageFilter, sortBy]);
+  useEffect(() => {
+    const timer = setTimeout(loadPatients, 250);
+    return () => clearTimeout(timer);
+  }, [loadPatients]);
   useAutoRefresh(loadPatients);
-
-  const handleUpdatePatient = async () => {
-    await loadPatients();
-  };
-
-  /*
-   * Search covers patient name, patient ID, and occupation.
-   * Age is handled separately through the age-range filter.
-   */
-  const filteredAndSortedPatients = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
-
-    const filtered = patients.filter((p) => {
-      const name = String(p.name || "").toLowerCase();
-      const id = String(p.id ?? "").toLowerCase();
-      const occupation = String(p.occupation || "").toLowerCase();
-      const age = Number(p.age);
-
-      const matchesSearch =
-        !normalizedSearch ||
-        name.includes(normalizedSearch) ||
-        id.includes(normalizedSearch) ||
-        occupation.includes(normalizedSearch);
-
-      let matchesAge = true;
-
-      if (ageFilter === "under-18") {
-        matchesAge = Number.isFinite(age) && age < 18;
-      } else if (ageFilter === "18-30") {
-        matchesAge = Number.isFinite(age) && age >= 18 && age <= 30;
-      } else if (ageFilter === "31-50") {
-        matchesAge = Number.isFinite(age) && age >= 31 && age <= 50;
-      } else if (ageFilter === "51-65") {
-        matchesAge = Number.isFinite(age) && age >= 51 && age <= 65;
-      } else if (ageFilter === "66-plus") {
-        matchesAge = Number.isFinite(age) && age >= 66;
-      }
-
-      return matchesSearch && matchesAge;
-    });
-
-    return [...filtered].sort((a, b) => {
-      if (sortBy === "name-az" || sortBy === "name-za") {
-        const comparison = String(a.name || "").localeCompare(
-          String(b.name || ""),
-          undefined,
-          { sensitivity: "base" },
-        );
-        return sortBy === "name-az" ? comparison : -comparison;
-      }
-
-      const dateA = new Date(a.created_at || 0).getTime();
-      const dateB = new Date(b.created_at || 0).getTime();
-
-      return sortBy === "registration-oldest" ? dateA - dateB : dateB - dateA;
-    });
-  }, [patients, search, ageFilter, sortBy]);
-
-  /* PAGINATION CALCULATION */
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredAndSortedPatients.length / recordsPerPage),
-  );
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const indexOfLast = safeCurrentPage * recordsPerPage;
-  const indexOfFirst = indexOfLast - recordsPerPage;
-  const currentPatients = filteredAndSortedPatients.slice(
-    indexOfFirst,
-    indexOfLast,
-  );
+  const handleUpdatePatient = () => loadPatients();
+  const totalPages = pageInfo.totalPages;
+  const safeCurrentPage = pageInfo.page;
+  const indexOfFirst = (safeCurrentPage - 1) * recordsPerPage;
+  const indexOfLast = indexOfFirst + patients.length;
+  const currentPatients = patients;
 
   /* PAGE CONTROLS */
   const goNext = () => {
     if (safeCurrentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
+      setCurrentPage(safeCurrentPage + 1);
     }
   };
 
   const goPrev = () => {
     if (safeCurrentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
+      setCurrentPage(safeCurrentPage - 1);
     }
   };
 
   /* Reset page when searching/filtering/sorting */
   const handleSearch = (value) => {
-    setSearch(value);
+    setSearchParams(value ? { search: value } : {}, { replace: true });
     setCurrentPage(1);
-
-    if (searchParams.get("search")) {
-      setSearchParams(value ? { search: value } : {});
-    }
   };
-
   const handleAgeFilter = (value) => {
     setAgeFilter(value);
     setCurrentPage(1);
@@ -144,8 +67,8 @@ function PatientMngmt() {
   };
 
   const firstShown =
-    filteredAndSortedPatients.length === 0 ? 0 : indexOfFirst + 1;
-  const lastShown = Math.min(indexOfLast, filteredAndSortedPatients.length);
+    pageInfo.total === 0 ? 0 : indexOfFirst + 1;
+  const lastShown = Math.min(indexOfLast, pageInfo.total);
 
   return (
     <div className="patient-container">
@@ -156,7 +79,7 @@ function PatientMngmt() {
 
       <div className="patient-card">
         <div className="card-header patient-filter-header">
-          <h3>{filteredAndSortedPatients.length} Patients Found</h3>
+          <h3>{pageInfo.total} Patients Found</h3>
 
           <div className="patient-filter-controls">
             <div className="search-box">
@@ -207,7 +130,7 @@ function PatientMngmt() {
         <div className="table-footer">
           <span>
             Showing {firstShown} to {lastShown} of{" "}
-            {filteredAndSortedPatients.length} patients
+            {pageInfo.total} patients
           </span>
 
           <div className="pagination">
