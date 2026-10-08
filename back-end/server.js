@@ -28,17 +28,23 @@ const app = express();
 // Configure only a known proxy hop count; never blindly trust arbitrary headers.
 if (process.env.TRUST_PROXY_HOPS) {
   const hops = Number(process.env.TRUST_PROXY_HOPS);
-  if (!Number.isInteger(hops) || hops < 1) throw new Error("TRUST_PROXY_HOPS must be a positive integer.");
+  if (!Number.isInteger(hops) || hops < 1)
+    throw new Error("TRUST_PROXY_HOPS must be a positive integer.");
   app.set("trust proxy", hops);
 }
-app.get("/health/live", (req,res) => res.json({ status: "ok" }));
-app.get("/health/ready", async (req,res) => {
-  const timer = setTimeout(() => { if (!res.headersSent) res.status(503).json({ status: "unavailable" }); }, 3000);
+app.get("/health/live", (req, res) => res.json({ status: "ok" }));
+app.get("/health/ready", async (req, res) => {
+  const timer = setTimeout(() => {
+    if (!res.headersSent) res.status(503).json({ status: "unavailable" });
+  }, 3000);
   try {
     await db.promise().query("SELECT id FROM email_outbox LIMIT 1");
     if (!res.headersSent) res.json({ status: "ready" });
-  } catch { if (!res.headersSent) res.status(503).json({ status: "unavailable" }); }
-  finally { clearTimeout(timer); }
+  } catch {
+    if (!res.headersSent) res.status(503).json({ status: "unavailable" });
+  } finally {
+    clearTimeout(timer);
+  }
 });
 
 /* Security and request limits. */
@@ -64,7 +70,10 @@ app.use(
   }),
 );
 
-app.use((req,res,next) => { if (req.headers.authorization) res.set("Cache-Control", "no-store"); next(); });
+app.use((req, res, next) => {
+  if (req.headers.authorization) res.set("Cache-Control", "no-store");
+  next();
+});
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false, limit: "1mb" }));
 
@@ -123,11 +132,16 @@ reviewController.ensureReviewTable((tableError) => {
 
   const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
-    verifyEmailConnection().then(startEmailQueue).catch((error) => {
-      console.error("Email configuration check failed:", error.code || error.message);
-      // Keep attempting queued mail; configuration/network problems may be temporary.
-      startEmailQueue();
-    });
+    verifyEmailConnection()
+      .then(startEmailQueue)
+      .catch((error) => {
+        console.error(
+          "Email configuration check failed:",
+          error.code || error.message,
+        );
+        // Keep attempting queued mail; configuration/network problems may be temporary.
+        startEmailQueue();
+      });
   });
   const shutdown = () => {
     stopEmailQueue();
