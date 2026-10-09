@@ -144,3 +144,22 @@ test('upcoming appointments of every status precede history, including today pas
   ];
   assert.deepEqual(rows.sort((a,b) => ui.compareAppointments(a,b,now)).map(row => row.id), [5,3,2,1,4]);
 });
+test('active-only API filter composes with date range and leaves calendar history available', async () => {
+  for (const active of [true, false]) {
+    const m = { exports: {} }; const queries = [];
+    vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname, '../controllers/appointmentController.js'), 'utf8'), {
+      module: m, exports: m.exports, console,
+      require: name => ({
+        '../config/db': { promise: () => ({ execute: async (sql,args) => { queries.push({sql,args}); return [[]]; } }) },
+        '../services/appointmentSchedule': schedule,
+        '../services/emailQueue': {}, '../services/notificationService': {},
+      })[name],
+    });
+    const res = response();
+    await m.exports.getAppointments({ query: { start_date: '2026-10-01', end_date: '2026-10-31', ...(active ? {active_only:'true'} : {}) } },res);
+    assert.equal(res.code,200);
+    assert.match(queries[0].sql,/preferred_date BETWEEN \? AND \?/);
+    assert.deepEqual(Array.from(queries[0].args),['2026-10-01','2026-10-31']);
+    assert.equal(queries[0].sql.includes("status IN ('Pending', 'Rescheduled', 'Approved')"),active);
+  }
+});

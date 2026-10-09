@@ -48,9 +48,11 @@ function AppointmentMngmt() {
 
 
 
-      const res = await api.get("/appointments");
+      const res = await api.get("/appointments", { params: { active_only: "true" } });
 
-      setAppointments([...res.data].sort(compareAppointments));
+      setAppointments(res.data
+        .filter(appointment => ["Pending", "Rescheduled", "Approved"].includes(appointment.status))
+        .sort(compareAppointments));
       setError("");
     } catch (err) {
       console.error(err);
@@ -223,11 +225,11 @@ function AppointmentMngmt() {
         <div>
           <h1>Appointments</h1>
 
-          <p>Review and manage patient appointment requests.</p>
+          <p>Review pending, rescheduled, and approved appointments.</p>
         </div>
 
         <div className="appointment-count">
-          <span>Total Appointments</span>
+          <span>Active Appointments</span>
 
           <strong>{appointments.length}</strong>
         </div>
@@ -248,9 +250,9 @@ function AppointmentMngmt() {
           <div className="appointment-message">
             <FaCalendarAlt />
 
-            <h3>No appointments</h3>
+            <h3>No active appointments</h3>
 
-            <p>There are currently no appointment requests.</p>
+            <p>There are currently no pending, rescheduled, or approved appointments.</p>
           </div>
         ) : (
           <div className="appointment-table-wrapper">

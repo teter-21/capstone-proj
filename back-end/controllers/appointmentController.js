@@ -65,8 +65,12 @@ exports.getAppointments = async (req, res) => {
   if (filtered && (!/^\d{4}-\d{2}-\d{2}$/.test(start || "") || !/^\d{4}-\d{2}-\d{2}$/.test(end || "") || start > end))
     return res.status(400).json({ message: "A valid date range is required." });
   try {
-    const [rows] = await db.promise().execute(`SELECT * FROM appointments ${filtered ? "WHERE preferred_date BETWEEN ? AND ?" : ""}
-      ORDER BY (TIMESTAMP(preferred_date, preferred_time) >= NOW()) DESC, preferred_date ASC, preferred_time ASC, id ASC`, filtered ? [start,end] : []);
+    const conditions = [];
+    const parameters = [];
+    if (filtered) { conditions.push("preferred_date BETWEEN ? AND ?"); parameters.push(start, end); }
+    if (req.query.active_only === "true") conditions.push("status IN ('Pending', 'Rescheduled', 'Approved')");
+    const [rows] = await db.promise().execute(`SELECT * FROM appointments ${conditions.length ? `WHERE ${conditions.join(" AND ")}` : ""}
+      ORDER BY (TIMESTAMP(preferred_date, preferred_time) >= NOW()) DESC, preferred_date ASC, preferred_time ASC, id ASC`, parameters);
     return res.json(rows);
   } catch (error) { console.error("Appointment list failed:", error.code); return res.status(500).json({ message: "Unable to retrieve appointments." }); }
 };

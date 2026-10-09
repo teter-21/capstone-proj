@@ -23,11 +23,11 @@ Start times less than 60 minutes apart in either direction are rejected. Exactly
 
 The backend takes a MySQL named lock on the acquired connection before beginning each appointment write transaction. This serializes availability checks and updates across app instances using the same database. The lock is released after commit or rollback. A lock timeout returns HTTP 503 with a retry message. Direct SQL edits and old app instances bypass these rules: run all appointment-writing instances with the updated controller/service.
 
-The management and patient appointment lists put all upcoming start times first, regardless of status. Within upcoming and historical groups, dates and times sort ascending. An appointment is upcoming when its clinic start timestamp is at or after the current Philippine time; today’s already-past start times belong below upcoming entries. Historical records remain visible.
+The admin management list shows only Pending, Rescheduled and Approved records and puts upcoming start times first. The patient appointment list retains all statuses and puts upcoming start times first. Within upcoming and historical groups, dates and times sort ascending. An appointment is upcoming when its clinic start timestamp is at or after the current Philippine time; today’s already-past start times belong below upcoming entries. Historical records remain visible where their status is included.
 
 ## Verification
 
-42 automated tests passed, including duplicate messages, both sides of the one-hour buffer, inclusive hours, Sunday rejection, public/portal rejection without inserts or emails, approval/reschedule checks, simulated concurrent approvals, lock cleanup, and frontend sorting. Frontend build and lint passed. Database and concurrency tests use mocks; a live Aiven/Laragon end-to-end test was not available.
+44 automated tests passed, including duplicate messages, both sides of the one-hour buffer, inclusive hours, Sunday rejection, public/portal rejection without inserts or emails, approval/reschedule checks, simulated concurrent approvals, lock cleanup, and frontend sorting. Frontend build and lint passed. Database and concurrency tests use mocks; a live Aiven/Laragon end-to-end test was not available.
 
 After installing, test with fictional appointments: approve an 11:00 AM booking on a future Monday–Saturday date; 11:00 AM must show the exact duplicate warning, 10:30 AM and 11:30 AM must be rejected, while 10:00 AM and noon must be allowed. Test Sunday, 09:59, 18:01, public and portal bookings, and admin rescheduling. Review historical appointments before attempting approval if they fall outside the new hours.
 

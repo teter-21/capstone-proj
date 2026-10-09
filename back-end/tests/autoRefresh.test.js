@@ -68,3 +68,18 @@ for (const [file, name] of pages) test(`${file}: successful/failed background re
   assert.ok(!effects.some(e=> e.setter==='setError' || e.setter==='setLoading' && e.value===true));
   assert.ok(!effects.some(e=>!['setLoading','setError'].includes(e.setter)), 'existing data retained after failure');
 });
+test('admin appointment loader displays only Pending, Rescheduled and Approved rows', async () => {
+  const source = fs.readFileSync(path.join(root,'pages/admin/AppointmentMngmt.jsx'),'utf8');
+  const match = source.match(/const loadAppointments = async (\([^]*?\)) => \{/);
+  const start = match.index + match[0].length - 1;
+  let depth=1,end=start+1;
+  while(depth) { if(source[end]==='{') depth++; if(source[end]==='}') depth--; end++; }
+  const rows = ['Completed','Pending','Cancelled','Approved','Rescheduled'].map((status,id)=>({status,id}));
+  let displayed;
+  const context = { api: {get:async(url,config)=>{ assert.equal(url,'/appointments');assert.equal(config.params.active_only,'true');return {data:rows}; }},
+    setAppointments:value=>{displayed=value;}, setLoading(){},setError(){},compareAppointments:(a,b)=>a.id-b.id,console };
+  vm.runInNewContext(`loader = async ${match[1]} => ${source.slice(start,end)}`,context);
+  await context.loader({background:true});
+  assert.deepEqual(Array.from(displayed,row=>row.status),['Pending','Approved','Rescheduled']);
+  assert.equal(rows.length,5);
+});
