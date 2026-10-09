@@ -1,4 +1,8 @@
-import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
+import {
+  validateSchedule,
+  clinicToday,
+  isSunday,
+} from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import "../../css/Appointment.css";
 import { useState } from "react";
@@ -29,7 +33,9 @@ function AppointmentForm() {
 
   const handleChange = (e) => {
     if (e.target.name === "preferred_date" && isSunday(e.target.value)) {
-      window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
+      window.alert(
+        "Appointments are available Monday to Saturday only. Please choose another date.",
+      );
       return;
     }
     setFormData({
@@ -45,8 +51,14 @@ function AppointmentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const invalidSchedule = validateSchedule(formData.preferred_date, formData.preferred_time);
-    if (invalidSchedule) { window.alert(invalidSchedule); return; }
+    const invalidSchedule = validateSchedule(
+      formData.preferred_date,
+      formData.preferred_time,
+    );
+    if (invalidSchedule) {
+      window.alert(invalidSchedule);
+      return;
+    }
 
     if (!termsAccepted) {
       alert(
@@ -112,7 +124,6 @@ function AppointmentForm() {
           confirmed.
         </p>
 
-        <p>Monday–Saturday. Appointment start times: 10:00 AM–6:00 PM. Approved appointments must be at least 1 hour apart.</p>
         <form onSubmit={handleSubmit}>
           <div className="name-row">
             <input
@@ -163,7 +174,7 @@ function AppointmentForm() {
 
           <div className="schedule-row">
             <div>
-              <label>Preferred Date</label>
+              <label>Preferred Date (Monday–Saturday)</label>
               <input
                 type="date"
                 name="preferred_date"
@@ -175,7 +186,7 @@ function AppointmentForm() {
             </div>
 
             <div>
-              <label>Preferred Time</label>
+              <label>Preferred Time (10:00 AM–6:00 PM)</label>
               <input
                 type="time"
                 name="preferred_time"
