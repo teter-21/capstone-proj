@@ -53,6 +53,9 @@ function connectionMock({ failInsert = false, balance = 100 } = {}) {
     },
     async execute(sql, args) {
       events.push(sql);
+      if (sql.includes("GET_LOCK")) return [[{ acquired: 1 }]];
+      if (sql.includes("RELEASE_LOCK")) return [[{ released: 1 }]];
+      if (sql.includes("SELECT preferred_time FROM appointments")) return [[]];
       if (sql.includes("FROM visits"))
         return [[{ id: 1, patient_id: 2, amount_paid: 50, balance }]];
       if (sql.includes("INSERT INTO payments") && failInsert)
@@ -80,7 +83,7 @@ function connectionMock({ failInsert = false, balance = 100 } = {}) {
               service: "Checkup",
               status: "Pending",
               preferred_date: "2099-10-15",
-              preferred_time: "09:00:00",
+              preferred_time: "10:00:00",
             },
           ],
         ];
@@ -124,6 +127,7 @@ for (const portal of [false, true]) {
     const queued = [];
     const controller = moduleUnderTest("controllers/appointmentController.js", {
       "../config/db": { promise: () => ({ getConnection: async () => c }) },
+      "../services/appointmentSchedule": require("../services/appointmentSchedule"),
       "../services/emailQueue": {
         enqueueAppointmentEmail: async (connection, type, data) => {
           assert.equal(connection, c);
@@ -144,7 +148,7 @@ for (const portal of [false, true]) {
           phone: "09170000000",
           service: "Checkup",
           preferred_date: "2099-10-15",
-          preferred_time: "09:00",
+          preferred_time: "10:00",
         },
       },
       res,
@@ -152,7 +156,7 @@ for (const portal of [false, true]) {
     assert.equal(res.code, 201);
     assert.equal(res.body.emailStatus, "queued");
     assert.equal(queued[0].type, "submitted");
-    assert.equal(c.events.at(-2), "commit");
+    assert.ok(c.events.indexOf("commit") < c.events.findIndex(e => e.includes("RELEASE_LOCK")));
     assert.equal(c.events.at(-1), "release");
   });
 }
@@ -160,6 +164,7 @@ test("queue insert failure rolls back the booking", async () => {
   const c = connectionMock();
   const controller = moduleUnderTest("controllers/appointmentController.js", {
     "../config/db": { promise: () => ({ getConnection: async () => c }) },
+    "../services/appointmentSchedule": require("../services/appointmentSchedule"),
     "../services/emailQueue": {
       enqueueAppointmentEmail: async () => {
         throw new Error("outbox missing");
@@ -178,7 +183,7 @@ test("queue insert failure rolls back the booking", async () => {
         phone: "0917",
         service: "Checkup",
         preferred_date: "2099-10-15",
-        preferred_time: "09:00",
+        preferred_time: "10:00",
       },
     },
     res,
@@ -193,6 +198,7 @@ test("approval persists in-app notification and email in the same transaction", 
   const queued = [];
   const controller = moduleUnderTest("controllers/appointmentController.js", {
     "../config/db": { promise: () => ({ getConnection: async () => c }) },
+    "../services/appointmentSchedule": require("../services/appointmentSchedule"),
     "../services/emailQueue": {
       enqueueAppointmentEmail: async (conn, type) => {
         queued.push(type);
@@ -216,6 +222,7 @@ test("invalid dates are rejected before insertion", async () => {
   const c = connectionMock();
   const controller = moduleUnderTest("controllers/appointmentController.js", {
     "../config/db": { promise: () => ({ getConnection: async () => c }) },
+    "../services/appointmentSchedule": require("../services/appointmentSchedule"),
     "../services/emailQueue": {
       enqueueAppointmentEmail: async () => {
         throw Error("must not queue");
@@ -234,7 +241,7 @@ test("invalid dates are rejected before insertion", async () => {
         phone: "0917",
         service: "Checkup",
         preferred_date: "2099-02-30",
-        preferred_time: "09:00",
+        preferred_time: "10:00",
       },
     },
     res,

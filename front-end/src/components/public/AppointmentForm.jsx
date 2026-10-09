@@ -1,3 +1,4 @@
+import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import "../../css/Appointment.css";
 import { useState } from "react";
@@ -7,13 +8,7 @@ import { FaShieldAlt } from "react-icons/fa";
 import SERVICES from "../../config/services";
 
 function AppointmentForm() {
-  const today = (() => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  })();
+  const today = clinicToday();
 
   const [formData, setFormData] = useState({
     lastName: "",
@@ -33,6 +28,10 @@ function AppointmentForm() {
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handleChange = (e) => {
+    if (e.target.name === "preferred_date" && isSunday(e.target.value)) {
+      window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
+      return;
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -46,6 +45,8 @@ function AppointmentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const invalidSchedule = validateSchedule(formData.preferred_date, formData.preferred_time);
+    if (invalidSchedule) { window.alert(invalidSchedule); return; }
 
     if (!termsAccepted) {
       alert(
@@ -111,6 +112,7 @@ function AppointmentForm() {
           confirmed.
         </p>
 
+        <p>Monday–Saturday. Appointment start times: 10:00 AM–6:00 PM. Approved appointments must be at least 1 hour apart.</p>
         <form onSubmit={handleSubmit}>
           <div className="name-row">
             <input
@@ -179,8 +181,9 @@ function AppointmentForm() {
                 name="preferred_time"
                 value={formData.preferred_time}
                 onChange={handleChange}
-                min="08:00"
+                min="10:00"
                 max="18:00"
+                step="60"
                 required
               />
             </div>

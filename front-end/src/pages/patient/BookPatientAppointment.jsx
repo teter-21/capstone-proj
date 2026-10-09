@@ -1,3 +1,4 @@
+import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
 import SERVICES from "../../config/services";
@@ -22,6 +23,10 @@ function BookPatientAppointment() {
 
 
   const handleChange = (e) => {
+    if (e.target.name === "preferred_date" && isSunday(e.target.value)) {
+      window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
+      return;
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -30,6 +35,8 @@ function BookPatientAppointment() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const invalidSchedule = validateSchedule(formData.preferred_date, formData.preferred_time);
+    if (invalidSchedule) { window.alert(invalidSchedule); return; }
 
     setMessage("");
     setError("");
@@ -106,6 +113,7 @@ function BookPatientAppointment() {
 
         {error && <div className="appointment-error">{error}</div>}
 
+        <p>Monday–Saturday. Appointment start times: 10:00 AM–6:00 PM. Approved appointments must be at least 1 hour apart.</p>
         <form onSubmit={handleSubmit}>
           <div className="patient-form-row">
             <div className="patient-form-group">
@@ -118,7 +126,7 @@ function BookPatientAppointment() {
                 type="date"
                 name="preferred_date"
                 value={formData.preferred_date}
-                min={new Date().toISOString().split("T")[0]}
+                min={clinicToday()}
                 onChange={handleChange}
               />
             </div>
@@ -131,6 +139,10 @@ function BookPatientAppointment() {
 
               <input
                 type="time"
+                min="10:00"
+                max="18:00"
+                step="60"
+                required
                 name="preferred_time"
                 value={formData.preferred_time}
                 onChange={handleChange}

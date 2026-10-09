@@ -1,3 +1,4 @@
+import { validateSchedule, clinicToday, isSunday, compareAppointments } from "../../utils/appointmentSchedule";
 import React, { useEffect, useState } from "react";
 
 import api from "../../api";
@@ -49,7 +50,7 @@ function AppointmentMngmt() {
 
       const res = await api.get("/appointments");
 
-      setAppointments(res.data);
+      setAppointments([...res.data].sort(compareAppointments));
     } catch (err) {
       console.error(err);
 
@@ -161,6 +162,8 @@ function AppointmentMngmt() {
 
   const handleReschedule = async (e) => {
     e.preventDefault();
+    const invalidSchedule = validateSchedule(newDate, newTime);
+    if (invalidSchedule) { window.alert(invalidSchedule); return; }
 
     if (!newDate || !newTime) {
       alert("Please select a date and time.");
@@ -548,8 +551,14 @@ function AppointmentMngmt() {
                   <input
                     type="date"
                     value={newDate}
-                    min={new Date().toISOString().split("T")[0]}
-                    onChange={(e) => setNewDate(e.target.value)}
+                    min={clinicToday()}
+                    onChange={(e) => {
+                      if (isSunday(e.target.value)) {
+                        window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
+                        return;
+                      }
+                      setNewDate(e.target.value);
+                    }}
                     required
                   />
                 </div>
@@ -560,8 +569,9 @@ function AppointmentMngmt() {
                   <input
                     type="time"
                     value={newTime}
-                    min="08:00"
+                    min="10:00"
                     max="18:00"
+                    step="60"
                     onChange={(e) => setNewTime(e.target.value)}
                     required
                   />

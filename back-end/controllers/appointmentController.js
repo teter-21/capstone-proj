@@ -1,3 +1,4 @@
+const { validateSchedule, checkApprovedConflict, acquireScheduleLock, releaseScheduleConnection } = require("../services/appointmentSchedule");
 const db = require("../config/db");
 const { enqueueAppointmentEmail } = require("../services/emailQueue");
 const { createAdminNotification } = require("../services/notificationService");
@@ -10,17 +11,15 @@ function validateBooking(data) {
   return validateDateTime(data.preferred_date, data.preferred_time);
 }
 function validateDateTime(date, time) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date || "") || !/^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/.test(time || "")) return "Enter a valid appointment date and time.";
-  const parsed = new Date(`${date}T00:00:00Z`);
-  if (!Number.isFinite(parsed.getTime()) || parsed.toISOString().slice(0,10) !== date) return "Enter a valid appointment date.";
-  const today = new Date(Date.now() + 8 * 3600000).toISOString().slice(0,10);
-  if (date < today) return "Appointment date cannot be in the past.";
-  return null;
+  return validateSchedule(date, time);
 }
 async function createBooking(req, res, portal) {
   let connection;
+  let scheduleLocked = false;
   try {
     connection = await db.promise().getConnection();
+    await acquireScheduleLock(connection);
+    scheduleLocked = true;
     await connection.beginTransaction();
     let data;
     let patientId = null;
@@ -40,6 +39,8 @@ async function createBooking(req, res, portal) {
     }
     const invalid = validateBooking(data);
     if (invalid) { await connection.rollback(); return res.status(400).json({ message: invalid }); }
+    const conflict = await checkApprovedConflict(connection, data.preferred_date, data.preferred_time);
+    if (conflict) { await connection.rollback(); return res.status(409).json({ message: conflict }); }
     const [result] = await connection.execute(`INSERT INTO appointments
       (patient_id, fullname, email, phone, preferred_date, preferred_time, service, reason, status)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`, [patientId, data.fullname, data.email, data.phone,
@@ -53,8 +54,8 @@ async function createBooking(req, res, portal) {
   } catch (error) {
     if (connection) await connection.rollback().catch(() => {});
     console.error("Appointment creation failed:", error.code || error.name);
-    return res.status(500).json({ message: "Unable to submit appointment. Please try again." });
-  } finally { if (connection) connection.release(); }
+    return res.status(error.status || 500).json({ message: error.status === 503 ? error.message : "Unable to submit appointment. Please try again." });
+  } finally { await releaseScheduleConnection(connection, scheduleLocked); }
 }
 exports.createAppointment = (req, res) => createBooking(req, res, false);
 exports.createPatientAppointment = (req, res) => createBooking(req, res, true);
@@ -65,7 +66,7 @@ exports.getAppointments = async (req, res) => {
     return res.status(400).json({ message: "A valid date range is required." });
   try {
     const [rows] = await db.promise().execute(`SELECT * FROM appointments ${filtered ? "WHERE preferred_date BETWEEN ? AND ?" : ""}
-      ORDER BY FIELD(status,'Pending','Approved','Completed','Cancelled','Rescheduled'), preferred_date, preferred_time`, filtered ? [start,end] : []);
+      ORDER BY preferred_date ASC, preferred_time ASC, id ASC`, filtered ? [start,end] : []);
     return res.json(rows);
   } catch (error) { console.error("Appointment list failed:", error.code); return res.status(500).json({ message: "Unable to retrieve appointments." }); }
 };
@@ -80,9 +81,12 @@ async function updateBooking(req, res, reschedule) {
     return res.status(400).json({ message: "Use the reschedule action to choose a new date and time." });
   }
   let connection;
+  let scheduleLocked = false;
   let created = false;
   try {
     connection = await db.promise().getConnection();
+    await acquireScheduleLock(connection);
+    scheduleLocked = true;
     await connection.beginTransaction();
     const [rows] = await connection.execute("SELECT * FROM appointments WHERE id = ? FOR UPDATE", [id]);
     if (!rows.length) { await connection.rollback(); return res.status(404).json({ message: "Appointment not found." }); }
@@ -90,6 +94,14 @@ async function updateBooking(req, res, reschedule) {
     if (appointment.status === status && (!reschedule || (appointment.preferred_date === req.body.preferred_date
       && appointment.preferred_time.slice(0,5) === req.body.preferred_time.slice(0,5)))) {
       await connection.rollback(); return res.json({ message: `Appointment is already ${status}.`, patientId: appointment.patient_id, patientCreated: false, emailStatus: "unchanged" });
+    }
+    if (status === "Approved" || reschedule) {
+      const date = reschedule ? req.body.preferred_date : appointment.preferred_date;
+      const time = reschedule ? req.body.preferred_time : appointment.preferred_time;
+      const invalid = validateDateTime(date, time);
+      if (invalid) { await connection.rollback(); return res.status(400).json({ message: invalid }); }
+      const conflict = await checkApprovedConflict(connection, date, time, appointment.id);
+      if (conflict) { await connection.rollback(); return res.status(409).json({ message: conflict }); }
     }
     if (status === "Approved" && !appointment.patient_id) {
       const [patients] = await connection.execute("SELECT patient_id FROM users WHERE email = ? AND role = 'patient' AND patient_id IS NOT NULL LIMIT 1", [appointment.email]);
@@ -116,8 +128,8 @@ async function updateBooking(req, res, reschedule) {
   } catch (error) {
     if (connection) await connection.rollback().catch(() => {});
     console.error("Appointment update failed:", error.code || error.name);
-    return res.status(500).json({ message: "Unable to update appointment." });
-  } finally { if (connection) connection.release(); }
+    return res.status(error.status || 500).json({ message: error.status === 503 ? error.message : "Unable to update appointment." });
+  } finally { await releaseScheduleConnection(connection, scheduleLocked); }
 }
 exports.updateAppointmentStatus = (req,res) => updateBooking(req,res,false);
 exports.rescheduleAppointment = (req,res) => updateBooking(req,res,true);
