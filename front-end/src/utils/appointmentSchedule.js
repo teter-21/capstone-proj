@@ -17,6 +17,14 @@ export function validateSchedule(date, time, now = Date.now()) {
 
 export const clinicToday = () => new Date(Date.now() + 8 * 3600000).toISOString().slice(0, 10);
 export const isSunday = date => date && new Date(`${date}T00:00:00Z`).getUTCDay() === 0;
-export const compareAppointments = (a, b) =>
-  String(a.preferred_date || "").slice(0, 10).localeCompare(String(b.preferred_date || "").slice(0, 10)) ||
-  String(a.preferred_time || "").localeCompare(String(b.preferred_time || "")) || Number(a.id) - Number(b.id);
+// MySQL date/time strings are clinic wall time (+08:00), independent of the viewer's timezone.
+const appointmentInstant = appointment => Date.parse(
+  `${String(appointment.preferred_date || "").slice(0, 10)}T${String(appointment.preferred_time || "").padEnd(8, ":00")}+08:00`,
+);
+export const compareAppointments = (a, b, now = Date.now()) => {
+  const aUpcoming = appointmentInstant(a) >= now;
+  const bUpcoming = appointmentInstant(b) >= now;
+  return Number(bUpcoming) - Number(aUpcoming) ||
+    String(a.preferred_date || "").slice(0, 10).localeCompare(String(b.preferred_date || "").slice(0, 10)) ||
+    String(a.preferred_time || "").localeCompare(String(b.preferred_time || "")) || Number(a.id) - Number(b.id);
+};

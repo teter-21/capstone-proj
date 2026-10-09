@@ -22,9 +22,9 @@ function AdminNotification() {
   const notificationRef = useRef(null);
 
   /* Load admin notifications. */
-  const fetchNotifications = async () => {
+  const fetchNotifications = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
+      if (!background) setLoading(true);
       const token = localStorage.getItem("token");
       const response = await axios.get(API_BASE_URL + "/admin/notifications", {
         headers: { Authorization: `Bearer ${token}` },

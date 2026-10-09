@@ -29,17 +29,18 @@ function AppointmentCalendar() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const loadAppointments = async () => {
+  const loadAppointments = async ({ background = false } = {}) => {
     try {
-      setError("");
+
       const res = await api.get("/appointments", { params: {
         start_date: toDateKey(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)),
         end_date: toDateKey(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)),
       } });
       setAppointments(Array.isArray(res.data) ? res.data : []);
+      setError("");
     } catch (err) {
       console.error("Appointment calendar error:", err);
-      setError(err.response?.data?.message || "Unable to load appointments.");
+      if (!background) setError(err.response?.data?.message || "Unable to load appointments.");
     } finally {
       setLoading(false);
     }

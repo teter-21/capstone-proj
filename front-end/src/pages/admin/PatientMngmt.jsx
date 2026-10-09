@@ -18,13 +18,13 @@ function PatientMngmt() {
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10;
 
-  const loadPatients = useCallback(async () => {
+  const loadPatients = useCallback(async ({ background = false } = {}) => {
     try {
       const res = await api.get("/patients", { params: { page: currentPage, page_size: recordsPerPage,
         search, age: ageFilter, sort: sortBy } });
       setPatients(res.data.items || []);
       setPageInfo(res.data);
-    } catch (error) { console.error(error); window.alert(error.response?.data?.message || "Unable to load patients."); }
+    } catch (error) { console.error(error); if (!background) window.alert(error.response?.data?.message || "Unable to load patients."); }
   }, [currentPage, recordsPerPage, search, ageFilter, sortBy]);
   useEffect(() => {
     const timer = setTimeout(loadPatients, 250);

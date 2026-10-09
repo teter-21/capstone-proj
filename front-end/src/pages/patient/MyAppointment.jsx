@@ -1,3 +1,4 @@
+import { compareAppointments } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -13,7 +14,7 @@ function MyAppointments() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const fetchAppointments = async () => {
+  const fetchAppointments = async ({ background = false } = {}) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(API_BASE_URL + "/my-appointments", {
@@ -21,11 +22,12 @@ function MyAppointments() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setAppointments(response.data);
+      setAppointments([...response.data].sort(compareAppointments));
+
       setError("");
     } catch (err) {
       console.error("Appointment error:", err);
-      setError("Unable to load your appointments.");
+      if (!background) setError("Unable to load your appointments.");
     } finally {
       setLoading(false);
     }

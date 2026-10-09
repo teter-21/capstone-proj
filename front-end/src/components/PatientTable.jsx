@@ -21,19 +21,20 @@ function PatientTable() {
     loadRecentPatients();
   }, []);
 
-  const loadRecentPatients = async () => {
+  const loadRecentPatients = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
+      if (!background) setLoading(true);
 
-      setError("");
+
 
       const res = await api.get("/recent-patients");
 
       setPatients(res.data);
+      setError("");
     } catch (err) {
       console.error("Recent patients error:", err);
 
-      setError(
+      if (!background) setError(
         err.response?.data?.message || "Unable to load recent patients.",
       );
     } finally {

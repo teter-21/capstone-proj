@@ -66,7 +66,7 @@ exports.getAppointments = async (req, res) => {
     return res.status(400).json({ message: "A valid date range is required." });
   try {
     const [rows] = await db.promise().execute(`SELECT * FROM appointments ${filtered ? "WHERE preferred_date BETWEEN ? AND ?" : ""}
-      ORDER BY preferred_date ASC, preferred_time ASC, id ASC`, filtered ? [start,end] : []);
+      ORDER BY (TIMESTAMP(preferred_date, preferred_time) >= NOW()) DESC, preferred_date ASC, preferred_time ASC, id ASC`, filtered ? [start,end] : []);
     return res.json(rows);
   } catch (error) { console.error("Appointment list failed:", error.code); return res.status(500).json({ message: "Unable to retrieve appointments." }); }
 };
@@ -174,6 +174,7 @@ exports.getMyAppointments = (req, res) => {
     WHERE a.patient_id = ?
 
     ORDER BY
+        (TIMESTAMP(a.preferred_date, a.preferred_time) >= NOW()) DESC,
         a.preferred_date ASC,
         a.preferred_time ASC,
         a.id DESC

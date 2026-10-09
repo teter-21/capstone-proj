@@ -59,11 +59,11 @@ function QueueManagement() {
 
   /* LOAD QUEUE */
 
-  const fetchQueue = async () => {
+  const fetchQueue = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
+      if (!background) setLoading(true);
 
-      setError("");
+
 
       const response = await axios.get(API_BASE_URL + "/queue", {
         headers: {
@@ -72,10 +72,11 @@ function QueueManagement() {
       });
 
       setQueue(Array.isArray(response.data) ? response.data : []);
+      setError("");
     } catch (err) {
       console.error("Queue error:", err);
 
-      setError("Unable to load today's queue.");
+      if (!background) setError("Unable to load today's queue.");
     } finally {
       setLoading(false);
     }

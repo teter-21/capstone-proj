@@ -11,7 +11,7 @@ function TreatmentHistory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchVisits = async () => {
+  const fetchVisits = async ({ background = false } = {}) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(API_BASE_URL + "/patient/visits", {
@@ -20,10 +20,11 @@ function TreatmentHistory() {
         },
       });
       setVisits(response.data);
+
       setError("");
     } catch (err) {
       console.error("Treatment history error:", err);
-      setError(
+      if (!background) setError(
         err.response?.data?.message || "Unable to load treatment history.",
       );
     } finally {

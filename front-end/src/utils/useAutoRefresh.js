@@ -9,15 +9,12 @@ export const useAutoRefresh = (loadData, interval = 30000) => {
     const refresh = async () => {
       if (!active || pending || document.visibilityState === "hidden") return;
       pending = true;
-      const scrollY = window.scrollY;
-      try { await loadRef.current?.(); }
+      try { await loadRef.current?.({ background: true }); }
       catch (error) { console.error("Background refresh failed:", error); }
       finally {
         pending = false;
-        // Do not undo a scroll the user made while the request was in progress.
-        if (active && window.scrollY === scrollY) requestAnimationFrame(() => {
-          if (active && window.scrollY === scrollY) window.scrollTo({ top: scrollY, behavior: "instant" });
-        });
+        // Loaders keep mounted content visible during background updates.
+        // Never force scroll: preserve both page/container scroll and user movement.
       }
     };
     const visible = () => { if (document.visibilityState === "visible") void refresh(); };

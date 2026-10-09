@@ -33,13 +33,14 @@ function Reviews() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const loadReviews = async () => {
+  const loadReviews = async ({ background = false } = {}) => {
     try {
-      setError("");
+
       const response = await api.get("/admin/reviews");
       setReviews(Array.isArray(response.data) ? response.data : []);
+      setError("");
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to load reviews.");
+      if (!background) setError(err.response?.data?.message || "Unable to load reviews.");
     } finally {
       setLoading(false);
     }

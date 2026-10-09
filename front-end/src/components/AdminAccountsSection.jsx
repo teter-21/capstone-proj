@@ -23,14 +23,14 @@ function AdminAccountsSection() {
   const token = localStorage.getItem("token");
   const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
-  const loadAdmins = useCallback(async () => {
+  const loadAdmins = useCallback(async ({ background = false } = {}) => {
     try {
       const response = await axios.get(API_BASE_URL + "/admin-accounts", {
         headers,
       });
       setAdmins(response.data);
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to load admin accounts.");
+      if (!background) setError(err.response?.data?.message || "Unable to load admin accounts.");
     } finally {
       setLoading(false);
     }

@@ -23,9 +23,9 @@ function PatientNotifications() {
 
   /* GET NOTIFICATIONS */
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
+      if (!background) setLoading(true);
 
       const token = localStorage.getItem("token");
 

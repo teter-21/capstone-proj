@@ -131,3 +131,16 @@ test('frontend sorting orders dates and times before status and applies identica
     assert.equal(ui.validateSchedule(d, t), schedule.validateSchedule(d, t));
   }
 });
+test('upcoming appointments of every status precede history, including today past times', async () => {
+  const source = fs.readFileSync(require('node:path').join(__dirname, '../../front-end/src/utils/appointmentSchedule.js'), 'utf8');
+  const ui = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+  const now = Date.parse('2026-10-09T11:00:00+08:00');
+  const rows = [
+    { id: 1, preferred_date: '2026-10-08', preferred_time: '10:00:00', status: 'Approved' },
+    { id: 2, preferred_date: '2026-10-10', preferred_time: '10:00:00', status: 'Pending' },
+    { id: 3, preferred_date: '2026-10-09', preferred_time: '12:00:00', status: 'Approved' },
+    { id: 4, preferred_date: '2026-10-09', preferred_time: '10:00:00', status: 'Pending' },
+    { id: 5, preferred_date: '2026-10-09', preferred_time: '11:00', status: 'Rescheduled' },
+  ];
+  assert.deepEqual(rows.sort((a,b) => ui.compareAppointments(a,b,now)).map(row => row.id), [5,3,2,1,4]);
+});

@@ -100,7 +100,7 @@ function Report() {
     }
   };
 
-  const loadReport = async () => {
+  const loadReport = async ({ background = false } = {}) => {
     if (!startDate || !endDate) return;
 
     if (startDate > endDate) {
@@ -109,8 +109,8 @@ function Report() {
     }
 
     try {
-      setLoading(true);
-      setError("");
+      if (!background) setLoading(true);
+
 
       const response = await api.get("/reports", {
         params: {
@@ -122,9 +122,10 @@ function Report() {
       });
 
       setReport(response.data);
+      setError("");
     } catch (err) {
       console.error("Reports error:", err);
-      setError(
+      if (!background) setError(
         err.response?.data?.message || "Unable to load the automatic report.",
       );
     } finally {

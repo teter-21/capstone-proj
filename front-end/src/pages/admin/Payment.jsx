@@ -35,10 +35,10 @@ function AdminPayment() {
   });
   const [saving, setSaving] = useState(false);
 
-  const loadBilling = useCallback(async () => {
+  const loadBilling = useCallback(async ({ background = false } = {}) => {
     try {
-      setLoading(true);
-      setError("");
+      if (!background) setLoading(true);
+
       const [recordsResponse, summaryResponse] = await Promise.all([
         api.get("/billing", { params: { search, status } }),
         api.get("/billing/summary"),
@@ -47,9 +47,10 @@ function AdminPayment() {
         Array.isArray(recordsResponse.data) ? recordsResponse.data : [],
       );
       setSummary(summaryResponse.data || {});
+      setError("");
     } catch (err) {
       console.error("Billing load error:", err);
-      setError(
+      if (!background) setError(
         err.response?.data?.message || "Unable to load billing records.",
       );
     } finally {

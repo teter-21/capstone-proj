@@ -42,19 +42,20 @@ function AppointmentMngmt() {
     loadAppointments();
   }, []);
 
-  const loadAppointments = async () => {
+  const loadAppointments = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
+      if (!background) setLoading(true);
 
-      setError("");
+
 
       const res = await api.get("/appointments");
 
       setAppointments([...res.data].sort(compareAppointments));
+      setError("");
     } catch (err) {
       console.error(err);
 
-      setError(err.response?.data?.message || "Unable to load appointments.");
+      if (!background) setError(err.response?.data?.message || "Unable to load appointments.");
     } finally {
       setLoading(false);
     }

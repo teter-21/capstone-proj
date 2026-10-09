@@ -21,10 +21,10 @@ function PatientDashboard() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const loadPatientData = async () => {
+  const loadPatientData = async ({ background = false } = {}) => {
     try {
-      setLoading(true);
-      setError("");
+      if (!background) setLoading(true);
+
 
       const [profileRes, visitsRes, balanceRes, appointmentsRes] =
         await Promise.all([
@@ -40,9 +40,10 @@ function PatientDashboard() {
       setAppointments(
         Array.isArray(appointmentsRes.data) ? appointmentsRes.data : [],
       );
+      setError("");
     } catch (requestError) {
       console.error("Patient dashboard error:", requestError);
-      setError(
+      if (!background) setError(
         requestError.response?.data?.message ||
           "Unable to load your information.",
       );
