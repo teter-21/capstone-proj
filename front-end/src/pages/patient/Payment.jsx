@@ -1,3 +1,4 @@
+import { getAccessToken } from "../../utils/session.js";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -26,7 +27,7 @@ function Payments() {
 
   const fetchPayments = async ({ background = false } = {}) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
       const response = await axios.get(API_BASE_URL + "/patient/payments", {
         headers: {
           Authorization: `Bearer ${token}`,

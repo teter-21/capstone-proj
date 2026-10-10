@@ -1,6 +1,9 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { issueSession } = require("../services/sessionSecurity");
+const { passwordError } = require("../services/passwordPolicy");
+
+const DUMMY_LOGIN_HASH = '$2b$12$KM5Hzi8kHwlGBHXGtCUlYOp1CWy3VHRu8tblKyMbkxKsFF3uGd0eC';
 
 /*  LOGIN  */
 exports.login = (req, res) => {
@@ -9,7 +12,7 @@ exports.login = (req, res) => {
     .toLowerCase();
   const password = String(req.body.password || "");
 
-  if (!emailValue || !password) {
+  if (!emailValue || !password || emailValue.length > 100 || Buffer.byteLength(password, "utf8") > 72) {
     return res.status(400).json({
       message: "Email and password are required.",
     });
@@ -27,6 +30,7 @@ exports.login = (req, res) => {
       }
 
       if (result.length === 0) {
+        await bcrypt.compare(password, DUMMY_LOGIN_HASH);
         req.recordLoginFailure?.();
         return res.status(401).json({
           message: "Invalid email or password.",
@@ -45,23 +49,14 @@ exports.login = (req, res) => {
           });
         }
 
-        const token = jwt.sign(
-          {
-            id: user.id,
-            role: user.role,
-            patient_id: user.patient_id,
-            is_main_admin: Number(user.is_main_admin || 0),
-          },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: "8h",
-          },
-        );
+        const mustChangePassword = Boolean(passwordError(password));
+        const token = await issueSession(user, mustChangePassword);
 
         req.clearLoginFailures?.();
 
         res.json({
           token,
+          mustChangePassword,
           role: user.role,
           id: user.id,
           is_main_admin: Number(user.is_main_admin || 0),
@@ -105,10 +100,10 @@ exports.createAccount = async (req, res) => {
       .json({ message: "Please enter a valid email address." });
   }
 
-  if (password.length < 6) {
+  if (passwordError(password)) {
     return res
       .status(400)
-      .json({ message: "Password must be at least 6 characters." });
+      .json({ message: passwordError(password) });
   }
 
   try {
@@ -252,7 +247,8 @@ exports.updateMyAccount = async (req, res) => {
   }
 
   const cleanName = fullname.trim();
-  const cleanEmail = email.trim();
+  const cleanEmail = email.trim().toLowerCase();
+  if (!/^\S+@\S+\.\S+$/.test(cleanEmail) || cleanEmail.length > 100) return res.status(400).json({ message: "Enter a valid email address." });
 
   if (!cleanName || !cleanEmail) {
     return res.status(400).json({
@@ -260,15 +256,15 @@ exports.updateMyAccount = async (req, res) => {
     });
   }
 
-  if (newPassword && newPassword.length < 6) {
+  if (newPassword && passwordError(newPassword)) {
     return res.status(400).json({
-      message: "New password must be at least 6 characters.",
+      message: passwordError(newPassword),
     });
   }
 
   try {
     db.query(
-      "SELECT id, password FROM users WHERE id = ? LIMIT 1",
+      "SELECT id, password, email FROM users WHERE id = ? LIMIT 1",
       [userId],
       async (err, results) => {
         if (err) {
@@ -284,10 +280,10 @@ exports.updateMyAccount = async (req, res) => {
           });
         }
 
-        if (newPassword) {
+        if (newPassword || cleanEmail !== results[0].email.trim().toLowerCase()) {
           if (!currentPassword) {
             return res.status(400).json({
-              message: "Enter your current password before changing it.",
+              message: "Enter your current password before changing your email or password.",
             });
           }
 
@@ -345,6 +341,7 @@ exports.updateMyAccount = async (req, res) => {
               }
 
               res.json({
+                sessionEnded: Boolean(newPassword),
                 message: newPassword
                   ? "Account information and password updated successfully."
                   : "Account information updated successfully.",
@@ -517,7 +514,7 @@ exports.resetPassword = async (req, res) => {
   const rawToken = String(req.body.token || "");
   const newPassword = String(req.body.newPassword || "");
   if (!rawToken || !newPassword) return res.status(400).json({ message: "Reset token and new password are required." });
-  if (newPassword.length < 6) return res.status(400).json({ message: "New password must be at least 6 characters." });
+  if (passwordError(newPassword)) return res.status(400).json({ message: passwordError(newPassword) });
   const tokenHash = require("node:crypto").createHash("sha256").update(rawToken).digest("hex");
   let connection;
   try {
@@ -529,6 +526,7 @@ exports.resetPassword = async (req, res) => {
       WHERE token_hash = ? AND used_at IS NULL AND expires_at > NOW() LIMIT 1 FOR UPDATE`, [tokenHash]);
     if (!tokens.length) { await connection.rollback(); return res.status(400).json({ message: "This reset link is invalid or has expired." }); }
     await connection.execute("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, tokens[0].user_id]);
+    await connection.execute("DELETE FROM auth_sessions WHERE user_id = ?", [tokens[0].user_id]);
     await connection.execute("UPDATE password_reset_tokens SET used_at = NOW() WHERE user_id = ? AND used_at IS NULL", [tokens[0].user_id]);
     await connection.commit();
     return res.json({ message: "Password changed successfully. You can now sign in." });
@@ -537,4 +535,14 @@ exports.resetPassword = async (req, res) => {
     console.error("Reset password failed:", error.code || error.name);
     return res.status(500).json({ message: "Unable to reset the password." });
   } finally { if (connection) connection.release(); }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    await db.promise().execute('DELETE FROM auth_sessions WHERE id = ? AND user_id = ?', [req.sessionId, req.user.id]);
+    return res.json({ message: 'Logged out.' });
+  } catch (error) {
+    console.error('Logout failed:', error.code || error.name);
+    return res.status(503).json({ message: 'Unable to end the session. Please try again.' });
+  }
 };

@@ -1,35 +1,5 @@
 const db = require("../config/db");
-const cloudinary = require("../config/cloudinary");
-
-/*
- * Upload an image buffer to Cloudinary.
- *
- * Multer now uses memoryStorage(), so uploaded files are available through:
- *
- * req.file.buffer
- *
- * This function sends that buffer to Cloudinary and returns the
- * Cloudinary upload result.
- */
-const uploadToCloudinary = (buffer) => {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: "magno-dental/patients",
-        resource_type: "image",
-      },
-      (error, result) => {
-        if (error) {
-          return reject(error);
-        }
-
-        resolve(result);
-      },
-    );
-
-    stream.end(buffer);
-  });
-};
+const { uploadPrivateImage: uploadToCloudinary } = require("../services/privateImages");
 
 /* =========================================================
    GET ALL PATIENTS
@@ -138,9 +108,8 @@ exports.addPatient = async (req, res) => {
     if (req.file) {
       const uploadResult = await uploadToCloudinary(req.file.buffer);
 
-      image = uploadResult.secure_url;
+      image = `private:${uploadResult.public_id}`;
 
-      console.log("Patient image uploaded to Cloudinary:", image);
     }
 
     /*
@@ -225,9 +194,8 @@ exports.updatePatient = async (req, res) => {
     if (req.file) {
       const uploadResult = await uploadToCloudinary(req.file.buffer);
 
-      image = uploadResult.secure_url;
+      image = `private:${uploadResult.public_id}`;
 
-      console.log("Updated patient image:", image);
     }
 
     /*

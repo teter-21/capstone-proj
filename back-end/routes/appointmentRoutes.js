@@ -1,3 +1,4 @@
+const { bookingLimit, patientBookingLimit } = require("../middleware/persistentLimits");
 const express = require("express");
 
 const router = express.Router();
@@ -18,6 +19,7 @@ const {
 
 router.post(
   "/appointment",
+  bookingLimit,
   publicAppointmentLimiter,
   appointmentController.createAppointment,
 );
@@ -28,6 +30,7 @@ router.post(
   "/patient/appointment",
   auth,
   patient,
+  patientBookingLimit,
   appointmentController.createPatientAppointment,
 );
 

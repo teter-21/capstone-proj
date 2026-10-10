@@ -35,6 +35,8 @@ const indexes = [
     );
     for (const statement of sql.split(";").filter((part) => part.trim()))
       await client.query(statement);
+    const securitySql = fs.readFileSync(path.join(__dirname, '../../database/migrations/20261010_security.sql'), 'utf8');
+    for (const statement of securitySql.split(';').filter(part => part.trim())) await client.query(statement);
     for (const [table, index, columns] of [
       ...indexes,
       ["users", "unique_user_email", "email"],

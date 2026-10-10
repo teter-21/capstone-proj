@@ -1,3 +1,4 @@
+import { getAccessToken, clearAccessToken } from "./utils/session.js";
 import API_BASE_URL from "./config/apiBase.js";
 import axios from "axios";
 
@@ -25,7 +26,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = getAccessToken();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -36,6 +37,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+let sessionRedirecting = false;
 const clearExpiredSession = (error) => {
   const status = error?.response?.status;
   const requestUrl = String(error?.config?.url || "");
@@ -48,14 +50,15 @@ const clearExpiredSession = (error) => {
     requestUrl.includes("/verify-reset-token");
 
   if (status === 401 && !isPublicAuthRequest) {
-    localStorage.removeItem("token");
+    clearAccessToken();
     localStorage.removeItem("role");
     localStorage.removeItem("patient_id");
     localStorage.removeItem("is_main_admin");
     localStorage.removeItem("fullname");
 
     // Send the user back to login once the stored JWT is no longer valid.
-    if (typeof window !== "undefined" && window.location.pathname !== "/") {
+    if (typeof window !== "undefined" && window.location.pathname !== "/" && !sessionRedirecting) {
+      sessionRedirecting = true;
       window.alert("Your session has expired. Please log in again.");
       window.location.replace("/login");
     }
@@ -64,15 +67,26 @@ const clearExpiredSession = (error) => {
   return Promise.reject(error);
 };
 
-api.interceptors.response.use((response) => {
-  notifyDataUpdated(response.config);
+const receiveResponse = (response) => {
+  if (response.data?.sessionEnded) {
+    clearAccessToken();
+    window.alert("Password changed. Please log in again.");
+    window.location.replace("/login");
+  }
   return response;
+};
+
+api.interceptors.response.use((response) => {
+  if (response.data?.sessionEnded) return receiveResponse(response);
+  notifyDataUpdated(response.config);
+  return receiveResponse(response);
 }, clearExpiredSession);
 
 /* Also cover pages that still use axios directly instead of the shared api instance. */
 axios.interceptors.response.use((response) => {
+  if (response.data?.sessionEnded) return receiveResponse(response);
   notifyDataUpdated(response.config);
-  return response;
+  return receiveResponse(response);
 }, clearExpiredSession);
 
 export default api;

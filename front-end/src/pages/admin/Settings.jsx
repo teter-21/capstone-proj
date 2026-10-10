@@ -1,3 +1,4 @@
+import { getAccessToken } from "../../utils/session.js";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useMemo, useEffect, useState } from "react";
 import axios from "axios";
@@ -18,7 +19,7 @@ function Settings() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const token = localStorage.getItem("token");
+  const token = getAccessToken();
   const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+const { loginIpLimit, loginAccountLimit, resetLimit } = require("../middleware/persistentLimits");
 const express = require("express");
 
 const router = express.Router();
@@ -11,12 +12,12 @@ const {
 } = require("../middleware/securityMiddleware");
 
 /* Login */
-router.post("/login", loginLimiter, authController.login);
+router.post("/login", loginIpLimit, loginAccountLimit, loginLimiter, authController.login);
 
 /* Password reset */
-router.post("/forgot-password", resetLimiter, authController.forgotPassword);
+router.post("/forgot-password", resetLimit, resetLimiter, authController.forgotPassword);
 router.get("/verify-reset-token", authController.verifyResetToken);
-router.post("/reset-password", resetLimiter, authController.resetPassword);
+router.post("/reset-password", resetLimit, resetLimiter, authController.resetPassword);
 
 /* Create Patient Account */
 router.post("/create-account", auth, admin, authController.createAccount);
@@ -26,3 +27,5 @@ router.get("/account", auth, authController.getMyAccount);
 router.put("/account", auth, authController.updateMyAccount);
 
 module.exports = router;
+
+router.post("/logout", auth, authController.logout);

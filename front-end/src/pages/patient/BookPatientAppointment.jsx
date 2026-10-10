@@ -1,3 +1,4 @@
+import { getAccessToken } from "../../utils/session.js";
 import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
@@ -54,7 +55,7 @@ function BookPatientAppointment() {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
 
       const response = await axios.post(
         API_BASE_URL + "/patient/appointment",

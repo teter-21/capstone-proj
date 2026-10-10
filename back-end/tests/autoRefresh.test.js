@@ -57,7 +57,7 @@ for (const [file, name] of pages) test(`${file}: successful/failed background re
   const body = source.slice(start,end);
   const effects = []; let fail = false;
   const get = async () => { if (fail) throw Error('offline'); return { data: [] }; };
-  const context = { API_BASE_URL: 'https://test.invalid', api:{get}, axios:{get}, console: {error(){}}, localStorage:{getItem:()=> 'test'}, getToken:()=> 'test',
+  const context = { API_BASE_URL: 'https://test.invalid', api:{get}, axios:{get}, console: {error(){}}, localStorage:{getItem:()=> 'test'}, getToken:()=> 'test', getAccessToken:()=> 'test',
     startDate:'2026-10-01', endDate:'2026-10-31', group:'month', procedure:'', search:'', status:'all', compareAppointments:()=>0 };
   for (const setter of new Set(body.match(/set[A-Z]\w+/g))) context[setter] = value => effects.push({ setter,value });
   vm.runInNewContext(`loader = async ${match[1]} => ${body}`,context);

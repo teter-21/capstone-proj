@@ -1,3 +1,4 @@
+import { endSession } from "../utils/session.js";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -48,13 +49,9 @@ function Sidebar() {
     };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("patient_id");
-    localStorage.removeItem("is_main_admin");
-
-    navigate("/login");
+  const handleLogout = async () => {
+    try { await endSession(); navigate('/login'); }
+    catch (error) { window.alert(error.message); }
   };
 
   const isActive = (path) => {

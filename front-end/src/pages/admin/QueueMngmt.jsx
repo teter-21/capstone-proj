@@ -1,3 +1,4 @@
+import { getAccessToken } from "../../utils/session.js";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
 import SERVICES from "../../config/services";
@@ -54,7 +55,7 @@ function QueueManagement() {
   /* GET TOKEN */
 
   const getToken = () => {
-    return localStorage.getItem("token");
+    return getAccessToken();
   };
 
   /* LOAD QUEUE */

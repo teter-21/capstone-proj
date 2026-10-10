@@ -1,4 +1,6 @@
-import { patientImageUrl } from "../utils/patientImage.js";
+import { endSession } from "../utils/session.js";
+import PatientImage from "./PatientImage.jsx";
+
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -44,11 +46,9 @@ function PatientSidebar() {
     };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-
-    navigate("/login");
+  const handleLogout = async () => {
+    try { await endSession(); navigate('/login'); }
+    catch (error) { window.alert(error.message); }
   };
 
   return (
@@ -129,8 +129,8 @@ function PatientSidebar() {
         <div className="patient-user">
           <div className="patient-user-icon">
             {profile?.image ? (
-              <img
-                src={patientImageUrl(profile.image)}
+              <PatientImage
+                image={profile.image}
                 alt={profile.name || "Patient"}
                 className="patient-sidebar-avatar"
               />

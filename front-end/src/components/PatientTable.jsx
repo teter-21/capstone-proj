@@ -1,4 +1,5 @@
-import { patientImageUrl } from "../utils/patientImage.js";
+import PatientImage from "./PatientImage.jsx";
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -116,8 +117,8 @@ function PatientTable() {
                       {/* IMAGE */}
 
                       {patient.image ? (
-                        <img
-                          src={patientImageUrl(patient.image)}
+                        <PatientImage
+                          image={patient.image}
                           alt={patient.name}
                           className="patient-avatar-image"
                         />

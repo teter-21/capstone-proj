@@ -1,3 +1,4 @@
+import { getAccessToken } from "../utils/session.js";
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useEffect, useState } from "react";
 import SERVICES from "../config/services";
@@ -84,7 +85,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
     try {
       setSaving(true);
 
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
 
       const response = await axios.post(
         `${API_BASE_URL}/queue/${patient.id}/complete-treatment`,

@@ -56,7 +56,6 @@ function AddPatient() {
   /* HANDLE SUBMIT */
 
   const handleSubmit = async () => {
-    console.log("SAVE CLICKED");
 
     /* BUILD FULL NAME */
 
@@ -103,7 +102,7 @@ function AddPatient() {
     /* SEND TO SERVER */
 
     try {
-      const res = await api.post(
+      await api.post(
         "/add-patient",
 
         data,
@@ -115,7 +114,6 @@ function AddPatient() {
         },
       );
 
-      console.log(res.data);
 
       alert("Patient Added Successfully!");
 

@@ -1,3 +1,4 @@
+import { getAccessToken } from "../utils/session.js";
 import { useAutoRefresh } from "../utils/useAutoRefresh";
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useEffect, useRef, useState } from "react";
@@ -25,7 +26,7 @@ function AdminNotification() {
   const fetchNotifications = async ({ background = false } = {}) => {
     try {
       if (!background) setLoading(true);
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
       const response = await axios.get(API_BASE_URL + "/admin/notifications", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -61,7 +62,7 @@ function AdminNotification() {
 
   const markAsRead = async (id) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
       await axios.put(
         `${API_BASE_URL}/admin/notifications/${id}/read`,
         {},

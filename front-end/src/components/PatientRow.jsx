@@ -1,4 +1,5 @@
-import { patientImageUrl } from "../utils/patientImage.js";
+import PatientImage from "./PatientImage.jsx";
+
 import React, { useState } from "react";
 {
   /* import AddVisitModal from "./AddVisitModal"; */
@@ -22,8 +23,8 @@ function PatientRow({ patient, onUpdatePatient, onImageClick }) {
       <span>{patient.id}</span>
 
       <span>
-        <img
-           src={patientImageUrl(patient.image)}
+        <PatientImage
+           image={patient.image}
           width="80"
           className="avatar"
           alt={patient.name}

@@ -42,7 +42,7 @@ test("patient pagination binds search, clamps pages and whitelists sorting", asy
   };
   const controller = load("controllers/patientController.js", {
     "../config/db": { promise: () => client },
-    "../config/cloudinary": {},
+    "../services/privateImages": {},
   });
   const res = response();
   await controller.getPatients(
@@ -149,13 +149,15 @@ test("password reset rolls back the password if token consumption fails", async 
         events.push("password");
         return [{}];
       }
+      if (sql.includes("DELETE FROM auth_sessions")) return [{}];
       throw Error("token update failed");
     },
   };
   const controller = load("controllers/authController.js", {
     "../config/db": { promise: () => ({ getConnection: async () => c }) },
     bcrypt: { hash: async () => "hashed" },
-    jsonwebtoken: {},
+    "../services/sessionSecurity": {},
+    "../services/passwordPolicy": require("../services/passwordPolicy"),
     "node:crypto": require("node:crypto"),
     "../services/notificationService": {},
   });

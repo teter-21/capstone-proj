@@ -1,3 +1,4 @@
+import { getAccessToken } from "../utils/session.js";
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useCallback, useMemo, useEffect, useState } from "react";
 import axios from "axios";
@@ -20,7 +21,7 @@ function AdminAccountsSection() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const token = localStorage.getItem("token");
+  const token = getAccessToken();
   const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
   const loadAdmins = useCallback(async ({ background = false } = {}) => {
@@ -61,8 +62,8 @@ function AdminAccountsSection() {
       return;
     }
 
-    if (form.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (form.password.length < 12) {
+      setError("Password must be at least 12 characters.");
       return;
     }
 
@@ -149,7 +150,7 @@ function AdminAccountsSection() {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                placeholder="At least 6 characters"
+                placeholder="At least 12 characters"
                 autoComplete="new-password"
                 minLength="6"
                 required

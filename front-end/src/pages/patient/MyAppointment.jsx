@@ -1,3 +1,4 @@
+import { getAccessToken } from "../../utils/session.js";
 import { compareAppointments } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useState } from "react";
@@ -16,7 +17,7 @@ function MyAppointments() {
 
   const fetchAppointments = async ({ background = false } = {}) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
       const response = await axios.get(API_BASE_URL + "/my-appointments", {
         headers: {
           Authorization: `Bearer ${token}`,

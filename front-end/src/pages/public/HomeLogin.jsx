@@ -1,3 +1,4 @@
+import { setAccessToken } from "../../utils/session.js";
 import API_BASE_URL from "../../config/apiBase.js";
 import React from "react";
 import axios from "axios";
@@ -16,7 +17,6 @@ function HomeLogin() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    console.log("LOGIN:", email, password);
 
     axios
       .post(`${API_BASE_URL}/login`, {
@@ -24,7 +24,7 @@ function HomeLogin() {
         password: password,
       })
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
+        setAccessToken(res.data.token);
 
         localStorage.setItem("role", res.data.role);
 
@@ -33,7 +33,11 @@ function HomeLogin() {
           String(res.data.is_main_admin || 0),
         );
 
-        if (res.data.role === "admin") {
+        localStorage.setItem('must_change_password', res.data.mustChangePassword ? '1' : '0');
+        if (res.data.mustChangePassword) {
+          window.alert('Please set a stronger password before continuing.');
+          navigate(res.data.role === 'admin' ? '/Settings' : '/patient/profile');
+        } else if (res.data.role === "admin") {
           navigate("/Dashboard");
         } else if (res.data.role === "patient") {
           navigate("/patient/dashboard");
@@ -42,8 +46,8 @@ function HomeLogin() {
         }
       })
       .catch((err) => {
-        alert("Invalid Email or Password");
-        console.log(err);
+        window.alert(err.response?.data?.message || "Unable to log in. Please try again.");
+
       });
   };
 

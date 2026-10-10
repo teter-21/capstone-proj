@@ -1,4 +1,5 @@
-import { patientImageUrl } from "../utils/patientImage.js";
+import PatientImage from "./PatientImage.jsx";
+
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import PatientRow from "./PatientRow";
@@ -72,8 +73,8 @@ function PatientColumn({ patients, onSaveVisit, onUpdatePatient }) {
               >
                 ×
               </button>
-              <img
-                src={patientImageUrl(selectedImage)}
+              <PatientImage
+                image={selectedImage}
                 alt="Patient preview"
               />
             </div>

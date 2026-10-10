@@ -1,3 +1,4 @@
+import { getAccessToken } from "../../utils/session.js";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useRef, useState } from "react";
@@ -27,7 +28,7 @@ function PatientNotifications() {
     try {
       if (!background) setLoading(true);
 
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
 
       const response = await axios.get(API_BASE_URL + "/notifications", {
         headers: {
@@ -79,7 +80,7 @@ function PatientNotifications() {
 
   const markAsRead = async (id) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
 
       await axios.put(
         `${API_BASE_URL}/notifications/${id}/read`,

@@ -41,7 +41,7 @@ function AddVisitModal({ patient, onClose, onSave }) {
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
 
       const res = await axios.post(
         API_BASE_URL + "/add-visit",
@@ -59,7 +59,6 @@ function AddVisitModal({ patient, onClose, onSave }) {
         },
       );
 
-      console.log(res.data);
 
       alert("Visit added successfully!");
 

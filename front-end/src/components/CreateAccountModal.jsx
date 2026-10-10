@@ -1,3 +1,4 @@
+import { getAccessToken } from "../utils/session.js";
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useState } from "react";
 import axios from "axios";
@@ -11,7 +12,7 @@ function CreateAccountModal({ patient, onClose }) {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("token");
+      const token = getAccessToken();
 
       const res = await axios.post(
         API_BASE_URL + "/create-account",

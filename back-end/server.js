@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32 ||
+  new Set(process.env.JWT_SECRET).size < 8 || /^(replace|your[-_]|changeme)/i.test(process.env.JWT_SECRET)) {
   throw new Error("JWT_SECRET must be set and contain at least 32 characters.");
 }
 
@@ -19,6 +20,8 @@ const dentalChartRoutes = require("./routes/dentalChartRoutes");
 const adminAccountRoutes = require("./routes/adminAccountRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const reviewController = require("./controllers/reviewController");
+const { getPatientImage, maskImages } = require("./services/privateImages");
+const auth = require("./middleware/authMiddleware");
 const { securityHeaders } = require("./middleware/securityMiddleware");
 const { verifyEmailConnection } = require("./services/emailService");
 
@@ -38,6 +41,8 @@ app.get("/health/ready", async (req, res) => {
     if (!res.headersSent) res.status(503).json({ status: "unavailable" });
   }, 3000);
   try {
+    await db.promise().query("SELECT id FROM auth_sessions LIMIT 1");
+    await db.promise().query("SELECT bucket_key FROM security_rate_limits LIMIT 1");
     await db.promise().query("SELECT id FROM email_outbox LIMIT 1");
     if (!res.headersSent) res.json({ status: "ready" });
   } catch {
@@ -77,15 +82,14 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false, limit: "1mb" }));
 
-/* Uploaded files are served only from the dedicated upload folder. */
-app.use(
-  "/uploads",
-  express.static(require("node:path").join(__dirname, "uploads"), {
-    dotfiles: "deny",
-    index: false,
-    maxAge: "1d",
-  }),
-);
+// Never expose legacy files or Cloudinary asset URLs publicly.
+app.use((req, res, next) => {
+  const json = res.json.bind(res);
+  res.json = (body) => json(maskImages(body));
+  next();
+});
+app.get('/patient-images/:id', auth, getPatientImage);
+app.use('/uploads', (req, res) => res.status(404).json({ message: 'Not found.' }));
 
 /* Routes */
 app.use("/", authRoutes);
@@ -115,7 +119,7 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ message: err.message });
   }
 
-  console.error("Unhandled server error:", err);
+  console.error("Unhandled server error:", err.code || err.name);
   return res
     .status(500)
     .json({ message: "An unexpected server error occurred." });
@@ -143,7 +147,15 @@ reviewController.ensureReviewTable((tableError) => {
         startEmailQueue();
       });
   });
+  const maintenance = setInterval(async () => {
+    try {
+      await db.promise().query('DELETE FROM auth_sessions WHERE expires_at <= NOW()');
+      await db.promise().execute('DELETE FROM security_rate_limits WHERE last_seen < ?', [Date.now() - 24 * 60 * 60 * 1000]);
+    } catch (error) { console.error('Security maintenance failed:', error.code || error.name); }
+  }, 15 * 60 * 1000);
+  maintenance.unref();
   const shutdown = () => {
+    clearInterval(maintenance);
     stopEmailQueue();
     server.close(() => db.end(() => process.exit(0)));
     setTimeout(() => process.exit(1), 20000).unref();

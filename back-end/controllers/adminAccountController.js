@@ -1,3 +1,4 @@
+const { passwordError } = require("../services/passwordPolicy");
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 
@@ -42,9 +43,9 @@ exports.createAdmin = async (req, res) => {
     });
   }
 
-  if (password.length < 6) {
+  if (passwordError(password)) {
     return res.status(400).json({
-      message: "Password must be at least 6 characters.",
+      message: passwordError(password),
     });
   }
 

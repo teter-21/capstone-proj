@@ -46,8 +46,8 @@ function ResetPassword() {
     setMessage("");
     setError("");
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (password.length < 12) {
+      setError("Password must be at least 12 characters.");
       return;
     }
 
@@ -93,7 +93,7 @@ function ResetPassword() {
               <input
                 type="password"
                 value={password}
-                placeholder="At least 6 characters"
+                placeholder="At least 12 characters"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />

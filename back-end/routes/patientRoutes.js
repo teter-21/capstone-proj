@@ -1,3 +1,5 @@
+const { uploadLimit } = require("../middleware/persistentLimits");
+const { validateImage } = require("../services/privateImages");
 const express = require("express");
 
 const router = express.Router();
@@ -33,7 +35,9 @@ router.post(
   "/add-patient",
   auth,
   admin,
+  uploadLimit,
   upload.single("image"),
+  validateImage,
   patientController.addPatient,
 );
 
@@ -43,7 +47,9 @@ router.put(
   "/update-patient/:id",
   auth,
   admin,
+  uploadLimit,
   upload.single("image"),
+  validateImage,
   patientController.updatePatient,
 );
 

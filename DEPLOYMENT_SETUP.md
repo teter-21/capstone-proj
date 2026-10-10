@@ -1,3 +1,7 @@
+# Security update (2026-10-10)
+
+Follow SECURITY_DEPLOYMENT.md first. Its session, image privacy and migration instructions supersede the earlier security notes below.
+
 # Updated dental clinic app: Render + Aiven + Cloudinary + Brevo
 
 Start here before replacing the running app. Updated source is ready, but your Render/Aiven settings and a verified email sender are required. No live deployment or live email delivery was performed during this repair.
@@ -126,7 +130,7 @@ All 20 regression checks passed; frontend lint passed with zero errors/warnings;
 
 Previous initial JS chunk: 973.62 KB (292.40 KB gzip). Split build initial JS chunk: 373.42 KB (122.84 KB gzip), with chart code loaded separately. The two large images shrank from 4,486 KB combined to about 232 KB. These are build-size improvements, not measured browser/API latency or a production load benchmark.
 
-Remaining work for a production clinic: simultaneous queue calling/transition rules need additional concurrency handling; existing JWT sessions are not automatically revoked by password change; report revenue still groups cumulative paid amounts by visit date rather than payment collection date; existing public Cloudinary URLs remain public; legacy image bytes must be migrated if no longer available. Confirm clinic opening hours/conflict rules and privacy requirements before introducing business rules not present in the original app.
+Remaining work for a production clinic: simultaneous queue calling/transition rules need additional concurrency handling; sessions are now revoked by password changes; report revenue still groups cumulative paid amounts by visit date rather than payment collection date; existing public Cloudinary URLs must be migrated using the privacy script; legacy image bytes must be migrated if no longer available. Confirm clinic opening hours/conflict rules and privacy requirements before introducing business rules not present in the original app.
 
 ## Official sources checked on 9 October 2026
 
