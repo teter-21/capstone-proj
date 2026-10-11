@@ -1,17 +1,9 @@
-const { passwordError } = require("../services/passwordPolicy");
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
+const { passwordError } = require("../services/passwordPolicy");
 
-/* Only the main admin can manage admin accounts. */
-const requireMainAdmin = (req, res) => {
-  if (req.user?.role !== "admin") {
-    res.status(403).json({
-      message: "Only administrators can manage admin accounts.",
-    });
-    return false;
-  }
-
-  if (req.user?.is_main_admin !== 1) {
+function requireMainAdmin(req, res) {
+  if (req.user?.role !== "admin" || Number(req.user?.is_main_admin) !== 1) {
     res.status(403).json({
       message: "Only the main admin can manage admin accounts.",
     });
@@ -19,116 +11,206 @@ const requireMainAdmin = (req, res) => {
   }
 
   return true;
-};
+}
 
-/* Create a new admin account. */
+/* Create a staff administrator. */
 exports.createAdmin = async (req, res) => {
   if (!requireMainAdmin(req, res)) return;
 
-  const { fullname, email, password } = req.body;
-  const cleanName = String(fullname || "").trim();
-  const cleanEmail = String(email || "")
+  const fullname = String(req.body.fullname || "").trim();
+  const email = String(req.body.email || "")
     .trim()
     .toLowerCase();
+  const password = req.body.password;
 
-  if (!cleanName || !cleanEmail || !password) {
+  if (
+    fullname.length < 2 ||
+    fullname.length > 150 ||
+    email.length > 100 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
     return res.status(400).json({
-      message: "Full name, email, and password are required.",
+      message: "Enter a valid full name and email address.",
     });
   }
 
-  if (cleanName.length < 2) {
-    return res.status(400).json({
-      message: "Please enter a valid full name.",
-    });
-  }
+  const passwordIssue = passwordError(password);
 
-  if (passwordError(password)) {
-    return res.status(400).json({
-      message: passwordError(password),
-    });
+  if (passwordIssue) {
+    return res.status(400).json({ message: passwordIssue });
   }
 
   try {
-    db.query(
-      "SELECT id FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1",
-      [cleanEmail],
-      async (checkError, existing) => {
-        if (checkError) {
-          console.error("Admin email check error:", checkError);
-          return res.status(500).json({
-            message: "Unable to check the email address.",
-          });
-        }
+    const client = db.promise();
 
-        if (existing.length > 0) {
-          return res.status(400).json({
-            message: "That email address is already in use.",
-          });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 12);
-
-        db.query(
-          `INSERT INTO users
-                    (patient_id, fullname, email, password, role, is_main_admin)
-                    VALUES (NULL, ?, ?, ?, 'admin', 0)`,
-          [cleanName, cleanEmail, hashedPassword],
-          (insertError, result) => {
-            if (insertError) {
-              console.error("Create admin error:", insertError);
-
-              if (insertError.code === "ER_DUP_ENTRY") {
-                return res.status(400).json({
-                  message: "That email address is already in use.",
-                });
-              }
-
-              return res.status(500).json({
-                message: "Unable to create admin account.",
-              });
-            }
-
-            res.status(201).json({
-              message: "Admin account created successfully.",
-              admin: {
-                id: result.insertId,
-                fullname: cleanName,
-                email: cleanEmail,
-                role: "admin",
-                is_main_admin: 0,
-              },
-            });
-          },
-        );
-      },
+    const [existing] = await client.execute(
+      "SELECT id FROM users WHERE LOWER(TRIM(email)) = ? LIMIT 1",
+      [email],
     );
+
+    if (existing.length) {
+      return res.status(400).json({
+        message: "That email address is already in use.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const [result] = await client.execute(
+      `INSERT INTO users
+       (patient_id, fullname, email, password, role, is_main_admin)
+       VALUES (NULL, ?, ?, ?, 'admin', 0)`,
+      [fullname, email, hashedPassword],
+    );
+
+    return res.status(201).json({
+      message: "Admin account created successfully.",
+      admin: {
+        id: result.insertId,
+        fullname,
+        email,
+        role: "admin",
+        is_main_admin: 0,
+      },
+    });
   } catch (error) {
-    console.error("Create admin error:", error);
-    res.status(500).json({
-      message: "Unable to create admin account.",
+    console.error("Create admin failed:", error.code || error.name);
+
+    return res.status(error.code === "ER_DUP_ENTRY" ? 400 : 500).json({
+      message:
+        error.code === "ER_DUP_ENTRY"
+          ? "That email address is already in use."
+          : "Unable to create admin account.",
     });
   }
 };
 
-/* Load the admin accounts for the main admin. */
-exports.getAdmins = (req, res) => {
+/* List administrators. */
+exports.getAdmins = async (req, res) => {
   if (!requireMainAdmin(req, res)) return;
 
-  db.query(
-    `SELECT id, fullname, email, role, is_main_admin, created_at
-         FROM users
-         WHERE role = 'admin'
-         ORDER BY is_main_admin DESC, id ASC`,
-    (err, results) => {
-      if (err) {
-        console.error("Get admins error:", err);
-        return res.status(500).json({
-          message: "Unable to load admin accounts.",
-        });
-      }
+  try {
+    const [admins] = await db.promise().query(
+      `SELECT id, fullname, email, role, is_main_admin, created_at
+       FROM users
+       WHERE role = 'admin'
+       ORDER BY is_main_admin DESC, id ASC`,
+    );
 
-      res.json(results);
-    },
-  );
+    return res.json(admins);
+  } catch (error) {
+    console.error("Load admins failed:", error.code || error.name);
+
+    return res.status(500).json({
+      message: "Unable to load admin accounts.",
+    });
+  }
+};
+
+/* Delete staff and revoke their sessions atomically. */
+exports.deleteAdmin = async (req, res) => {
+  if (!requireMainAdmin(req, res)) return;
+
+  const targetId = Number(req.params.id);
+  const actorId = Number(req.user.id);
+
+  if (!Number.isSafeInteger(targetId) || targetId < 1) {
+    return res.status(400).json({
+      message: "Invalid admin account.",
+    });
+  }
+
+  if (targetId === actorId) {
+    return res.status(403).json({
+      message: "You cannot delete your own account.",
+    });
+  }
+
+  let connection;
+
+  try {
+    connection = await db.promise().getConnection();
+    await connection.beginTransaction();
+
+    // Recheck the caller's current permissions inside the transaction.
+    const [[actor]] = await connection.execute(
+      `SELECT role, is_main_admin
+       FROM users WHERE id = ? FOR UPDATE`,
+      [actorId],
+    );
+
+    if (!actor || actor.role !== "admin" || Number(actor.is_main_admin) !== 1) {
+      await connection.rollback();
+
+      return res.status(403).json({
+        message: "Only the main admin can delete staff accounts.",
+      });
+    }
+
+    const [[target]] = await connection.execute(
+      `SELECT id, role, is_main_admin
+       FROM users WHERE id = ? FOR UPDATE`,
+      [targetId],
+    );
+
+    if (!target || target.role !== "admin") {
+      await connection.rollback();
+
+      return res.status(404).json({
+        message: "Staff admin account not found.",
+      });
+    }
+
+    if (Number(target.is_main_admin || 0) !== 0) {
+      await connection.rollback();
+
+      return res.status(403).json({
+        message: "The main admin account cannot be deleted.",
+      });
+    }
+
+    await connection.execute("DELETE FROM auth_sessions WHERE user_id = ?", [
+      targetId,
+    ]);
+
+    await connection.execute(
+      "DELETE FROM password_reset_tokens WHERE user_id = ?",
+      [targetId],
+    );
+
+    await connection.execute(
+      "DELETE FROM admin_notifications WHERE admin_id = ?",
+      [targetId],
+    );
+
+    const [result] = await connection.execute(
+      `DELETE FROM users
+       WHERE id = ?
+         AND role = 'admin'
+         AND COALESCE(is_main_admin, 0) = 0`,
+      [targetId],
+    );
+
+    if (result.affectedRows !== 1) {
+      throw new Error("Staff account was not deleted.");
+    }
+
+    await connection.commit();
+
+    return res.json({
+      message: "Staff account deleted. Their system access has been revoked.",
+    });
+  } catch (error) {
+    if (connection) {
+      await connection.rollback().catch(() => {});
+    }
+
+    console.error("Delete admin failed:", error.code || error.name);
+
+    return res.status(500).json({
+      message: "Unable to delete the staff account. Please try again.",
+    });
+  } finally {
+    connection?.release();
+  }
 };

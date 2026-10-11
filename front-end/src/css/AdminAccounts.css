@@ -205,6 +205,50 @@
   white-space: nowrap;
 }
 
+.admin-accounts-table {
+  min-width: 720px;
+}
+
+.admin-accounts-table th:last-child,
+.admin-accounts-table td:last-child {
+  white-space: nowrap;
+}
+
+.admin-accounts-table .admin-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-accounts-table .admin-delete-button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.admin-accounts-table .admin-delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-accounts-table .admin-delete-button:focus-visible {
+  outline: 3px solid #fca5a5;
+  outline-offset: 2px;
+}
+
+.admin-protected-label {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 @media (max-width: 900px) {
   .admin-accounts-layout {
     grid-template-columns: 1fr;

@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const auth = require("../middleware/authMiddleware");
-const adminAccountController = require("../controllers/adminAccountController");
+const controller = require("../controllers/adminAccountController");
 
-/* Admin account management */
-router.get("/admin-accounts", auth, adminAccountController.getAdmins);
-router.post("/admin-accounts", auth, adminAccountController.createAdmin);
+router.get("/admin-accounts", auth, controller.getAdmins);
+router.post("/admin-accounts", auth, controller.createAdmin);
+router.delete("/admin-accounts/:id", auth, controller.deleteAdmin);
 
 module.exports = router;
