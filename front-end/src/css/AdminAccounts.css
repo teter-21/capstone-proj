@@ -206,7 +206,7 @@
 }
 
 .admin-accounts-table {
-  min-width: 720px;
+  min-width: 820px;
 }
 
 .admin-accounts-table th:last-child,
@@ -221,12 +221,12 @@
   gap: 6px;
   padding: 8px 12px;
   border: 0;
-  border-radius: 6px;
   background: #dc2626;
   color: #fff;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .admin-accounts-table .admin-delete-button:hover:not(:disabled) {
