@@ -54,8 +54,6 @@ function AdminNotification() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
-
   const unreadCount = notifications.filter(
     (item) => Number(item.is_read) === 0,
   ).length;

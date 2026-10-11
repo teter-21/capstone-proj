@@ -175,25 +175,6 @@
   cursor: not-allowed;
 }
 
-.account-alert {
-  margin: 0 0 16px;
-  padding: 11px 14px;
-  border-radius: 0px;
-  font-size: 12px;
-}
-
-.account-success {
-  background: #e9f5f0;
-  color: #3f7969;
-  border: 1px solid #cbe5db;
-}
-
-.account-error {
-  background: #fdecec;
-  color: #b64545;
-  border: 1px solid #f2cccc;
-}
-
 .account-message {
   min-height: 360px;
   display: flex;
@@ -228,8 +209,8 @@
   }
 
   .account-profile-top,
-  .account-section,
-  .account-actions {
+.account-section,
+.account-actions {
     padding-left: 18px;
     padding-right: 18px;
   }
@@ -249,7 +230,6 @@
     width: 100%;
   }
 }
-
 
 /* Admin account management is now part of Settings. */
 .admin-settings-section {

@@ -30,7 +30,7 @@
   color: #7b8794;
 }
 
-.patient-avatar {
+:where(.patient-dashboard) .patient-avatar {
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -64,12 +64,6 @@
   background: var(--color-blue-soft);
 
   color: var(--color-primary);
-}
-
-.patient-stat-card.purple .patient-stat-icon {
-  background: var(--color-purple-soft);
-
-  color: var(--color-purple);
 }
 
 .patient-stat-card.purple .patient-stat-icon {
@@ -189,22 +183,6 @@
   background: transparent;
 }
 
-.appointment-status-patient.pending {
-  color: var(--color-warning);
-}
-
-.appointment-status-patient.approved {
-  color: var(--color-success);
-}
-
-.appointment-status-patient.completed {
-  color: var(--color-green-dark);
-}
-
-.appointment-status-patient.cancelled {
-  color: var(--color-error);
-}
-
 .profile-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -229,7 +207,7 @@
   word-break: break-word;
 }
 
-.treatment-card {
+:where(.patient-dashboard) .treatment-card {
   width: 100%;
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
@@ -341,49 +319,6 @@
   }
 }
 
-.patient-error {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: var(--color-page);
-}
-
-.patient-error-card {
-  width: 100%;
-  max-width: min(420px, calc(100vw - 32px));
-  padding: 30px;
-  text-align: center;
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 0px;
-  box-shadow: 0 4px 18px rgba(30, 45, 60, 0.05);
-}
-
-.patient-error-card h2 {
-  margin: 0 0 10px;
-  font-size: 20px;
-  color: var(--color-heading);
-}
-
-.patient-error-card p {
-  margin: 0 0 20px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #7b8794;
-}
-
-.patient-error-card button {
-  border: none;
-  border-radius: 0px;
-  padding: 10px 18px;
-  background: var(--color-green);
-  color: var(--color-white);
-  cursor: pointer;
-  font-size: 13px;
-}
-
 @media (max-width: 900px) {
   .patient-main-grid {
     grid-template-columns: 1fr;
@@ -403,7 +338,7 @@
     font-size: 24px;
   }
 
-  .patient-avatar {
+  :where(.patient-dashboard) .patient-avatar {
     width: 46px;
     height: 46px;
     font-size: 17px;

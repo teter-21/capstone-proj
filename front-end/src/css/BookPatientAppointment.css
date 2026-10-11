@@ -168,26 +168,6 @@
   cursor: not-allowed;
 }
 
-.appointment-success {
-  padding: 12px 15px;
-  margin-bottom: 20px;
-  border-radius: 0px;
-  background: #e8f6ee;
-  border: 1px solid #c9e8d7;
-  color: #27774b;
-  font-size: 12px;
-}
-
-.appointment-error {
-  padding: 12px 15px;
-  margin-bottom: 20px;
-  border-radius: 0px;
-  background: #fdeeee;
-  border: 1px solid #f3d0d0;
-  color: #b84a4a;
-  font-size: 12px;
-}
-
 @media (max-width: 700px) {
   .book-patient-page {
     padding: 25px 20px;
@@ -207,7 +187,6 @@
   .book-patient-header {
     align-items: flex-start;
   }
-
 
   .patient-form-actions {
     flex-direction: column-reverse;

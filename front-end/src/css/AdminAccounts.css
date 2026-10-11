@@ -22,25 +22,6 @@
   font-size: 13px;
 }
 
-.admin-accounts-alert {
-  margin-bottom: 16px;
-  padding: 11px 14px;
-  border-radius:0px;
-  font-size: 12px;
-}
-
-.admin-accounts-alert.success {
-  background: #e9f5f0;
-  border: 1px solid #cbe5db;
-  color: #3f7969;
-}
-
-.admin-accounts-alert.error {
-  background: #fdecec;
-  border: 1px solid #f2cccc;
-  color: #b64545;
-}
-
 .admin-accounts-layout {
   display: grid;
   grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);

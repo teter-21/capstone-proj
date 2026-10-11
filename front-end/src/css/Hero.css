@@ -1,10 +1,8 @@
 .hero {
-  height: 90vh;
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.8)),
     url("../assets/images/clinic-2.jpg");
   background-size: cover;
-  background-position: left;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +13,6 @@
 }
 
 .hero-content {
-  width: 90%;
   max-width: 1600px;
   margin: auto;
   color: white;
@@ -23,23 +20,18 @@
 
 .hero-content h3 {
   color: #29b7ca;
-  font-size: 20px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .hero h1 {
-  line-height: 76px;
-  font-size: 55px;
   margin-bottom: 20px;
 }
 
 .hero p {
-  width: min(600px, calc(100vw - 32px));
   max-width: 100%;
   line-height: 1.8;
   margin-bottom: 30px;
-  font-size: 18px;
 }
 
 .hero-buttons {

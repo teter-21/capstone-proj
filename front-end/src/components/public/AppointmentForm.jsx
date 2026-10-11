@@ -1,8 +1,4 @@
-import {
-  validateSchedule,
-  clinicToday,
-  isSunday,
-} from "../../utils/appointmentSchedule";
+import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import "../../css/Appointment.css";
 import { useState } from "react";
@@ -10,10 +6,8 @@ import axios from "axios";
 import { buildFullName } from "../../utils/nameFormatter";
 import { FaShieldAlt } from "react-icons/fa";
 import SERVICES from "../../config/services";
-
 function AppointmentForm() {
   const today = clinicToday();
-
   const [formData, setFormData] = useState({
     lastName: "",
     firstName: "",
@@ -23,58 +17,39 @@ function AppointmentForm() {
     preferred_date: "",
     preferred_time: "",
     service: "",
-    reason: "",
+    reason: ""
   });
-
   const [loading, setLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [termsRead, setTermsRead] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-
-  const handleChange = (e) => {
+  const handleChange = e => {
     if (e.target.name === "preferred_date" && isSunday(e.target.value)) {
-      window.alert(
-        "Appointments are available Monday to Saturday only. Please choose another date.",
-      );
+      window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
       return;
     }
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
-
   const openTerms = () => {
     setShowTerms(true);
     setTermsRead(true);
   };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const invalidSchedule = validateSchedule(
-      formData.preferred_date,
-      formData.preferred_time,
-    );
+    const invalidSchedule = validateSchedule(formData.preferred_date, formData.preferred_time);
     if (invalidSchedule) {
       window.alert(invalidSchedule);
       return;
     }
-
     if (!termsAccepted) {
-      alert(
-        "Please read and agree to the Terms and Conditions before booking.",
-      );
+      window.alert("Please read and agree to the Terms and Conditions before booking.");
       return;
     }
-
     setLoading(true);
-
-    const fullname = buildFullName(
-      formData.lastName,
-      formData.firstName,
-      formData.middleName,
-    );
-
+    const fullname = buildFullName(formData.lastName, formData.firstName, formData.middleName);
     try {
       const res = await axios.post(API_BASE_URL + "/appointment", {
         fullname,
@@ -83,11 +58,9 @@ function AppointmentForm() {
         preferred_date: formData.preferred_date,
         preferred_time: formData.preferred_time,
         service: formData.service,
-        reason: formData.reason,
+        reason: formData.reason
       });
-
-      alert(res.data.message);
-
+      window.alert(res.data.message);
       setFormData({
         lastName: "",
         firstName: "",
@@ -97,20 +70,18 @@ function AppointmentForm() {
         preferred_date: "",
         preferred_time: "",
         service: "",
-        reason: "",
+        reason: ""
       });
       setTermsAccepted(false);
       setTermsRead(false);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Unable to submit appointment.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to submit appointment.");
     } finally {
       setLoading(false);
     }
   };
-
-  return (
-    <section className="appointment">
+  return <section className="appointment">
       <div className="appointment-card-container">
         <h1>Book Appointment</h1>
 
@@ -126,133 +97,54 @@ function AppointmentForm() {
 
         <form onSubmit={handleSubmit}>
           <div className="name-row">
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-            />
+            <input type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
 
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
+            <input type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
 
-            <input
-              type="text"
-              name="middleName"
-              placeholder="Middle Name"
-              value={formData.middleName}
-              onChange={handleChange}
-            />
+            <input type="text" name="middleName" placeholder="Middle Name" value={formData.middleName} onChange={handleChange} />
           </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address(e.g., example@email.com)"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <input type="email" name="email" placeholder="Email Address(e.g., example@email.com)" value={formData.email} onChange={handleChange} required />
 
-          <input
-            type="number"
-            name="phone"
-            placeholder="Phone Number(e.g., 09123456789)"
-            value={formData.phone}
-            onChange={handleChange}
-            maxLength={11}
-            required
-          />
+          <input type="number" name="phone" placeholder="Phone Number(e.g., 09123456789)" value={formData.phone} onChange={handleChange} maxLength={11} required />
 
           <div className="schedule-row">
             <div>
               <label>Preferred Date (Monday–Saturday)</label>
-              <input
-                type="date"
-                name="preferred_date"
-                value={formData.preferred_date}
-                onChange={handleChange}
-                min={today}
-                required
-              />
+              <input type="date" name="preferred_date" value={formData.preferred_date} onChange={handleChange} min={today} required />
             </div>
 
             <div>
               <label>Preferred Time (10:00 AM–6:00 PM)</label>
-              <input
-                type="time"
-                name="preferred_time"
-                value={formData.preferred_time}
-                onChange={handleChange}
-                min="10:00"
-                max="18:00"
-                step="60"
-                required
-              />
+              <input type="time" name="preferred_time" value={formData.preferred_time} onChange={handleChange} min="10:00" max="18:00" step="60" required />
             </div>
           </div>
 
-          <select
-            name="service"
-            value={formData.service}
-            onChange={handleChange}
-            required
-          >
+          <select name="service" value={formData.service} onChange={handleChange} required>
             <option value="">Select Service</option>
             <option value="">Select Service</option>
-            {SERVICES.map((service) => (
-              <option key={service} value={service}>
+            {SERVICES.map(service => <option key={service} value={service}>
                 {service}
-              </option>
-            ))}
+              </option>)}
           </select>
 
-          <textarea
-            name="reason"
-            rows="5"
-            placeholder="Reason for Visit(e.g., toothache, routine check-up, etc.)"
-            value={formData.reason}
-            onChange={handleChange}
-          />
+          <textarea name="reason" rows="5" placeholder="Reason for Visit(e.g., toothache, routine check-up, etc.)" value={formData.reason} onChange={handleChange} />
 
           <div className="appointment-terms">
             <label className="terms-check">
-              <input
-                type="checkbox"
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-                disabled={!termsRead}
-              />
+              <input type="checkbox" checked={termsAccepted} onChange={e => setTermsAccepted(e.target.checked)} disabled={!termsRead} />
               <span>
                 I have read and agree to the{" "}
-                <button
-                  type="button"
-                  className="terms-link"
-                  onClick={openTerms}
-                >
+                <button type="button" className="terms-link" onClick={openTerms}>
                   Terms and Conditions
                 </button>
                 .
               </span>
             </label>
 
-            {!termsRead && (
-              <button
-                type="button"
-                className="read-terms-button"
-                onClick={openTerms}
-              >
+            {!termsRead && <button type="button" className="read-terms-button" onClick={openTerms}>
                 Read Terms and Conditions
-              </button>
-            )}
+              </button>}
           </div>
 
           <button type="submit" disabled={loading || !termsAccepted}>
@@ -266,16 +158,9 @@ function AppointmentForm() {
         </form>
       </div>
 
-      {showTerms && (
-        <div
-          className="terms-modal-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="appointment-terms-title"
-          onMouseDown={(e) => {
-            if (e.target === e.currentTarget) setShowTerms(false);
-          }}
-        >
+      {showTerms && <div className="terms-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="appointment-terms-title" onMouseDown={e => {
+      if (e.target === e.currentTarget) setShowTerms(false);
+    }}>
           <div className="terms-modal">
             <div className="terms-modal-header">
               <div>
@@ -285,12 +170,7 @@ function AppointmentForm() {
                   request.
                 </p>
               </div>
-              <button
-                type="button"
-                className="terms-close"
-                aria-label="Close Terms and Conditions"
-                onClick={() => setShowTerms(false)}
-              >
+              <button type="button" className="terms-close" aria-label="Close Terms and Conditions" onClick={() => setShowTerms(false)}>
                 ×
               </button>
             </div>
@@ -345,23 +225,16 @@ function AppointmentForm() {
             </div>
 
             <div className="terms-modal-footer">
-              <button
-                type="button"
-                className="terms-agree-button"
-                onClick={() => {
-                  setTermsRead(true);
-                  setTermsAccepted(true);
-                  setShowTerms(false);
-                }}
-              >
+              <button type="button" className="terms-agree-button" onClick={() => {
+            setTermsRead(true);
+            setTermsAccepted(true);
+            setShowTerms(false);
+          }}>
                 I Have Read and Agree
               </button>
             </div>
           </div>
-        </div>
-      )}
-    </section>
-  );
+        </div>}
+    </section>;
 }
-
 export default AppointmentForm;

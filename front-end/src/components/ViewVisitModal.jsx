@@ -14,8 +14,6 @@ function ViewVisitModal({ patient, onClose }) {
     return () => { active = false; };
   }, [patient?.id]);
 
-
-
   return (
     <div className="viewv-modal-overlay">
       <div className="viewv-modal">

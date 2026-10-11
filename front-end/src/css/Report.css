@@ -140,16 +140,6 @@
   background: var(--color-primary-dark);
 }
 
-.report-error {
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  border: 1px solid #efcaca;
-  border-radius: 0px;
-  background: #fdecec;
-  color: #a83f3f;
-  font-size: 12px;
-}
-
 /* STATS */
 
 .reports-stats {
@@ -441,7 +431,7 @@
   }
 
   .card.report-chart-card,
-  .card.report-detail-card {
+.card.report-detail-card {
     padding: 14px;
   }
 

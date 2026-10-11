@@ -3,16 +3,12 @@ import { FaMoneyBillWave, FaSearch, FaPlus, FaTimes } from "react-icons/fa";
 import api from "../../api";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import "../../css/AdminPayment.css";
-
 import { formatDateOnly } from "../../utils/dateUtils";
-const money = (value) =>
-  Number(value || 0).toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
-const formatDate = (value) => formatDateOnly(value);
-
+const money = value => Number(value || 0).toLocaleString("en-PH", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+const formatDate = value => formatDateOnly(value);
 function AdminPayment() {
   const [records, setRecords] = useState([]);
   const [summary, setSummary] = useState({
@@ -20,94 +16,81 @@ function AdminPayment() {
     totalPaid: 0,
     totalBalance: 0,
     paidVisits: 0,
-    unpaidVisits: 0,
+    unpaidVisits: 0
   });
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [paymentVisit, setPaymentVisit] = useState(null);
   const [form, setForm] = useState({
     amount: "",
     payment_method: "Cash",
     reference_number: "",
-    notes: "",
+    notes: ""
   });
   const [saving, setSaving] = useState(false);
-
-  const loadBilling = useCallback(async ({ background = false } = {}) => {
+  const loadBilling = useCallback(async ({
+    background = false
+  } = {}) => {
     try {
       if (!background) setLoading(true);
-
-      const [recordsResponse, summaryResponse] = await Promise.all([
-        api.get("/billing", { params: { search, status } }),
-        api.get("/billing/summary"),
-      ]);
-      setRecords(
-        Array.isArray(recordsResponse.data) ? recordsResponse.data : [],
-      );
+      const [recordsResponse, summaryResponse] = await Promise.all([api.get("/billing", {
+        params: {
+          search,
+          status
+        }
+      }), api.get("/billing/summary")]);
+      setRecords(Array.isArray(recordsResponse.data) ? recordsResponse.data : []);
       setSummary(summaryResponse.data || {});
-      setError("");
     } catch (err) {
       console.error("Billing load error:", err);
-      if (!background) setError(
-        err.response?.data?.message || "Unable to load billing records.",
-      );
+      if (!background) {
+        if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to load billing records.");
+      }
     } finally {
       setLoading(false);
     }
   }, [search, status]);
-
   useAutoRefresh(loadBilling);
-
   useEffect(() => {
     const timer = setTimeout(loadBilling, 250);
     return () => clearTimeout(timer);
   }, [loadBilling]);
-
   const visibleRecords = useMemo(() => records, [records]);
-
-  const openPayment = (record) => {
+  const openPayment = record => {
     setPaymentVisit(record);
     setForm({
       amount: record.balance > 0 ? String(record.balance) : "",
       payment_method: "Cash",
       reference_number: "",
-      notes: "",
+      notes: ""
     });
   };
-
   const closePayment = () => {
     if (saving) return;
     setPaymentVisit(null);
-    setForm({ amount: "", payment_method: "Cash", notes: "" });
+    setForm({
+      amount: "",
+      payment_method: "Cash",
+      notes: ""
+    });
   };
-
-  const referenceRequired = ["GCash", "Card", "Bank Transfer"].includes(
-    form.payment_method,
-  );
-
-  const handlePayment = async (event) => {
+  const referenceRequired = ["GCash", "Card", "Bank Transfer"].includes(form.payment_method);
+  const handlePayment = async event => {
     event.preventDefault();
     const amount = Number(form.amount);
-
     if (!paymentVisit || !Number.isFinite(amount) || amount <= 0) {
-      alert("Enter a valid payment amount.");
+      window.alert("Enter a valid payment amount.");
       return;
     }
-
     if (amount > Number(paymentVisit.balance || 0)) {
-      alert("Payment cannot exceed the remaining balance.");
+      window.alert("Payment cannot exceed the remaining balance.");
       return;
     }
-
     if (referenceRequired && !form.reference_number.trim()) {
-      alert(
-        "Reference number is required for GCash, Card, or Bank Transfer payments.",
-      );
+      window.alert("Reference number is required for GCash, Card, or Bank Transfer payments.");
       return;
     }
-
     try {
       setSaving(true);
       const response = await api.post("/billing/payments", {
@@ -115,21 +98,19 @@ function AdminPayment() {
         amount,
         payment_method: form.payment_method,
         reference_number: form.reference_number.trim() || null,
-        notes: form.notes,
+        notes: form.notes
       });
-      alert(response.data?.message || "Payment recorded successfully.");
+      window.alert(response.data?.message || "Payment recorded successfully.");
       closePayment();
       await loadBilling();
     } catch (err) {
       console.error("Record payment error:", err);
-      alert(err.response?.data?.message || "Unable to record payment.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to record payment.");
     } finally {
       setSaving(false);
     }
   };
-
-  return (
-    <div className="admin-payment-page">
+  return <div className="admin-payment-page">
       <div className="admin-payment-header">
         <div>
           <h1>Billing & Payments</h1>
@@ -168,13 +149,9 @@ function AdminPayment() {
           <div className="billing-filters">
             <div className="billing-search">
               <FaSearch />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search patient, procedure, or visit ID..."
-              />
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search patient, procedure, or visit ID..." />
             </div>
-            <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <select value={status} onChange={e => setStatus(e.target.value)}>
               <option value="all">All Status</option>
               <option value="paid">Paid</option>
               <option value="balance">Balance Due</option>
@@ -182,8 +159,6 @@ function AdminPayment() {
             </select>
           </div>
         </div>
-
-        {error && <div className="billing-error">{error}</div>}
 
         <div className="billing-table-wrap">
           <table className="billing-table">
@@ -201,67 +176,42 @@ function AdminPayment() {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
+              {loading ? <tr>
                   <td colSpan="9" className="billing-empty">
                     Loading billing records...
                   </td>
-                </tr>
-              ) : visibleRecords.length === 0 ? (
-                <tr>
+                </tr> : visibleRecords.length === 0 ? <tr>
                   <td colSpan="9" className="billing-empty">
                     No billing records found.
                   </td>
-                </tr>
-              ) : (
-                visibleRecords.map((record) => (
-                  <tr key={record.id}>
+                </tr> : visibleRecords.map(record => <tr key={record.id}>
                     <td className="visit-id">#{record.id}</td>
                     <td>{formatDate(record.visit_date)}</td>
                     <td className="patient-name">{record.patient_name}</td>
                     <td>{record.procedure_name || "Dental Treatment"}</td>
                     <td>₱{money(record.total_charge)}</td>
                     <td className="paid-cell">₱{money(record.amount_paid)}</td>
-                    <td
-                      className={
-                        record.balance > 0 ? "balance-cell" : "zero-cell"
-                      }
-                    >
+                    <td className={record.balance > 0 ? "balance-cell" : "zero-cell"}>
                       ₱{money(record.balance)}
                     </td>
                     <td>
-                      <span
-                        className={`billing-status ${record.payment_status.toLowerCase().replace(/\s+/g, "-")}`}
-                      >
+                      <span className={`billing-status ${record.payment_status.toLowerCase().replace(/\s+/g, "-")}`}>
                         {record.payment_status}
                       </span>
                     </td>
                     <td>
-                      {record.balance > 0 ? (
-                        <button
-                          className="record-payment-btn"
-                          onClick={() => openPayment(record)}
-                        >
+                      {record.balance > 0 ? <button className="record-payment-btn" onClick={() => openPayment(record)}>
                           <FaPlus /> Record Payment
-                        </button>
-                      ) : (
-                        <span className="paid-label">Fully Paid</span>
-                      )}
+                        </button> : <span className="paid-label">Fully Paid</span>}
                     </td>
-                  </tr>
-                ))
-              )}
+                  </tr>)}
             </tbody>
           </table>
         </div>
       </div>
 
-      {paymentVisit && (
-        <div className="payment-modal-overlay" onMouseDown={closePayment}>
-          <div
-            className="payment-modal"
-            onMouseDown={(e) => e.stopPropagation()}
-          >
+      {paymentVisit && <div className="payment-modal-overlay" onMouseDown={closePayment}>
+          <div className="payment-modal" onMouseDown={e => e.stopPropagation()}>
             <div className="payment-modal-header">
               <div>
                 <span>RECORD PAYMENT</span>
@@ -289,24 +239,16 @@ function AdminPayment() {
 
             <form onSubmit={handlePayment}>
               <label>Payment Amount</label>
-              <input
-                type="number"
-                min="0.01"
-                max={paymentVisit.balance}
-                step="0.01"
-                value={form.amount}
-                onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                placeholder="0.00"
-                required
-              />
+              <input type="number" min="0.01" max={paymentVisit.balance} step="0.01" value={form.amount} onChange={e => setForm({
+            ...form,
+            amount: e.target.value
+          })} placeholder="0.00" required />
 
               <label>Payment Method</label>
-              <select
-                value={form.payment_method}
-                onChange={(e) =>
-                  setForm({ ...form, payment_method: e.target.value })
-                }
-              >
+              <select value={form.payment_method} onChange={e => setForm({
+            ...form,
+            payment_method: e.target.value
+          })}>
                 <option>Cash</option>
                 <option>GCash</option>
                 <option>Card</option>
@@ -318,53 +260,30 @@ function AdminPayment() {
                 {referenceRequired && <span className="required-mark"> *</span>}
               </label>
 
-              <input
-                type="text"
-                value={form.reference_number}
-                onChange={(e) =>
-                  setForm({ ...form, reference_number: e.target.value })
-                }
-                placeholder={
-                  referenceRequired
-                    ? "Enter transaction/reference number"
-                    : "Optional"
-                }
-                required={referenceRequired}
-              />
+              <input type="text" value={form.reference_number} onChange={e => setForm({
+            ...form,
+            reference_number: e.target.value
+          })} placeholder={referenceRequired ? "Enter transaction/reference number" : "Optional"} required={referenceRequired} />
 
               <label>
                 Notes <span>(optional)</span>
               </label>
-              <textarea
-                rows="3"
-                value={form.notes}
-                onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                placeholder="Additional notes..."
-              />
+              <textarea rows="3" value={form.notes} onChange={e => setForm({
+            ...form,
+            notes: e.target.value
+          })} placeholder="Additional notes..." />
 
               <div className="payment-modal-actions">
-                <button
-                  type="button"
-                  className="payment-cancel-btn"
-                  onClick={closePayment}
-                  disabled={saving}
-                >
+                <button type="button" className="payment-cancel-btn" onClick={closePayment} disabled={saving}>
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="payment-save-btn"
-                  disabled={saving}
-                >
+                <button type="submit" className="payment-save-btn" disabled={saving}>
                   <FaMoneyBillWave /> {saving ? "Saving..." : "Save Payment"}
                 </button>
               </div>
             </form>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 }
-
 export default AdminPayment;

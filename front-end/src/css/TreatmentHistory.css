@@ -19,7 +19,7 @@
   color: var(--color-heading);
 }
 
-.page-description {
+:where(.treatment-history-page) .page-description {
   margin: 8px 0 0;
   color: var(--color-muted);
   font-size: 13px;
@@ -31,7 +31,7 @@
   gap: 18px;
 }
 
-.treatment-card {
+:where(.treatment-history-page) .treatment-card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: 0px;
@@ -56,7 +56,7 @@
   color: #91a0ad;
 }
 
-.treatment-card h2 {
+:where(.treatment-history-page) .treatment-card h2 {
   margin: 0;
   font-size: 19px;
   color: var(--color-heading);
@@ -145,10 +145,6 @@
   color: var(--color-muted);
 }
 
-.treatment-message.error {
-  color: var(--color-danger);
-}
-
 .treatment-spinner {
   width: 28px;
   height: 28px;
@@ -163,18 +159,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.treatment-error-icon {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #fdeeee;
-  margin-bottom: 10px;
-  font-weight: 700;
 }
 
 .empty-treatment {

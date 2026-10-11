@@ -3,41 +3,33 @@ import API_BASE_URL from "../config/apiBase.js";
 import React, { useState } from "react";
 import axios from "axios";
 import "../css/CreateAccountModal.css";
-
-function CreateAccountModal({ patient, onClose }) {
+function CreateAccountModal({
+  patient,
+  onClose
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleCreateAccount = async (e) => {
+  const handleCreateAccount = async e => {
     e.preventDefault();
-
     try {
       const token = getAccessToken();
-
-      const res = await axios.post(
-        API_BASE_URL + "/create-account",
-        {
-          patient_id: patient.id,
-          fullname: patient.name,
-          email,
-          password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      alert(res.data.message);
+      const res = await axios.post(API_BASE_URL + "/create-account", {
+        patient_id: patient.id,
+        fullname: patient.name,
+        email,
+        password
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      window.alert(res.data.message);
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || "Unable to create account.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to create account.");
     }
   };
-
-  return (
-    <div className="modal-overlay">
+  return <div className="modal-overlay">
       <div className="modal-container">
         <h2>Create Patient Account</h2>
 
@@ -48,21 +40,11 @@ function CreateAccountModal({ patient, onClose }) {
 
           <label>Email</label>
 
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <input type="email" required value={email} onChange={e => setEmail(e.target.value)} />
 
           <label>Temporary Password</label>
 
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <input type="password" required value={password} onChange={e => setPassword(e.target.value)} />
 
           <div className="modal-buttons">
             <button type="submit" className="save-btn">
@@ -75,8 +57,6 @@ function CreateAccountModal({ patient, onClose }) {
           </div>
         </form>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default CreateAccountModal;

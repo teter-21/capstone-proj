@@ -150,14 +150,6 @@
   gap: 2px;
   align-items: start;
 }
-.upper-right-quadrant,
-.lower-right-quadrant {
-  padding-right: 10px;
-}
-.upper-left-quadrant,
-.lower-left-quadrant {
-  padding-left: 10px;
-}
 .odontogram-tooth {
   position: relative;
   width: 100%;
@@ -204,10 +196,6 @@
   color: #2f76b4;
   font-weight: 700;
 }
-.tooth-drawing {
-  display: block;
-  overflow: visible;
-}
 .simple-tooth {
   width: 42px;
   height: 76px;
@@ -220,35 +208,6 @@
   place-items: center;
   color: #7d8d9c;
   font-size: 12px;
-}
-.odontogram-legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-.legend-dot {
-  width: 9px;
-  height: 9px;
-  display: inline-block;
-  border-radius: 50%;
-}
-.legend-dot.healthy {
-  background: #8ca5b5;
-}
-.legend-dot.cavity {
-  background: #d76a5e;
-}
-.legend-dot.filled {
-  background: #5b9e8a;
-}
-.legend-dot.missing {
-  background: #8d99a3;
-}
-.legend-dot.cracked {
-  background: #d6a340;
-}
-.legend-dot.other {
-  background: #5c9ca4;
 }
 .tooth-editor {
   padding: 17px;
@@ -451,13 +410,6 @@
   .tooth-quadrant {
     padding: 0 2px 5px;
   }
-  .upper-right-quadrant,
-  .lower-right-quadrant,
-  .upper-left-quadrant,
-  .lower-left-quadrant {
-    padding-left: 2px;
-    padding-right: 2px;
-  }
   .quadrant-label {
     margin-bottom: 10px;
     font-size: 13px;
@@ -504,7 +456,7 @@
   .quadrant-grid {
     gap: 20px 10px;
   }
-    .odontogram-tooth {
+  .odontogram-tooth {
     height: 108px;
   }
   .quadrant-label {
@@ -513,7 +465,7 @@
   .tooth-number {
     font-size: 10px;
   }
-  }
+}
 
 /* Tooth picture: based directly on the simple tooth image supplied for the odontogram. */
 .tooth-drawing {
@@ -550,7 +502,6 @@
   line-height: 1;
   pointer-events: none;
 }
-
 
 @media (max-width: 760px) {
   .tooth-drawing {

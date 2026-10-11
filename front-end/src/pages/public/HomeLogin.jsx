@@ -7,59 +7,38 @@ import "../../css/HomeLogin.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import teethLogo from "../../assets/images/60x60modal-logo.png";
-
 function HomeLogin() {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleLogin = (e) => {
+  const handleLogin = e => {
     e.preventDefault();
-
-
-    axios
-      .post(`${API_BASE_URL}/login`, {
-        email: email,
-        password: password,
-      })
-      .then((res) => {
-        setAccessToken(res.data.token);
-
-        localStorage.setItem("role", res.data.role);
-
-        localStorage.setItem(
-          "is_main_admin",
-          String(res.data.is_main_admin || 0),
-        );
-
-        localStorage.setItem('must_change_password', res.data.mustChangePassword ? '1' : '0');
-        if (res.data.mustChangePassword) {
-          window.alert('Please set a stronger password before continuing.');
-          navigate(res.data.role === 'admin' ? '/Settings' : '/patient/profile');
-        } else if (res.data.role === "admin") {
-          navigate("/Dashboard");
-        } else if (res.data.role === "patient") {
-          navigate("/patient/dashboard");
-        } else {
-          alert("Unknown user role.");
-        }
-      })
-      .catch((err) => {
-        window.alert(err.response?.data?.message || "Unable to log in. Please try again.");
-
-      });
+    axios.post(`${API_BASE_URL}/login`, {
+      email: email,
+      password: password
+    }).then(res => {
+      setAccessToken(res.data.token);
+      localStorage.setItem("role", res.data.role);
+      localStorage.setItem("is_main_admin", String(res.data.is_main_admin || 0));
+      localStorage.setItem('must_change_password', res.data.mustChangePassword ? '1' : '0');
+      if (res.data.mustChangePassword) {
+        window.alert('Please set a stronger password before continuing.');
+        navigate(res.data.role === 'admin' ? '/Settings' : '/patient/profile');
+      } else if (res.data.role === "admin") {
+        navigate("/Dashboard");
+      } else if (res.data.role === "patient") {
+        navigate("/patient/dashboard");
+      } else {
+        window.alert("Unknown user role.");
+      }
+    }).catch(err => {
+      window.alert(err.response?.data?.message || "Unable to log in. Please try again.");
+    });
   };
-
-  return (
-    <div className="home-login">
+  return <div className="home-login">
       <div className="login-left">
         <div className="left-overlay">
-          <button
-            type="button"
-            className="back-home-btn"
-            onClick={() => navigate("/")}
-          >
+          <button type="button" className="back-home-btn" onClick={() => navigate("/")}>
             Home
           </button>
 
@@ -95,38 +74,24 @@ function HomeLogin() {
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <label>Email Address</label>
-              <input
-                type="email"
-                placeholder="name@example.com"
-                onChange={(e) => setEmail(e.target.value)}
-              />
+              <input type="email" placeholder="name@example.com" onChange={e => setEmail(e.target.value)} />
             </div>
 
             <div className="form-group">
               <label>Password</label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <input type="password" placeholder="••••••••" onChange={e => setPassword(e.target.value)} />
             </div>
 
             <button type="submit" className="login-btn">
               Sign In
             </button>
 
-            <button
-              type="button"
-              className="forgot-password-link"
-              onClick={() => navigate("/forgot-password")}
-            >
+            <button type="button" className="forgot-password-link" onClick={() => navigate("/forgot-password")}>
               Forgot Password?
             </button>
           </form>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default HomeLogin;

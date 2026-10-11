@@ -49,8 +49,6 @@ function PatientNotifications() {
   useEffect(() => { fetchNotifications(); }, []);
   useAutoRefresh(fetchNotifications);
 
-
-
   /* CLOSE WHEN CLICKING OUTSIDE */
 
   useEffect(() => {

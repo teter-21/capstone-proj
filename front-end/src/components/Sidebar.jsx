@@ -1,32 +1,15 @@
 import { endSession } from "../utils/session.js";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import {
-  FaTachometerAlt,
-  FaUserPlus,
-  FaUsers,
-  FaCog,
-  FaSignOutAlt,
-  FaCalendarAlt,
-  FaHeartbeat,
-  FaListOl,
-  FaMoneyBillWave,
-  FaStar,
-  FaChartBar,
-} from "react-icons/fa";
-
+import { FaTachometerAlt, FaUserPlus, FaUsers, FaCog, FaSignOutAlt, FaCalendarAlt, FaHeartbeat, FaListOl, FaMoneyBillWave, FaStar, FaChartBar } from "react-icons/fa";
 import dentalLogo from "../assets/images/60x60modal-logo.png";
 import api from "../api";
-
 function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [account, setAccount] = useState(null);
-
   useEffect(() => {
     let mounted = true;
-
     const loadAccount = async () => {
       try {
         const response = await api.get("/account");
@@ -35,39 +18,32 @@ function Sidebar() {
         console.error("Sidebar account error:", error);
       }
     };
-
     loadAccount();
-
     const handleDataUpdated = () => loadAccount();
     window.addEventListener("clinic:data-updated", handleDataUpdated);
     window.addEventListener("focus", loadAccount);
-
     return () => {
       mounted = false;
       window.removeEventListener("clinic:data-updated", handleDataUpdated);
       window.removeEventListener("focus", loadAccount);
     };
   }, []);
-
   const handleLogout = async () => {
-    try { await endSession(); navigate('/login'); }
-    catch (error) { window.alert(error.message); }
+    try {
+      await endSession();
+      navigate('/login');
+    } catch (error) {
+      if (!error?.nativeAlertHandled) window.alert(error.message);
+    }
   };
-
-  const isActive = (path) => {
+  const isActive = path => {
     return location.pathname === path;
   };
-
-  return (
-    <aside className="sidebar">
+  return <aside className="sidebar">
       {/* LOGO */}
 
       <div className="sidebar-logo">
-        <img
-          src={dentalLogo}
-          alt="Magno Dental Clinic"
-          className="sidebar-logo-image"
-        />
+        <img src={dentalLogo} alt="Magno Dental Clinic" className="sidebar-logo-image" />
 
         <div className="sidebar-brand">
           <h2>Magno Dental</h2>
@@ -153,7 +129,6 @@ function Sidebar() {
           </Link>
         </li>
 
-
         {/* Reports */}
 
         <li className={isActive("/Report") ? "active" : ""}>
@@ -199,36 +174,18 @@ function Sidebar() {
       {/* ADMIN CARD */}
 
       <div className="sidebar-bottom">
-        <div
-          className="sidebar-admin-card"
-          title={
-            account?.fullname ||
-            localStorage.getItem("fullname") ||
-            "Administrator"
-          }
-        >
+        <div className="sidebar-admin-card" title={account?.fullname || localStorage.getItem("fullname") || "Administrator"}>
           <div className="admin-avatar">
-            {(
-              account?.fullname ||
-              localStorage.getItem("fullname") ||
-              "Administrator"
-            )
-              .trim()
-              .charAt(0)
-              .toUpperCase()}
+            {(account?.fullname || localStorage.getItem("fullname") || "Administrator").trim().charAt(0).toUpperCase()}
           </div>
 
           <div className="admin-details">
             <h4>
-              {account?.fullname ||
-                localStorage.getItem("fullname") ||
-                "Administrator"}
+              {account?.fullname || localStorage.getItem("fullname") || "Administrator"}
             </h4>
 
             <span>
-              {account?.role === "admin"
-                ? "Administrator"
-                : account?.role || "Administrator"}
+              {account?.role === "admin" ? "Administrator" : account?.role || "Administrator"}
             </span>
           </div>
         </div>
@@ -239,8 +196,6 @@ function Sidebar() {
           <span>Logout</span>
         </button>
       </div>
-    </aside>
-  );
+    </aside>;
 }
-
 export default Sidebar;

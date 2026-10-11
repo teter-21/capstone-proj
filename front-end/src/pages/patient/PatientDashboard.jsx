@@ -3,142 +3,85 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import "../../css/PatientDashboard.css";
-import {
-  FaCalendarAlt,
-  FaTooth,
-  FaClock,
-  FaMoneyBillWave,
-  FaArrowRight,
-} from "react-icons/fa";
+import { FaCalendarAlt, FaTooth, FaClock, FaMoneyBillWave, FaArrowRight } from "react-icons/fa";
 import { formatDateOnly, getDateParts } from "../../utils/dateUtils";
-
 function PatientDashboard() {
   const [profile, setProfile] = useState(null);
   const [visits, setVisits] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
-
-  const loadPatientData = async ({ background = false } = {}) => {
+  const loadPatientData = async ({
+    background = false
+  } = {}) => {
     try {
       if (!background) setLoading(true);
-
-
-      const [profileRes, visitsRes, balanceRes, appointmentsRes] =
-        await Promise.all([
-          api.get("/my-profile"),
-          api.get("/my-visits"),
-          api.get("/my-balance"),
-          api.get("/my-appointments"),
-        ]);
-
+      const [profileRes, visitsRes, balanceRes, appointmentsRes] = await Promise.all([api.get("/my-profile"), api.get("/my-visits"), api.get("/my-balance"), api.get("/my-appointments")]);
       setProfile(profileRes.data);
       setVisits(Array.isArray(visitsRes.data) ? visitsRes.data : []);
       setBalance(Number(balanceRes.data?.total_balance || 0));
-      setAppointments(
-        Array.isArray(appointmentsRes.data) ? appointmentsRes.data : [],
-      );
-      setError("");
+      setAppointments(Array.isArray(appointmentsRes.data) ? appointmentsRes.data : []);
+      setError(false);
     } catch (requestError) {
       console.error("Patient dashboard error:", requestError);
-      if (!background) setError(
-        requestError.response?.data?.message ||
-          "Unable to load your information.",
-      );
+      if (!background) {
+        setError(true);
+        if (!requestError?.nativeAlertHandled) window.alert(requestError.response?.data?.message || "Unable to load your information.");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     loadPatientData();
   }, []);
-
   useAutoRefresh(loadPatientData);
-
-  const formatCurrency = (amount) =>
-    new Intl.NumberFormat("en-PH", {
-      style: "currency",
-      currency: "PHP",
-    }).format(Number(amount || 0));
-
-  const formatDate = (date) => formatDateOnly(date);
-
-  const formatTime = (time) => {
+  const formatCurrency = amount => new Intl.NumberFormat("en-PH", {
+    style: "currency",
+    currency: "PHP"
+  }).format(Number(amount || 0));
+  const formatDate = date => formatDateOnly(date);
+  const formatTime = time => {
     if (!time) return "—";
-
     const [hours, minutes] = time.split(":");
     const date = new Date();
     date.setHours(Number(hours), Number(minutes), 0, 0);
-
     return date.toLocaleTimeString("en-PH", {
       hour: "numeric",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
-
-  const getStatusClass = (status) => {
+  const getStatusClass = status => {
     const value = String(status || "Pending").toLowerCase();
-
     if (value === "approved" || value === "confirmed") return "approved";
     if (value === "completed") return "completed";
     if (value === "cancelled" || value === "rejected") return "cancelled";
     if (value === "rescheduled") return "rescheduled";
-
     return "pending";
   };
-
-  const getStatusLabel = (status) => {
+  const getStatusLabel = status => {
     const value = String(status || "Pending").toLowerCase();
-
     if (value === "approved") return "Approved";
     if (value === "confirmed") return "Confirmed";
     if (value === "completed") return "Completed";
     if (value === "cancelled" || value === "canceled") return "Cancelled";
     if (value === "rejected") return "Rejected";
     if (value === "rescheduled") return "Rescheduled";
-
     return "Pending";
   };
-
-  const upcomingAppointment = [...appointments]
-    .filter(
-      (appointment) =>
-        !["cancelled", "completed", "rejected"].includes(
-          String(appointment.status || "").toLowerCase(),
-        ),
-    )
-    .sort(
-      (a, b) =>
-        new Date(`${a.preferred_date} ${a.preferred_time || "00:00"}`) -
-        new Date(`${b.preferred_date} ${b.preferred_time || "00:00"}`),
-    )[0];
-
+  const upcomingAppointment = [...appointments].filter(appointment => !["cancelled", "completed", "rejected"].includes(String(appointment.status || "").toLowerCase())).sort((a, b) => new Date(`${a.preferred_date} ${a.preferred_time || "00:00"}`) - new Date(`${b.preferred_date} ${b.preferred_time || "00:00"}`))[0];
   if (loading) {
-    return (
-      <div className="patient-loading">
+    return <div className="patient-loading">
         <div className="patient-spinner"></div>
         <p>Loading your dashboard...</p>
-      </div>
-    );
+      </div>;
   }
-
   if (error) {
-    return (
-      <div className="patient-error">
-        <div className="patient-error-card">
-          <h2>Unable to Load Dashboard</h2>
-          <p>{error}</p>
-          <button onClick={loadPatientData}>Try Again</button>
-        </div>
-      </div>
-    );
+    return <button type="button" onClick={loadPatientData}>Try Again</button>;
   }
-
-  return (
-    <div className="patient-dashboard">
+  return <div className="patient-dashboard">
       <div className="patient-dashboard-header">
         <div>
           <h1>
@@ -196,21 +139,16 @@ function PatientDashboard() {
             </div>
           </div>
 
-          {upcomingAppointment ? (
-            <div className="upcoming-content">
+          {upcomingAppointment ? <div className="upcoming-content">
               <div className="appointment-date-box">
                 <span>
                   {(() => {
-                    const parts = getDateParts(
-                      upcomingAppointment.preferred_date,
-                    );
-                    if (!parts) return "—";
-                    return new Date(
-                      parts.year,
-                      parts.month - 1,
-                      parts.day,
-                    ).toLocaleDateString("en-PH", { month: "short" });
-                  })()}
+                const parts = getDateParts(upcomingAppointment.preferred_date);
+                if (!parts) return "—";
+                return new Date(parts.year, parts.month - 1, parts.day).toLocaleDateString("en-PH", {
+                  month: "short"
+                });
+              })()}
                 </span>
                 <strong>
                   {getDateParts(upcomingAppointment.preferred_date)?.day || "—"}
@@ -223,24 +161,17 @@ function PatientDashboard() {
                   {formatDate(upcomingAppointment.preferred_date)} •{" "}
                   {formatTime(upcomingAppointment.preferred_time)}
                 </p>
-                <span
-                  className={`appointment-status-patient ${getStatusClass(
-                    upcomingAppointment.status,
-                  )}`}
-                >
+                <span className={`appointment-status-patient ${getStatusClass(upcomingAppointment.status)}`}>
                   {getStatusLabel(upcomingAppointment.status)}
                 </span>
               </div>
-            </div>
-          ) : (
-            <div className="empty-state">
+            </div> : <div className="empty-state">
               <div>
                 <FaClock />
               </div>
               <h3>No upcoming appointments</h3>
               <p>You don't have an upcoming appointment.</p>
-            </div>
-          )}
+            </div>}
         </div>
 
         <div className="patientD-card profile-summary">
@@ -279,26 +210,19 @@ function PatientDashboard() {
             <h2>My Appointments</h2>
           </div>
 
-          <button
-            className="patient-book-button"
-            onClick={() => navigate("/patient/book-appointment")}
-          >
+          <button className="patient-book-button" onClick={() => navigate("/patient/book-appointment")}>
             Book Appointment
           </button>
         </div>
 
-        {appointments.length === 0 ? (
-          <div className="empty-state appointment-empty">
+        {appointments.length === 0 ? <div className="empty-state appointment-empty">
             <div>
               <FaCalendarAlt />
             </div>
             <h3>No appointments yet</h3>
             <p>Book an appointment to see it here.</p>
-          </div>
-        ) : (
-          <div className="dashboard-appointments-list">
-            {appointments.map((appointment) => (
-              <div className="dashboard-appointment-row" key={appointment.id}>
+          </div> : <div className="dashboard-appointments-list">
+            {appointments.map(appointment => <div className="dashboard-appointment-row" key={appointment.id}>
                 <div className="dashboard-appointment-main">
                   <div className="dashboard-appointment-icon">
                     <FaTooth />
@@ -315,22 +239,14 @@ function PatientDashboard() {
                 </div>
 
                 <div className="dashboard-appointment-right">
-                  <span
-                    className={`appointment-status-patient ${getStatusClass(
-                      appointment.status,
-                    )}`}
-                  >
+                  <span className={`appointment-status-patient ${getStatusClass(appointment.status)}`}>
                     {getStatusLabel(appointment.status)}
                   </span>
 
-                  {appointment.queue_status && (
-                    <small>Queue: {appointment.queue_status}</small>
-                  )}
+                  {appointment.queue_status && <small>Queue: {appointment.queue_status}</small>}
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              </div>)}
+          </div>}
       </div>
 
       <div className="patientD-card treatment-card">
@@ -340,24 +256,18 @@ function PatientDashboard() {
             <h2>Recent Treatment History</h2>
           </div>
 
-          <button
-            className="patient-text-button"
-            onClick={() => navigate("/patient/treatments")}
-          >
+          <button className="patient-text-button" onClick={() => navigate("/patient/treatments")}>
             View History
           </button>
         </div>
 
-        {visits.length === 0 ? (
-          <div className="empty-state">
+        {visits.length === 0 ? <div className="empty-state">
             <div>
               <FaTooth />
             </div>
             <h3>No treatment records</h3>
             <p>Your treatment history will appear here.</p>
-          </div>
-        ) : (
-          <div className="treatment-table-wrapper">
+          </div> : <div className="treatment-table-wrapper">
             <table className="treatment-table">
               <thead>
                 <tr>
@@ -369,8 +279,7 @@ function PatientDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {visits.slice(0, 5).map((visit) => (
-                  <tr key={visit.id}>
+                {visits.slice(0, 5).map(visit => <tr key={visit.id}>
                     <td>{formatDate(visit.visit_date)}</td>
                     <td>
                       <strong>{visit.procedure_name || "—"}</strong>
@@ -378,25 +287,15 @@ function PatientDashboard() {
                     <td>{visit.complain || "—"}</td>
                     <td>{formatCurrency(visit.amount_paid)}</td>
                     <td>
-                      <span
-                        className={
-                          Number(visit.balance) > 0
-                            ? "balance-due"
-                            : "balance-paid"
-                        }
-                      >
+                      <span className={Number(visit.balance) > 0 ? "balance-due" : "balance-paid"}>
                         {formatCurrency(visit.balance)}
                       </span>
                     </td>
-                  </tr>
-                ))}
+                  </tr>)}
               </tbody>
             </table>
-          </div>
-        )}
+          </div>}
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default PatientDashboard;

@@ -19,7 +19,7 @@
   color: var(--color-heading);
 }
 
-.page-description {
+:where(.payments-page) .page-description {
   margin: 8px 0 0;
   color: var(--color-muted);
   font-size: 13px;
@@ -269,10 +269,6 @@
   color: var(--color-muted);
 }
 
-.payments-message.error {
-  color: var(--color-danger);
-}
-
 .payments-spinner {
   width: 28px;
   height: 28px;
@@ -287,18 +283,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.payments-error-icon {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-  border-radius: 50%;
-  background: #fdeeee;
-  font-weight: 700;
 }
 
 @media (max-width: 1000px) {

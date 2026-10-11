@@ -35,21 +35,10 @@
   color: var(--color-heading);
 }
 
-.page-description {
+:where(.my-appointments-page) .page-description {
   margin: 8px 0 0;
   color: var(--color-muted);
   font-size: 13px;
-}
-
-.appointment-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-green-soft);
-  font-size: 23px;
 }
 
 .appointments-container {
@@ -95,7 +84,7 @@
   color: var(--color-heading);
 }
 
-.appointment-status {
+:where(.my-appointments-page) .appointment-status {
   padding: 7px 12px;
   border-radius: 20px;
   font-size: 10px;
@@ -103,29 +92,19 @@
   text-transform: capitalize;
 }
 
-.appointment-status.pending {
+:where(.my-appointments-page) .appointment-status.pending {
   background: var(--color-warning-soft);
   color: var(--color-warning);
 }
 
-.appointment-status.confirmed {
-  background: var(--color-green-soft);
-  color: var(--color-success);
-}
-
-.appointment-status.completed {
+:where(.my-appointments-page) .appointment-status.completed {
   background: var(--color-blue-soft);
   color: var(--color-primary);
 }
 
-.appointment-status.cancelled {
+:where(.my-appointments-page) .appointment-status.cancelled {
   background: var(--color-danger-soft);
   color: var(--color-danger);
-}
-
-.appointment-status.rescheduled {
-  background: var(--color-border);
-  color: var(--color-green-dark);
 }
 
 .appointment-details {
@@ -168,35 +147,31 @@
   color: var(--color-text);
 }
 
-.appointment-reason {
+:where(.my-appointments-page) .appointment-reason {
   padding-top: 18px;
   border-top: 1px solid var(--color-border);
 }
 
-.appointment-reason span {
+:where(.my-appointments-page) .appointment-reason span {
   font-size: 10px;
   font-weight: 700;
   color: var(--color-muted);
 }
 
-.appointment-reason p {
+:where(.my-appointments-page) .appointment-reason p {
   margin: 6px 0 0;
   font-size: 13px;
   line-height: 1.6;
   color: var(--color-text);
 }
 
-.appointment-message {
+:where(.my-appointments-page) .appointment-message {
   min-height: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: var(--color-muted);
-}
-
-.appointment-message.error {
-  color: var(--color-danger);
 }
 
 .loading-spinner {
@@ -251,32 +226,24 @@
   font-size: 13px;
 }
 
-.appointment-status.approved {
+:where(.my-appointments-page) .appointment-status.approved {
   background: var(--color-green-soft);
   color: var(--color-success);
 }
 
-.appointment-status.rejected {
+:where(.my-appointments-page) .appointment-status.rejected {
   background: var(--color-danger-soft);
   color: var(--color-danger);
 }
 
-.appointment-status.confirmed {
+:where(.my-appointments-page) .appointment-status.confirmed {
   background: var(--color-green-soft);
   color: var(--color-success);
 }
 
-.appointment-status.rescheduled {
+:where(.my-appointments-page) .appointment-status.rescheduled {
   background: var(--color-border);
   color: var(--color-green-dark);
-}
-
-.appointment-status-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
 }
 
 .appointment-queue-status {
@@ -296,11 +263,6 @@
   color: var(--color-primary);
 }
 
-.appointment-queue-status.in-treatment {
-  background: var(--color-border);
-  color: var(--color-green-dark);
-}
-
 .appointment-queue-status.completed {
   background: var(--color-green-soft);
   color: var(--color-success);
@@ -314,12 +276,6 @@
 .appointment-queue-status.cancelled {
   background: var(--color-danger-soft);
   color: var(--color-danger);
-}
-
-@media (max-width: 550px) {
-  .appointment-status-group {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 800px) {
@@ -336,10 +292,6 @@
 @media (max-width: 550px) {
   .appointments-header {
     align-items: flex-start;
-  }
-
-  .appointment-icon {
-    display: none;
   }
 
   .appointment-card-header {

@@ -64,22 +64,9 @@
 
 /* MODERN RESPONSIVE OVERRIDES */
 
-img {
-  max-width: 100%;
-}
-
-button,
-input,
-select,
-textarea {
-  max-width: 100%;
-}
-
 @media (max-width: 680px) {
   .about {
     display: block;
-    justify-content: none;
-    flex-wrap: none;
   }
 
   .about-image {

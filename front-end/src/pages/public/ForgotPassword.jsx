@@ -5,34 +5,25 @@ import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import "../../css/HomeLogin.css";
 import "../../css/PasswordReset.css";
-
 function ForgotPassword() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     setLoading(true);
-
     try {
       const response = await axios.post(API_BASE_URL + "/forgot-password", {
-        email,
+        email
       });
-      setMessage(response.data.message);
+      if (!response.nativeAlertHandled) window.alert(response.data.message);
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to send the reset link.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to send the reset link.");
     } finally {
       setLoading(false);
     }
   };
-
-  return (
-    <div className="password-page">
+  return <div className="password-page">
       <div className="password-card">
         <button className="password-back" onClick={() => navigate("/login")}>
           Back to Login
@@ -46,24 +37,14 @@ function ForgotPassword() {
 
         <form onSubmit={handleSubmit}>
           <label>Email Address</label>
-          <input
-            type="email"
-            value={email}
-            placeholder="name@example.com"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input type="email" value={email} placeholder="name@example.com" onChange={e => setEmail(e.target.value)} required />
 
           <button type="submit" className="password-submit" disabled={loading}>
             {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
 
-        {message && <div className="password-success">{message}</div>}
-        {error && <div className="password-error">{error}</div>}
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default ForgotPassword;

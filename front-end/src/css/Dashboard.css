@@ -227,12 +227,6 @@
 
 /* TOP PROCEDURES */
 
-.top-procedure h3 {
-  font-size: 16px;
-
-  color: var(--color-heading);
-}
-
 .sub-text {
   font-size: 12px;
 
@@ -241,60 +235,6 @@
   margin-top: 5px;
 
   margin-bottom: 25px;
-}
-
-.progress-item {
-  margin-bottom: 20px;
-}
-
-.progress-label {
-  display: flex;
-
-  justify-content: space-between;
-
-  margin-bottom: 8px;
-
-  font-size: 12px;
-
-  color: var(--color-text);
-}
-
-.progress-label span:last-child {
-  font-weight: 600;
-
-  color: var(--color-primary);
-}
-
-.progress-bar {
-  width: 100%;
-
-  height: 7px;
-
-  background: var(--color-border);
-
-  border-radius: 10px;
-
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-
-  background: var(--color-primary);
-
-  border-radius: 10px;
-}
-
-.details-link {
-  display: inline-block;
-
-  margin-top: 5px;
-
-  color: var(--color-primary);
-
-  font-size: 12px;
-
-  font-weight: 600;
 }
 
 /* PATIENT SECTION */
@@ -358,34 +298,6 @@
 }
 
 /* HEADER */
-
-.view-all-patients {
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  color: var(--color-primary);
-
-  font-size: 12px;
-
-  font-weight: 600;
-
-  text-decoration: none;
-
-  transition: 0.2s;
-}
-
-.view-all-patients:hover {
-  color: var(--color-primary-dark);
-
-  gap: 10px;
-}
-
-.view-all-patients svg {
-  font-size: 9px;
-}
 
 /* TABLE */
 
@@ -459,7 +371,7 @@
   min-width: 190px;
 }
 
-.patient-avatar {
+:where(.dashboard) .patient-avatar {
   width: 38px;
 
   height: 38px;
@@ -579,10 +491,6 @@
   font-size: 13px !important;
 }
 
-.table-message.error {
-  color: var(--color-danger) !important;
-}
-
 /* DASHBOARD CHART */
 
 .monthly-revenue-card {
@@ -613,147 +521,9 @@
 
 /* TOP PROCEDURES */
 
-.top-procedure {
-  min-height: 350px;
-
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  border-radius: 0;
-  padding: 22px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
-  transition: 0.2s;
-}
-
-.procedure-card-header {
-  display: flex;
-
-  align-items: flex-start;
-
-  justify-content: space-between;
-
-  margin-bottom: 24px;
-}
-
-.procedure-card-header h3 {
-  font-size: 16px;
-
-  color: var(--color-heading);
-}
-
-.procedure-icon {
-  width: 38px;
-
-  height: 38px;
-
-  border-radius: 9px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: var(--color-blue-soft);
-
-  color: var(--color-primary);
-
-  font-size: 15px;
-}
-
 /* PROCEDURE LIST */
 
-.procedure-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 19px;
-}
-
-.progress-item {
-  margin: 0;
-}
-
-.progress-label {
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  margin-bottom: 8px;
-}
-
-.progress-label span:first-child {
-  font-size: 12px;
-
-  font-weight: 600;
-
-  color: var(--color-text);
-}
-
-.progress-label span:last-child {
-  font-size: 11px;
-
-  font-weight: 500;
-
-  color: var(--color-muted-light);
-}
-
-.progress-bar {
-  width: 100%;
-
-  height: 7px;
-
-  background: var(--color-border);
-
-  border-radius: 10px;
-
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-
-  background: var(--color-primary);
-
-  border-radius: 10px;
-
-  transition: width 0.5s ease;
-}
-
-.procedure-percentage {
-  margin-top: 5px;
-
-  font-size: 9px;
-
-  color: var(--color-muted-light);
-}
-
 /* PROCEDURE MESSAGE */
-
-.procedure-message {
-  min-height: 230px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 10px;
-
-  color: var(--color-muted-light);
-
-  font-size: 12px;
-}
-
-.procedure-message svg {
-  font-size: 25px;
-}
 
 /* RESPONSIVENESS */
 
@@ -875,15 +645,6 @@
   padding: 0 9px;
   font-size: 11px;
   font-weight: 600;
-}
-
-.calendar-error {
-  padding: 8px 10px;
-  margin-bottom: 10px;
-  background: var(--color-danger-soft, #fef2f2);
-  color: var(--color-danger);
-  border: 1px solid var(--color-border);
-  font-size: 11px;
 }
 
 .calendar-content {

@@ -4,7 +4,6 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "../../App.css";
 import "../../css/PasswordReset.css";
-
 function ResetPassword() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -12,68 +11,49 @@ function ResetPassword() {
   const [valid, setValid] = useState(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const verify = async () => {
       if (!token) {
         setValid(false);
-        setError("This reset link is invalid or missing.");
+        window.alert("This reset link is invalid or missing.");
         return;
       }
-
       try {
-        await axios.get(
-          `${API_BASE_URL}/verify-reset-token?token=${encodeURIComponent(token)}`,
-        );
+        await axios.get(`${API_BASE_URL}/verify-reset-token?token=${encodeURIComponent(token)}`);
         setValid(true);
       } catch (err) {
         setValid(false);
-        setError(
-          err.response?.data?.message ||
-            "This reset link is invalid or has expired.",
-        );
+        if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "This reset link is invalid or has expired.");
       }
     };
-
     verify();
   }, [token]);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setMessage("");
-    setError("");
-
     if (password.length < 12) {
-      setError("Password must be at least 12 characters.");
+      window.alert("Password must be at least 12 characters.");
       return;
     }
-
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      window.alert("Passwords do not match.");
       return;
     }
-
     setLoading(true);
-
     try {
       const response = await axios.post(API_BASE_URL + "/reset-password", {
         token,
-        newPassword: password,
+        newPassword: password
       });
-      setMessage(response.data.message);
-      setTimeout(() => navigate("/login"), 1800);
+      if (!response.nativeAlertHandled) window.alert(response.data.message);
+      navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to reset the password.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to reset the password.");
     } finally {
       setLoading(false);
     }
   };
-
-  return (
-    <div className="password-page">
+  return <div className="password-page">
       <div className="password-card">
         <button className="password-back" onClick={() => navigate("/login")}>
           Back to Login
@@ -81,48 +61,24 @@ function ResetPassword() {
 
         <h1>Reset Password</h1>
 
-        {valid === null ? (
-          <p className="password-intro">Checking your reset link...</p>
-        ) : valid ? (
-          <>
+        {valid === null ? <p className="password-intro">Checking your reset link...</p> : valid ? <>
             <p className="password-intro">
               Create a new password for your account.
             </p>
             <form onSubmit={handleSubmit}>
               <label>New Password</label>
-              <input
-                type="password"
-                value={password}
-                placeholder="At least 12 characters"
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <input type="password" value={password} placeholder="At least 12 characters" onChange={e => setPassword(e.target.value)} required />
 
               <label>Confirm Password</label>
-              <input
-                type="password"
-                value={confirmPassword}
-                placeholder="Enter your password again"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <input type="password" value={confirmPassword} placeholder="Enter your password again" onChange={e => setConfirmPassword(e.target.value)} required />
 
-              <button
-                type="submit"
-                className="password-submit"
-                disabled={loading}
-              >
+              <button type="submit" className="password-submit" disabled={loading}>
                 {loading ? "Saving..." : "Change Password"}
               </button>
             </form>
-          </>
-        ) : null}
+          </> : null}
 
-        {message && <div className="password-success">{message}</div>}
-        {error && <div className="password-error">{error}</div>}
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default ResetPassword;

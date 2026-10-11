@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import SERVICES from "../config/services";
 import axios from "axios";
 import "../css/TreatmentVisitModal.css";
-
 function getToday() {
   const now = new Date();
   const year = now.getFullYear();
@@ -12,15 +11,17 @@ function getToday() {
   const day = String(now.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
-
 function getCurrentTime() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
 }
-
-function TreatmentVisitModal({ patient, onClose, onCompleted }) {
+function TreatmentVisitModal({
+  patient,
+  onClose,
+  onCompleted
+}) {
   const [formData, setFormData] = useState({
     visit_date: getToday(),
     visit_time: getCurrentTime(),
@@ -28,11 +29,9 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
     complain: patient?.reason || "",
     description: "",
     amount_paid: "",
-    balance: "",
+    balance: ""
   });
-
   const [saving, setSaving] = useState(false);
-
   useEffect(() => {
     setFormData({
       visit_date: getToday(),
@@ -41,89 +40,52 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
       complain: patient?.reason || "",
       description: "",
       amount_paid: "",
-      balance: "",
+      balance: ""
     });
   }, [patient]);
-
-  const procedures = [
-    "Dental Check-up",
-    "Teeth Cleaning",
-    "Tooth Extraction",
-    "Wisdom Tooth Removal",
-    "Tooth Filling",
-    "Root Canal Treatment",
-    "Braces Adjustment",
-    "Teeth Whitening",
-    "Dental Crown",
-    "Dental Bridge",
-    "Dentures",
-    "X-Ray",
-    "Consultation",
-  ];
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormData((previous) => ({
+  const procedures = ["Dental Check-up", "Teeth Cleaning", "Tooth Extraction", "Wisdom Tooth Removal", "Tooth Filling", "Root Canal Treatment", "Braces Adjustment", "Teeth Whitening", "Dental Crown", "Dental Bridge", "Dentures", "X-Ray", "Consultation"];
+  const handleChange = event => {
+    const {
+      name,
+      value
+    } = event.target;
+    setFormData(previous => ({
       ...previous,
-      [name]: value,
+      [name]: value
     }));
   };
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
-
-    if (
-      !formData.visit_date ||
-      !formData.visit_time ||
-      !formData.procedure_name
-    ) {
-      alert("Please complete the date, time, and procedure.");
+    if (!formData.visit_date || !formData.visit_time || !formData.procedure_name) {
+      window.alert("Please complete the date, time, and procedure.");
       return;
     }
-
     try {
       setSaving(true);
-
       const token = getAccessToken();
-
-      const response = await axios.post(
-        `${API_BASE_URL}/queue/${patient.id}/complete-treatment`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      alert(response.data?.message || "Treatment completed and visit saved.");
-
+      const response = await axios.post(`${API_BASE_URL}/queue/${patient.id}/complete-treatment`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      window.alert(response.data?.message || "Treatment completed and visit saved.");
       if (onCompleted) {
         await onCompleted();
       }
-
       onClose();
     } catch (error) {
       console.error("Complete treatment error:", error);
-
-      alert(error.response?.data?.message || "Unable to complete treatment.");
+      if (!error?.nativeAlertHandled) window.alert(error.response?.data?.message || "Unable to complete treatment.");
     } finally {
       setSaving(false);
     }
   };
-
   if (!patient) {
     return null;
   }
-
-  return (
-    <div className="treatment-modal-overlay" onMouseDown={onClose}>
-      <div
-        className="treatment-modal"
-        onMouseDown={(event) => event.stopPropagation()}
-      >
+  return <div className="treatment-modal-overlay" onMouseDown={onClose}>
+      <div className="treatment-modal" onMouseDown={event => event.stopPropagation()}>
         <div className="treatment-modal-header">
           <div>
             <span className="treatment-modal-label">COMPLETE TREATMENT</span>
@@ -137,12 +99,7 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="treatment-close"
-            onClick={onClose}
-            disabled={saving}
-          >
+          <button type="button" className="treatment-close" onClick={onClose} disabled={saving}>
             ×
           </button>
         </div>
@@ -169,108 +126,56 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
             <div className="treatment-form-group">
               <label>Visit Date</label>
 
-              <input
-                type="date"
-                name="visit_date"
-                value={formData.visit_date}
-                onChange={handleChange}
-                required
-              />
+              <input type="date" name="visit_date" value={formData.visit_date} onChange={handleChange} required />
             </div>
 
             <div className="treatment-form-group">
               <label>Visit Time</label>
 
-              <input
-                type="time"
-                name="visit_time"
-                value={formData.visit_time}
-                onChange={handleChange}
-                required
-              />
+              <input type="time" name="visit_time" value={formData.visit_time} onChange={handleChange} required />
             </div>
           </div>
 
           <div className="treatment-form-group">
             <label>Procedure</label>
 
-            <select
-              name="procedure_name"
-              value={formData.procedure_name}
-              onChange={handleChange}
-              required
-            >
+            <select name="procedure_name" value={formData.procedure_name} onChange={handleChange} required>
               <option value="">Select procedure</option>
 
-              {procedures.map((procedure) => (
-                <option key={procedure} value={procedure}>
+              {procedures.map(procedure => <option key={procedure} value={procedure}>
                   {procedure}
-                </option>
-              ))}
+                </option>)}
             </select>
           </div>
 
           <div className="treatment-form-group">
             <label>Complaint</label>
 
-            <input
-              type="text"
-              name="complain"
-              value={formData.complain}
-              onChange={handleChange}
-              placeholder="Patient complaint"
-            />
+            <input type="text" name="complain" value={formData.complain} onChange={handleChange} placeholder="Patient complaint" />
           </div>
 
           <div className="treatment-form-group">
             <label>Treatment / Description</label>
 
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Record the treatment performed, findings, or dentist notes..."
-              rows="4"
-            />
+            <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Record the treatment performed, findings, or dentist notes..." rows="4" />
           </div>
 
           <div className="treatment-form-row">
             <div className="treatment-form-group">
               <label>Amount Paid</label>
 
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                name="amount_paid"
-                value={formData.amount_paid}
-                onChange={handleChange}
-                placeholder="0.00"
-              />
+              <input type="number" min="0" step="0.01" name="amount_paid" value={formData.amount_paid} onChange={handleChange} placeholder="0.00" />
             </div>
 
             <div className="treatment-form-group">
               <label>Balance</label>
 
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                name="balance"
-                value={formData.balance}
-                onChange={handleChange}
-                placeholder="0.00"
-              />
+              <input type="number" min="0" step="0.01" name="balance" value={formData.balance} onChange={handleChange} placeholder="0.00" />
             </div>
           </div>
 
           <div className="treatment-form-actions">
-            <button
-              type="button"
-              className="treatment-cancel"
-              onClick={onClose}
-              disabled={saving}
-            >
+            <button type="button" className="treatment-cancel" onClick={onClose} disabled={saving}>
               Cancel
             </button>
 
@@ -280,8 +185,6 @@ function TreatmentVisitModal({ patient, onClose, onCompleted }) {
           </div>
         </form>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default TreatmentVisitModal;

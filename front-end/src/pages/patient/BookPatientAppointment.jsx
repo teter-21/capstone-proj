@@ -1,9 +1,5 @@
 import { getAccessToken } from "../../utils/session.js";
-import {
-  validateSchedule,
-  clinicToday,
-  isSunday,
-} from "../../utils/appointmentSchedule";
+import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
 import SERVICES from "../../config/services";
@@ -11,98 +7,59 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../css/BookPatientAppointment.css";
 import { FaCalendarAlt } from "react-icons/fa";
-
 function BookPatientAppointment() {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     preferred_date: "",
     preferred_time: "",
     service: "",
-    reason: "",
+    reason: ""
   });
-
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-
-  const handleChange = (e) => {
+  const handleChange = e => {
     if (e.target.name === "preferred_date" && isSunday(e.target.value)) {
-      window.alert(
-        "Appointments are available Monday to Saturday only. Please choose another date.",
-      );
+      window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
       return;
     }
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const invalidSchedule = validateSchedule(
-      formData.preferred_date,
-      formData.preferred_time,
-    );
+    const invalidSchedule = validateSchedule(formData.preferred_date, formData.preferred_time);
     if (invalidSchedule) {
       window.alert(invalidSchedule);
       return;
     }
-
-    setMessage("");
-    setError("");
-
-    if (
-      !formData.preferred_date ||
-      !formData.preferred_time ||
-      !formData.service
-    ) {
-      setError("Please complete the required fields.");
-
+    if (!formData.preferred_date || !formData.preferred_time || !formData.service) {
+      window.alert("Please complete the required fields.");
       return;
     }
-
     try {
       setLoading(true);
-
       const token = getAccessToken();
-
-      const response = await axios.post(
-        API_BASE_URL + "/patient/appointment",
-
-        formData,
-
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      setMessage(
-        response.data.message || "Appointment submitted successfully.",
-      );
-
+      const response = await axios.post(API_BASE_URL + "/patient/appointment", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!response.nativeAlertHandled) window.alert(response.data.message || "Appointment submitted successfully.");
       setFormData({
         preferred_date: "",
         preferred_time: "",
         service: "",
-        reason: "",
+        reason: ""
       });
     } catch (err) {
       console.error("Patient appointment error:", err);
-
-      setError(
-        err.response?.data?.message || "Unable to book your appointment.",
-      );
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to book your appointment.");
     } finally {
       setLoading(false);
     }
   };
-
-  return (
-    <div className="book-patient-page">
+  return <div className="book-patient-page">
       <div className="book-patient-header">
         <div>
           <p className="page-label">PATIENT PORTAL</p>
@@ -120,10 +77,6 @@ function BookPatientAppointment() {
           <p>Please select your preferred schedule and service.</p>
         </div>
 
-        {message && <div className="appointment-success">✓ {message}</div>}
-
-        {error && <div className="appointment-error">{error}</div>}
-
         <form onSubmit={handleSubmit}>
           <div className="patient-form-row">
             <div className="patient-form-group">
@@ -132,13 +85,7 @@ function BookPatientAppointment() {
                 <span>*</span>
               </label>
 
-              <input
-                type="date"
-                name="preferred_date"
-                value={formData.preferred_date}
-                min={clinicToday()}
-                onChange={handleChange}
-              />
+              <input type="date" name="preferred_date" value={formData.preferred_date} min={clinicToday()} onChange={handleChange} />
             </div>
 
             <div className="patient-form-group">
@@ -147,16 +94,7 @@ function BookPatientAppointment() {
                 <span>*</span>
               </label>
 
-              <input
-                type="time"
-                min="10:00"
-                max="18:00"
-                step="60"
-                required
-                name="preferred_time"
-                value={formData.preferred_time}
-                onChange={handleChange}
-              />
+              <input type="time" min="10:00" max="18:00" step="60" required name="preferred_time" value={formData.preferred_time} onChange={handleChange} />
             </div>
           </div>
 
@@ -166,54 +104,32 @@ function BookPatientAppointment() {
               <span>*</span>
             </label>
 
-            <select
-              name="service"
-              value={formData.service}
-              onChange={handleChange}
-            >
+            <select name="service" value={formData.service} onChange={handleChange}>
               <option value="">Select a service</option>
 
-              {SERVICES.map((service) => (
-                <option key={service} value={service}>
+              {SERVICES.map(service => <option key={service} value={service}>
                   {service}
-                </option>
-              ))}
+                </option>)}
             </select>
           </div>
 
           <div className="patient-form-group">
             <label>Reason for Visit</label>
 
-            <textarea
-              name="reason"
-              value={formData.reason}
-              onChange={handleChange}
-              placeholder="Tell us briefly why you would like to visit..."
-              rows="5"
-            />
+            <textarea name="reason" value={formData.reason} onChange={handleChange} placeholder="Tell us briefly why you would like to visit..." rows="5" />
           </div>
 
           <div className="patient-form-actions">
-            <button
-              type="button"
-              className="patient-cancel-btn"
-              onClick={() => navigate("/patient/appointments")}
-            >
+            <button type="button" className="patient-cancel-btn" onClick={() => navigate("/patient/appointments")}>
               Cancel
             </button>
 
-            <button
-              type="submit"
-              className="patient-book-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="patient-book-btn" disabled={loading}>
               {loading ? "Submitting..." : "Book Appointment"}
             </button>
           </div>
         </form>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default BookPatientAppointment;

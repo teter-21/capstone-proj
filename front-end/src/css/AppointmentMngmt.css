@@ -66,22 +66,6 @@
 
 /* ERROR */
 
-.appointment-error {
-  padding: 13px 16px;
-
-  margin-bottom: 18px;
-
-  border-radius: 0px;
-
-  background: var(--color-danger-soft);
-
-  color: var(--color-danger);
-
-  border: 1px solid #fecaca;
-
-  font-size: 13px;
-}
-
 /* TABLE CARD */
 
 .appointment-table-card {
@@ -242,7 +226,7 @@
   color: var(--color-text);
 }
 
-.appointment-reason {
+:where(.appointment-page) .appointment-reason {
   display: block;
 
   max-width: 170px;
@@ -262,7 +246,7 @@
 
 /* STATUS */
 
-.appointment-status {
+:where(.appointment-page) .appointment-status {
   display: inline-flex;
 
   align-items: center;
@@ -271,7 +255,7 @@
 
   padding: 6px 10px;
 
-  border-radius:0px;
+  border-radius: 0px;
 
   font-size: 10px;
 
@@ -290,49 +274,49 @@
 
 /* PENDING */
 
-.appointment-status.pending {
+:where(.appointment-page) .appointment-status.pending {
   background: var(--color-white) beb;
 
   color: #b45309;
 }
 
-.appointment-status.pending .status-dot {
+:where(.appointment-page) .appointment-status.pending .status-dot {
   background: #f59e0b;
 }
 
 /* APPROVED */
 
-.appointment-status.approved {
+:where(.appointment-page) .appointment-status.approved {
   background: var(--color-blue-soft);
 
   color: var(--color-primary);
 }
 
-.appointment-status.approved .status-dot {
+:where(.appointment-page) .appointment-status.approved .status-dot {
   background: #3b82f6;
 }
 
 /* COMPLETED */
 
-.appointment-status.completed {
+:where(.appointment-page) .appointment-status.completed {
   background: var(--color-green-soft);
 
   color: var(--color-success);
 }
 
-.appointment-status.completed .status-dot {
+:where(.appointment-page) .appointment-status.completed .status-dot {
   background: var(--color-success-soft);
 }
 
 /* CANCELLED */
 
-.appointment-status.cancelled {
+:where(.appointment-page) .appointment-status.cancelled {
   background: var(--color-danger-soft);
 
   color: var(--color-danger);
 }
 
-.appointment-status.cancelled .status-dot {
+:where(.appointment-page) .appointment-status.cancelled .status-dot {
   background: #ef4444;
 }
 
@@ -386,11 +370,11 @@
   border-color: var(--color-green-border) !important;
 }
 
-.action-cancel {
+:where(.appointment-page) .action-cancel {
   color: var(--color-danger) !important;
 }
 
-.action-cancel:hover {
+:where(.appointment-page) .action-cancel:hover {
   background: var(--color-danger-soft) !important;
 
   border-color: #fecaca !important;
@@ -406,13 +390,13 @@
   border-color: var(--color-blue-border) !important;
 }
 
-.action-complete {
+:where(.appointment-page) .action-complete {
   color: var(--color-success) !important;
 }
 
 /* EMPTY / LOADING */
 
-.appointment-message {
+:where(.appointment-page) .appointment-message {
   min-height: 350px;
 
   display: flex;
@@ -426,13 +410,13 @@
   color: var(--color-muted-light);
 }
 
-.appointment-message svg {
+:where(.appointment-page) .appointment-message svg {
   font-size: 28px;
 
   margin-bottom: 12px;
 }
 
-.appointment-message h3 {
+:where(.appointment-page) .appointment-message h3 {
   margin: 0 0 5px;
 
   color: var(--color-text);
@@ -440,7 +424,7 @@
   font-size: 15px;
 }
 
-.appointment-message p {
+:where(.appointment-page) .appointment-message p {
   margin: 0;
 
   font-size: 12px;

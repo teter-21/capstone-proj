@@ -118,7 +118,6 @@ const router = createBrowserRouter([
         element: <AddPatient />,
       },
 
-
       {
         path: "Payment",
         element: <AdminPayment />,

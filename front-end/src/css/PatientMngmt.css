@@ -195,14 +195,12 @@
   transform: translateY(0);
 }
 
-.patient-container .visit-actions .add-btn,
 .patient-container .visit-actions .view-btn,
 .patient-container .visit-actions .edit-btn {
   background: var(--clinic-blue);
   border-color: var(--clinic-blue-dark);
 }
 
-.patient-container .visit-actions .add-btn:hover,
 .patient-container .visit-actions .view-btn:hover,
 .patient-container .visit-actions .edit-btn:hover {
   background: var(--clinic-blue-dark);

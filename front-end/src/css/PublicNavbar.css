@@ -150,7 +150,7 @@
   }
 
   .logo-container,
-  .logo-container img {
+.logo-container img {
     width: 46px;
     height: 46px;
   }
@@ -179,7 +179,7 @@
   }
 
   .public-nav-menu li,
-  .public-nav-menu li > a {
+.public-nav-menu li > a {
     width: 100%;
   }
 
@@ -192,7 +192,7 @@
   }
 
   .public-nav-menu li:nth-last-child(2),
-  .public-nav-menu li:last-child {
+.public-nav-menu li:last-child {
     grid-column: span 2;
   }
 }
@@ -203,7 +203,7 @@
   }
 
   .logo-container,
-  .logo-container img {
+.logo-container img {
     width: 42px;
     height: 42px;
   }

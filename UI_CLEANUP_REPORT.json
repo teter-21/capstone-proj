@@ -1,0 +1,1728 @@
+{
+  "nativeAlerts": {
+    "changedFiles": [
+      "src/components/AdminAccountsSection.jsx",
+      "src/components/AppointmentCalendar.jsx",
+      "src/components/CreateAccountModal.jsx",
+      "src/components/DentalChartModal.jsx",
+      "src/components/EditPatientModal.jsx",
+      "src/components/PatientTable.jsx",
+      "src/components/TreatmentVisitModal.jsx",
+      "src/components/public/AppointmentForm.jsx",
+      "src/pages/admin/AddPatient.jsx",
+      "src/pages/admin/AdminAccounts.jsx",
+      "src/pages/admin/AppointmentMngmt.jsx",
+      "src/pages/admin/Payment.jsx",
+      "src/pages/admin/QueueMngmt.jsx",
+      "src/pages/admin/Report.jsx",
+      "src/pages/admin/Reviews.jsx",
+      "src/pages/admin/Settings.jsx",
+      "src/pages/patient/BookPatientAppointment.jsx",
+      "src/pages/patient/MyAppointment.jsx",
+      "src/pages/patient/PatientDashboard.jsx",
+      "src/pages/patient/PatientReview.jsx",
+      "src/pages/patient/Payment.jsx",
+      "src/pages/patient/Profile.jsx",
+      "src/pages/patient/TreatmentHistory.jsx",
+      "src/pages/public/ForgotPassword.jsx",
+      "src/pages/public/HomeLogin.jsx",
+      "src/pages/public/ResetPassword.jsx"
+    ],
+    "bannerContainersRemoved": 28,
+    "feedbackCallsConverted": 49,
+    "existingAlertsNormalized": 37
+  },
+  "cssCleanup": {
+    "scannedFiles": 43,
+    "removedFiles": [
+      "src/css/AddVisitModal.css",
+      "src/css/Home.css",
+      "src/css/Profile.css"
+    ],
+    "removedSelectors": [
+      {
+        "file": "App.css",
+        "selector": ".notification-dot"
+      },
+      {
+        "file": "App.css",
+        "selector": ".navbar-admin-info"
+      },
+      {
+        "file": "App.css",
+        "selector": ".profile-arrow"
+      },
+      {
+        "file": "App.css",
+        "selector": ".addv-modal"
+      },
+      {
+        "file": "App.css",
+        "selector": ".grid-3"
+      },
+      {
+        "file": "App.css",
+        "selector": ".grid-4"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".modal-actions"
+      },
+      {
+        "file": "App.css",
+        "selector": ".form-actions"
+      },
+      {
+        "file": "App.css",
+        "selector": ".modal-actions button"
+      },
+      {
+        "file": "App.css",
+        "selector": ".form-actions button"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container thead"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody tr"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody tr:nth-child(even)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody tr:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody tr:last-child td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody td strong"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container thead th"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container tbody td"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container::-webkit-scrollbar"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container::-webkit-scrollbar-thumb"
+      },
+      {
+        "file": "App.css",
+        "selector": ".primary-btn:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".add-btn:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".add-patient-btn:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".btn-success"
+      },
+      {
+        "file": "App.css",
+        "selector": ".success-btn"
+      },
+      {
+        "file": "App.css",
+        "selector": ".confirm-btn"
+      },
+      {
+        "file": "App.css",
+        "selector": ".check-in-btn"
+      },
+      {
+        "file": "App.css",
+        "selector": ".btn-success:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".success-btn:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".confirm-btn:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".check-in-btn:hover"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".queue-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": "table th.center"
+      },
+      {
+        "file": "App.css",
+        "selector": "table td.center"
+      },
+      {
+        "file": "App.css",
+        "selector": "table th.actions"
+      },
+      {
+        "file": "App.css",
+        "selector": "table td.actions"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-search input"
+      },
+      {
+        "file": "App.css",
+        "selector": ".search-input"
+      },
+      {
+        "file": "App.css",
+        "selector": ".filter-input"
+      },
+      {
+        "file": "App.css",
+        "selector": ".filter-select"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-filter select"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-search input:focus"
+      },
+      {
+        "file": "App.css",
+        "selector": ".search-input:focus"
+      },
+      {
+        "file": "App.css",
+        "selector": ".filter-input:focus"
+      },
+      {
+        "file": "App.css",
+        "selector": ".filter-select:focus"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-filter select:focus"
+      },
+      {
+        "file": "App.css",
+        "selector": ".status-confirmed"
+      },
+      {
+        "file": "App.css",
+        "selector": ".status-completed"
+      },
+      {
+        "file": "App.css",
+        "selector": ".status-pending"
+      },
+      {
+        "file": "App.css",
+        "selector": ".badge-pending"
+      },
+      {
+        "file": "App.css",
+        "selector": ".status-cancelled"
+      },
+      {
+        "file": "App.css",
+        "selector": ".badge-cancelled"
+      },
+      {
+        "file": "App.css",
+        "selector": ".status-rescheduled"
+      },
+      {
+        "file": "App.css",
+        "selector": ".badge-rescheduled"
+      },
+      {
+        "file": "App.css",
+        "selector": ".admin-layout"
+      },
+      {
+        "file": "App.css",
+        "selector": ".admin-main-content"
+      },
+      {
+        "file": "App.css",
+        "selector": ".admin-main-content > *"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-wrapper"
+      },
+      {
+        "file": "App.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "App.css",
+        "selector": ".data-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-responsive"
+      },
+      {
+        "file": "App.css",
+        "selector": ".records-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".patient-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".appointments-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".queue-table-container"
+      },
+      {
+        "file": "App.css",
+        "selector": ".stats-grid"
+      },
+      {
+        "file": "App.css",
+        "selector": ".dashboard-stats"
+      },
+      {
+        "file": "App.css",
+        "selector": ".report-stats"
+      },
+      {
+        "file": "App.css",
+        "selector": ".stats-grid"
+      },
+      {
+        "file": "App.css",
+        "selector": ".dashboard-stats"
+      },
+      {
+        "file": "App.css",
+        "selector": ".report-stats"
+      },
+      {
+        "file": "App.css",
+        "selector": ".dashboard-card"
+      },
+      {
+        "file": "App.css",
+        "selector": ".summary-card"
+      },
+      {
+        "file": "App.css",
+        "selector": ".visit-card"
+      },
+      {
+        "file": "App.css",
+        "selector": ".report-card"
+      },
+      {
+        "file": "App.css",
+        "selector": ".queue-card"
+      },
+      {
+        "file": "App.css",
+        "selector": ".admin-main-content"
+      },
+      {
+        "file": "App.css",
+        "selector": ".admin-main-content"
+      },
+      {
+        "file": "AdminAccounts.css",
+        "selector": ".admin-accounts-alert"
+      },
+      {
+        "file": "AdminAccounts.css",
+        "selector": ".admin-accounts-alert.success"
+      },
+      {
+        "file": "AdminAccounts.css",
+        "selector": ".admin-accounts-alert.error"
+      },
+      {
+        "file": "AdminPayment.css",
+        "selector": ".billing-error"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-error"
+      },
+      {
+        "file": "BookPatientAppointment.css",
+        "selector": ".appointment-success"
+      },
+      {
+        "file": "BookPatientAppointment.css",
+        "selector": ".appointment-error"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".top-procedure h3"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-item"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-label"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-label span:last-child"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-bar"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-fill"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".details-link"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".view-all-patients"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".view-all-patients:hover"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".view-all-patients svg"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".table-message.error"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".top-procedure"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-card-header"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-card-header h3"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-icon"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-list"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-item"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-label"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-label span:first-child"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-label span:last-child"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-bar"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".progress-fill"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-percentage"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-message"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".procedure-message svg"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".calendar-error"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".upper-right-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".lower-right-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".upper-left-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".lower-left-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".odontogram-legend span"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot.healthy"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot.cavity"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot.filled"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot.missing"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot.cracked"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".legend-dot.other"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".upper-right-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".lower-right-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".upper-left-quadrant"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".lower-left-quadrant"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-icon"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-message.error"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status-group"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-queue-status.in-treatment"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status-group"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-icon"
+      },
+      {
+        "file": "PasswordReset.css",
+        "selector": ".password-logo"
+      },
+      {
+        "file": "PasswordReset.css",
+        "selector": ".password-success"
+      },
+      {
+        "file": "PasswordReset.css",
+        "selector": ".password-error"
+      },
+      {
+        "file": "PasswordReset.css",
+        "selector": ".password-success"
+      },
+      {
+        "file": "PasswordReset.css",
+        "selector": ".password-error"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-error"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-error-card"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-error-card h2"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-error-card p"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-error-card button"
+      },
+      {
+        "file": "PatientMngmt.css",
+        "selector": ".patient-container .visit-actions .add-btn"
+      },
+      {
+        "file": "PatientMngmt.css",
+        "selector": ".patient-container .visit-actions .add-btn:hover"
+      },
+      {
+        "file": "PatientReview.css",
+        "selector": ".patient-review-eyebrow"
+      },
+      {
+        "file": "PatientReview.css",
+        "selector": ".review-alert"
+      },
+      {
+        "file": "PatientReview.css",
+        "selector": ".review-alert-success"
+      },
+      {
+        "file": "PatientReview.css",
+        "selector": ".review-alert-error"
+      },
+      {
+        "file": "PatientReview.css",
+        "selector": ".review-status-approved"
+      },
+      {
+        "file": "PatientReview.css",
+        "selector": ".review-status-hidden"
+      },
+      {
+        "file": "Payment.css",
+        "selector": ".payments-message.error"
+      },
+      {
+        "file": "Payment.css",
+        "selector": ".payments-error-icon"
+      },
+      {
+        "file": "QueueMngmt.css",
+        "selector": ".priority.normal"
+      },
+      {
+        "file": "QueueMngmt.css",
+        "selector": ".queue-status.in-treatment"
+      },
+      {
+        "file": "QueueMngmt.css",
+        "selector": ".queue-message.error"
+      },
+      {
+        "file": "Report.css",
+        "selector": ".report-error"
+      },
+      {
+        "file": "Reviews.css",
+        "selector": ".reviews-admin-alert"
+      },
+      {
+        "file": "Settings.css",
+        "selector": ".account-alert"
+      },
+      {
+        "file": "Settings.css",
+        "selector": ".account-success"
+      },
+      {
+        "file": "Settings.css",
+        "selector": ".account-error"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".dashboard-card"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".summary-card"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".visit-card"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".report-card"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".queue-card"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".content-card"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".dashboard-card:hover"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".summary-card:hover"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".visit-card:hover"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".report-card:hover"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".queue-card:hover"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".grid-4"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".stats-grid"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".dashboard-stats"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".report-stats"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".grid-4"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".grid-3"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".stats-grid"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".dashboard-stats"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".report-stats"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".form-grid"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".form-row"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".patient-details"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".content-header"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".responsive-table"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".addv-modal"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".create-account-modal"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".modal-actions"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".form-actions"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".modal-actions button"
+      },
+      {
+        "file": "Theme.css",
+        "selector": ".form-actions button"
+      },
+      {
+        "file": "TreatmentHistory.css",
+        "selector": ".treatment-message.error"
+      },
+      {
+        "file": "TreatmentHistory.css",
+        "selector": ".treatment-error-icon"
+      }
+    ],
+    "removedDeclarations": [
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "box-shadow",
+        "value": "var(--shadow-sm)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "background",
+        "value": "var(--color-white)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "border",
+        "value": "1px solid var(--color-border)"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "-webkit-overflow-scrolling",
+        "value": "touch"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "overflow-y",
+        "value": "visible"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "overflow-x",
+        "value": "auto"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "max-width",
+        "value": "100%"
+      },
+      {
+        "file": "App.css",
+        "selector": ".table-container",
+        "property": "width",
+        "value": "100%"
+      },
+      {
+        "file": "App.css",
+        "selector": "body",
+        "property": "color",
+        "value": "var(--text)"
+      },
+      {
+        "file": "App.css",
+        "selector": "body",
+        "property": "background",
+        "value": "var(--background)"
+      },
+      {
+        "file": "About.css",
+        "property": "justify-content",
+        "value": "none"
+      },
+      {
+        "file": "About.css",
+        "property": "flex-wrap",
+        "value": "none"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".tooth-drawing",
+        "property": "overflow",
+        "value": "visible"
+      },
+      {
+        "file": "DentalChartModal.css",
+        "selector": ".tooth-drawing",
+        "property": "display",
+        "value": "block"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero p",
+        "property": "font-size",
+        "value": "18px"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero p",
+        "property": "width",
+        "value": "min(600px, calc(100vw - 32px))"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero h1",
+        "property": "font-size",
+        "value": "55px"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero h1",
+        "property": "line-height",
+        "value": "76px"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero-content h3",
+        "property": "font-size",
+        "value": "20px"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero-content",
+        "property": "width",
+        "value": "90%"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero",
+        "property": "background-position",
+        "value": "left"
+      },
+      {
+        "file": "Hero.css",
+        "selector": ".hero",
+        "property": "height",
+        "value": "90vh"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ":where(.my-appointments-page) .appointment-status.rescheduled",
+        "property": "color",
+        "value": "var(--color-green-dark)"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ":where(.my-appointments-page) .appointment-status.rescheduled",
+        "property": "background",
+        "value": "var(--color-border)"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ":where(.my-appointments-page) .appointment-status.confirmed",
+        "property": "color",
+        "value": "var(--color-success)"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ":where(.my-appointments-page) .appointment-status.confirmed",
+        "property": "background",
+        "value": "var(--color-green-soft)"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".appointment-status-patient.cancelled",
+        "property": "color",
+        "value": "var(--color-error)"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".appointment-status-patient.completed",
+        "property": "color",
+        "value": "var(--color-green-dark)"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".appointment-status-patient.approved",
+        "property": "color",
+        "value": "var(--color-success)"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".appointment-status-patient.pending",
+        "property": "color",
+        "value": "var(--color-warning)"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-stat-card.purple .patient-stat-icon",
+        "property": "color",
+        "value": "var(--color-purple)"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-stat-card.purple .patient-stat-icon",
+        "property": "background",
+        "value": "var(--color-purple-soft)"
+      }
+    ],
+    "scopedSelectors": [
+      {
+        "file": "AddPatient.css",
+        "selector": ".name-row",
+        "scope": ".overlay"
+      },
+      {
+        "file": "AddPatient.css",
+        "selector": ".name-row",
+        "scope": ".overlay"
+      },
+      {
+        "file": "Appointment.css",
+        "selector": ".name-row",
+        "scope": ".appointment"
+      },
+      {
+        "file": "Appointment.css",
+        "selector": ".name-row",
+        "scope": ".appointment"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-reason",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.pending",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.pending .status-dot",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.approved",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.approved .status-dot",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.completed",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.completed .status-dot",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.cancelled",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-status.cancelled .status-dot",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".action-cancel",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".action-cancel:hover",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".action-complete",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-message",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-message svg",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-message h3",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "AppointmentMngmt.css",
+        "selector": ".appointment-message p",
+        "scope": ".appointment-page"
+      },
+      {
+        "file": "Dashboard.css",
+        "selector": ".patient-avatar",
+        "scope": ".dashboard"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".page-description",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.pending",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.confirmed",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.completed",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.cancelled",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.rescheduled",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-reason",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-reason span",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-reason p",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-message",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.approved",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.rejected",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.confirmed",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "MyAppointment.css",
+        "selector": ".appointment-status.rescheduled",
+        "scope": ".my-appointments-page"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-avatar",
+        "scope": ".patient-dashboard"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".treatment-card",
+        "scope": ".patient-dashboard"
+      },
+      {
+        "file": "PatientDashboard.css",
+        "selector": ".patient-avatar",
+        "scope": ".patient-dashboard"
+      },
+      {
+        "file": "Payment.css",
+        "selector": ".page-description",
+        "scope": ".payments-page"
+      },
+      {
+        "file": "QueueMngmt.css",
+        "selector": ".action-complete",
+        "scope": ".queue-page"
+      },
+      {
+        "file": "QueueMngmt.css",
+        "selector": ".action-cancel",
+        "scope": ".queue-page"
+      },
+      {
+        "file": "TreatmentHistory.css",
+        "selector": ".page-description",
+        "scope": ".treatment-history-page"
+      },
+      {
+        "file": "TreatmentHistory.css",
+        "selector": ".treatment-card",
+        "scope": ".treatment-history-page"
+      },
+      {
+        "file": "TreatmentHistory.css",
+        "selector": ".treatment-card h2",
+        "scope": ".treatment-history-page"
+      }
+    ],
+    "removedKeyframes": [],
+    "beforeBytes": 221087,
+    "afterBytes": 198720
+  },
+  "validation": {
+    "existing_and_new_tests_passed": 63,
+    "frontend_lint": "passed",
+    "frontend_build": "passed",
+    "backend_syntax_files": 52,
+    "browser_visual_test": "not completed: Chromium download failed",
+    "live_integrations": "not exercised"
+  }
+}

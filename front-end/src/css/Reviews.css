@@ -50,15 +50,6 @@
   font-size: 10px;
 }
 
-.reviews-admin-alert {
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  border-radius: 0px;
-  background: var(--color-danger-soft);
-  color: var(--color-danger);
-  font-size: 13px;
-}
-
 .reviews-admin-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -1,56 +1,44 @@
 import PatientImage from "./PatientImage.jsx";
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { FaUser, FaCalendarAlt, FaChevronRight } from "react-icons/fa";
 import { formatDateOnly } from "../utils/dateUtils";
-
 import api from "../api";
 import { useAutoRefresh } from "../utils/useAutoRefresh";
-
 function PatientTable() {
   const [patients, setPatients] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
 
   /* LOAD RECENT PATIENTS */
 
   useEffect(() => {
     loadRecentPatients();
   }, []);
-
-  const loadRecentPatients = async ({ background = false } = {}) => {
+  const loadRecentPatients = async ({
+    background = false
+  } = {}) => {
     try {
       if (!background) setLoading(true);
-
-
-
       const res = await api.get("/recent-patients");
-
       setPatients(res.data);
-      setError("");
+      setError(false);
     } catch (err) {
       console.error("Recent patients error:", err);
-
-      if (!background) setError(
-        err.response?.data?.message || "Unable to load recent patients.",
-      );
+      if (!background) {
+        setError(true);
+        if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to load recent patients.");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   useAutoRefresh(loadRecentPatients);
 
   /* FORMAT DATE */
 
-  const formatDate = (date) => formatDateOnly(date);
-
-  return (
-    <div className="recent-patients">
+  const formatDate = date => formatDateOnly(date);
+  return <div className="recent-patients">
       {/* TABLE */}
 
       <div className="recent-patient-table-wrapper">
@@ -76,57 +64,34 @@ function PatientTable() {
           <tbody>
             {/* LOADING */}
 
-            {loading && (
-              <tr>
+            {loading && <tr>
                 <td colSpan="5" className="table-message">
                   Loading patients...
                 </td>
-              </tr>
-            )}
+              </tr>}
 
             {/* ERROR */}
 
-            {!loading && error && (
-              <tr>
-                <td colSpan="5" className="table-message error">
-                  {error}
-                </td>
-              </tr>
-            )}
-
             {/* NO PATIENTS */}
 
-            {!loading && !error && patients.length === 0 && (
-              <tr>
+            {!loading && !error && patients.length === 0 && <tr>
                 <td colSpan="5" className="table-message">
                   No patients found.
                 </td>
-              </tr>
-            )}
+              </tr>}
 
             {/* PATIENTS */}
 
-            {!loading &&
-              !error &&
-              patients.map((patient) => (
-                <tr key={patient.id}>
+            {!loading && !error && patients.map(patient => <tr key={patient.id}>
                   {/* PATIENT */}
 
                   <td>
                     <div className="patient-name-cell">
                       {/* IMAGE */}
 
-                      {patient.image ? (
-                        <PatientImage
-                          image={patient.image}
-                          alt={patient.name}
-                          className="patient-avatar-image"
-                        />
-                      ) : (
-                        <div className="patient-avatar">
+                      {patient.image ? <PatientImage image={patient.image} alt={patient.name} className="patient-avatar-image" /> : <div className="patient-avatar">
                           <FaUser />
-                        </div>
-                      )}
+                        </div>}
 
                       {/* NAME */}
 
@@ -165,13 +130,10 @@ function PatientTable() {
                   {/* CIVIL STATUS */}
 
                   <td>{patient.status || "—"}</td>
-                </tr>
-              ))}
+                </tr>)}
           </tbody>
         </table>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default PatientTable;

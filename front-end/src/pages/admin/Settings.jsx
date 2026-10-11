@@ -4,7 +4,6 @@ import React, { useMemo, useEffect, useState } from "react";
 import axios from "axios";
 import "../../css/Settings.css";
 import AdminAccountsSection from "../../components/AdminAccountsSection";
-
 function Settings() {
   const [account, setAccount] = useState(null);
   const [form, setForm] = useState({
@@ -12,115 +11,89 @@ function Settings() {
     email: "",
     currentPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-
   const token = getAccessToken();
-  const headers = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
-
+  const headers = useMemo(() => ({
+    Authorization: `Bearer ${token}`
+  }), [token]);
   useEffect(() => {
     const loadAccount = async () => {
       try {
         const response = await axios.get(API_BASE_URL + "/account", {
-          headers,
+          headers
         });
         setAccount(response.data);
-        setForm((current) => ({
+        setForm(current => ({
           ...current,
           fullname: response.data.fullname || "",
-          email: response.data.email || "",
+          email: response.data.email || ""
         }));
       } catch (err) {
-        setError(
-          err.response?.data?.message ||
-            "Unable to load your account information.",
-        );
+        if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to load your account information.");
       } finally {
         setLoading(false);
       }
     };
-
     loadAccount();
   }, [headers]);
-
-  const handleChange = (event) => {
-    setForm((current) => ({
+  const handleChange = event => {
+    setForm(current => ({
       ...current,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     }));
   };
-
-  const handleSave = async (event) => {
+  const handleSave = async event => {
     event.preventDefault();
-    setMessage("");
-    setError("");
-
     if (form.newPassword && !form.currentPassword) {
-      setError("Enter your current password before changing it.");
+      window.alert("Enter your current password before changing it.");
       return;
     }
-
     if (form.newPassword && form.newPassword !== form.confirmPassword) {
-      setError("New password and confirmation do not match.");
+      window.alert("New password and confirmation do not match.");
       return;
     }
-
     setSaving(true);
-
     try {
-      const response = await axios.put(
-        API_BASE_URL + "/account",
-        {
-          fullname: form.fullname,
-          email: form.email,
-          currentPassword: form.currentPassword,
-          newPassword: form.newPassword,
-        },
-        { headers },
-      );
-
-      setMessage(response.data.message);
-      setAccount((current) => ({
-        ...current,
+      const response = await axios.put(API_BASE_URL + "/account", {
         fullname: form.fullname,
         email: form.email,
+        currentPassword: form.currentPassword,
+        newPassword: form.newPassword
+      }, {
+        headers
+      });
+      if (response.nativeAlertHandled) return;
+      window.alert(response.data.message);
+      setAccount(current => ({
+        ...current,
+        fullname: form.fullname,
+        email: form.email
       }));
-      setForm((current) => ({
+      setForm(current => ({
         ...current,
         currentPassword: "",
         newPassword: "",
-        confirmPassword: "",
+        confirmPassword: ""
       }));
     } catch (err) {
-      setError(err.response?.data?.message || "Unable to save your changes.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to save your changes.");
     } finally {
       setSaving(false);
     }
   };
-
   if (loading) {
-    return (
-      <div className="account-message">Loading account information...</div>
-    );
+    return <div className="account-message">Loading account information...</div>;
   }
-
-  return (
-    <div className="account-page">
+  return <div className="account-page">
       <div className="account-header">
         <div>
           <h1>Settings</h1>
           <p>View your account information and manage your password.</p>
         </div>
       </div>
-
-      {message && (
-        <div className="account-alert account-success">{message}</div>
-      )}
-      {error && <div className="account-alert account-error">{error}</div>}
 
       <form className="account-form" onSubmit={handleSave}>
         <section className="account-card">
@@ -140,23 +113,12 @@ function Settings() {
             <div className="account-grid">
               <label>
                 Full Name
-                <input
-                  name="fullname"
-                  value={form.fullname}
-                  onChange={handleChange}
-                  required
-                />
+                <input name="fullname" value={form.fullname} onChange={handleChange} required />
               </label>
 
               <label>
                 Email Address
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                />
+                <input type="email" name="email" value={form.email} onChange={handleChange} required />
               </label>
 
               <label>
@@ -181,37 +143,17 @@ function Settings() {
             <div className="account-grid password-grid">
               <label>
                 Current Password
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value={form.currentPassword}
-                  onChange={handleChange}
-                  autoComplete="current-password"
-                />
+                <input type="password" name="currentPassword" value={form.currentPassword} onChange={handleChange} autoComplete="current-password" />
               </label>
 
               <label>
                 New Password
-                <input
-                  type="password"
-                  name="newPassword"
-                  value={form.newPassword}
-                  onChange={handleChange}
-                  minLength="6"
-                  autoComplete="new-password"
-                />
+                <input type="password" name="newPassword" value={form.newPassword} onChange={handleChange} minLength="6" autoComplete="new-password" />
               </label>
 
               <label>
                 Confirm New Password
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
-                  minLength="6"
-                  autoComplete="new-password"
-                />
+                <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} minLength="6" autoComplete="new-password" />
               </label>
             </div>
           </div>
@@ -224,13 +166,9 @@ function Settings() {
         </section>
       </form>
 
-      {localStorage.getItem("is_main_admin") === "1" && (
-        <section className="admin-settings-section">
+      {localStorage.getItem("is_main_admin") === "1" && <section className="admin-settings-section">
           <AdminAccountsSection />
-        </section>
-      )}
-    </div>
-  );
+        </section>}
+    </div>;
 }
-
 export default Settings;

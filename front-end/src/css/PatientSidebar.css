@@ -199,10 +199,10 @@
   }
 
   .patient-sidebar-logo > div,
-  .patient-menu-title,
-  .patient-menu-item span,
-  .patient-user > div:not(.patient-user-icon),
-  .patient-logout span {
+.patient-menu-title,
+.patient-menu-item span,
+.patient-user > div:not(.patient-user-icon),
+.patient-logout span {
     display: none;
   }
 

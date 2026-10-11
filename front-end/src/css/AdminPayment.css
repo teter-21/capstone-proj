@@ -290,16 +290,6 @@
   color: #8a99a6 !important;
 }
 
-.billing-error {
-  margin: 14px 20px 0;
-  padding: 10px 12px;
-  border: 1px solid #efcaca;
-  border-radius: 0px;
-  background: #fdecec;
-  color: #a83f3f;
-  font-size: 12px;
-}
-
 .payment-modal-overlay {
   position: fixed;
   inset: 0;

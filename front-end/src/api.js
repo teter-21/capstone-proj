@@ -64,11 +64,13 @@ const clearExpiredSession = (error) => {
     }
   }
 
+  if (sessionRedirecting && status === 401 && !isPublicAuthRequest) error.nativeAlertHandled = true;
   return Promise.reject(error);
 };
 
 const receiveResponse = (response) => {
   if (response.data?.sessionEnded) {
+    response.nativeAlertHandled = true;
     clearAccessToken();
     window.alert("Password changed. Please log in again.");
     window.location.replace("/login");

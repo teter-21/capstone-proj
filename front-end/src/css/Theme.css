@@ -161,30 +161,19 @@ a {
 
 /* Shared professional surfaces */
 .card,
-.dashboard-card,
 .stat-card,
-.summary-card,
 .patient-card,
 .appointment-card,
-.visit-card,
-.report-card,
-.queue-card,
-.table-container,
-.content-card {
+.table-container {
   max-width: 100%;
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
 }
 
 .card:hover,
-.dashboard-card:hover,
 .stat-card:hover,
-.summary-card:hover,
 .patient-card:hover,
-.appointment-card:hover,
-.visit-card:hover,
-.report-card:hover,
-.queue-card:hover {
+.appointment-card:hover {
   box-shadow: var(--shadow-md);
 }
 
@@ -196,34 +185,17 @@ iframe {
 }
 
 /* Better mobile behavior for common grids */
-@media (max-width: 900px) {
-  .grid-4,
-  .stats-grid,
-  .dashboard-stats,
-  .report-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
 
 @media (max-width: 640px) {
-  .grid-4,
-  .grid-3,
   .grid-2,
-  .stats-grid,
-  .dashboard-stats,
-  .report-stats,
-  .form-grid,
-  .form-row,
-  .appointment-details,
-  .patient-details {
+  .appointment-details {
     grid-template-columns: 1fr !important;
   }
 
   .page-header,
   .appointments-header,
   .queue-header,
-  .dashboard-header,
-  .content-header {
+  .dashboard-header {
     flex-direction: column;
     align-items: stretch;
     gap: 14px;
@@ -235,8 +207,7 @@ iframe {
     width: 100%;
   }
 
-  .table-container,
-  .responsive-table {
+  .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -252,24 +223,18 @@ iframe {
   }
 
   .modal,
-  .dialog,
-  .addv-modal,
-  .create-account-modal {
+  .dialog {
     width: calc(100% - 24px) !important;
     max-width: calc(100% - 24px) !important;
     max-height: calc(100vh - 24px);
     overflow-y: auto;
   }
 
-  .modal-actions,
-  .footer,
-  .form-actions {
+  .footer {
     flex-direction: column-reverse;
   }
 
-  .modal-actions button,
-  .footer button,
-  .form-actions button {
+  .footer button {
     width: 100%;
   }
 }

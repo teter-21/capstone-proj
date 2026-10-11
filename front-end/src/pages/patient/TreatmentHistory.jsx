@@ -5,66 +5,55 @@ import axios from "axios";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import "../../css/TreatmentHistory.css";
 import { FaTooth } from "react-icons/fa";
-
 import { formatDateOnly } from "../../utils/dateUtils";
 function TreatmentHistory() {
   const [visits, setVisits] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchVisits = async ({ background = false } = {}) => {
+  const [error, setError] = useState(false);
+  const fetchVisits = async ({
+    background = false
+  } = {}) => {
     try {
       const token = getAccessToken();
       const response = await axios.get(API_BASE_URL + "/patient/visits", {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       });
       setVisits(response.data);
-
-      setError("");
+      setError(false);
     } catch (err) {
       console.error("Treatment history error:", err);
-      if (!background) setError(
-        err.response?.data?.message || "Unable to load treatment history.",
-      );
+      if (!background) {
+        setError(true);
+        if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to load treatment history.");
+      }
     } finally {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchVisits();
   }, []);
-
   useAutoRefresh(fetchVisits);
-
-  const formatDate = (date) => formatDateOnly(date);
-
-  const formatTime = (time) => {
+  const formatDate = date => formatDateOnly(date);
+  const formatTime = time => {
     if (!time) return "—";
-
     const parts = time.split(":");
-
     const date = new Date();
-
     date.setHours(parseInt(parts[0]), parseInt(parts[1]));
-
     return date.toLocaleTimeString("en-US", {
       hour: "numeric",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
-
-  const formatAmount = (amount) => {
+  const formatAmount = amount => {
     return Number(amount || 0).toLocaleString("en-PH", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 2
     });
   };
-
-  return (
-    <div className="treatment-history-page">
+  return <div className="treatment-history-page">
       {/* HEADER */}
 
       <div className="treatment-history-header">
@@ -79,28 +68,17 @@ function TreatmentHistory() {
 
       {/* LOADING */}
 
-      {loading && (
-        <div className="treatment-message">
+      {loading && <div className="treatment-message">
           <div className="treatment-spinner"></div>
 
           <p>Loading treatment history...</p>
-        </div>
-      )}
+        </div>}
 
       {/* ERROR */}
 
-      {!loading && error && (
-        <div className="treatment-message error">
-          <div className="treatment-error-icon">!</div>
-
-          <p>{error}</p>
-        </div>
-      )}
-
       {/* EMPTY */}
 
-      {!loading && !error && visits.length === 0 && (
-        <div className="empty-treatment">
+      {!loading && !error && visits.length === 0 && <div className="empty-treatment">
           <div className="empty-treatment-icon">
             <FaTooth />
           </div>
@@ -108,15 +86,12 @@ function TreatmentHistory() {
           <h2>No Treatment History</h2>
 
           <p>You don't have any recorded dental visits yet.</p>
-        </div>
-      )}
+        </div>}
 
       {/* VISITS */}
 
-      {!loading && !error && visits.length > 0 && (
-        <div className="treatment-list">
-          {visits.map((visit) => (
-            <div className="treatment-card" key={visit.id}>
+      {!loading && !error && visits.length > 0 && <div className="treatment-list">
+          {visits.map(visit => <div className="treatment-card" key={visit.id}>
               {/* CARD HEADER */}
 
               <div className="treatment-card-header">
@@ -163,21 +138,13 @@ function TreatmentHistory() {
                 <div>
                   <span>Balance</span>
 
-                  <strong
-                    className={
-                      Number(visit.balance) > 0 ? "has-balance" : "paid"
-                    }
-                  >
+                  <strong className={Number(visit.balance) > 0 ? "has-balance" : "paid"}>
                     ₱{formatAmount(visit.balance)}
                   </strong>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            </div>)}
+        </div>}
+    </div>;
 }
-
 export default TreatmentHistory;

@@ -1,29 +1,16 @@
 import { endSession } from "../utils/session.js";
 import PatientImage from "./PatientImage.jsx";
-
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import {
-  FaTachometerAlt,
-  FaCalendarAlt,
-  FaFileMedical,
-  FaUser,
-  FaSignOutAlt,
-  FaStar,
-} from "react-icons/fa";
-
+import { FaTachometerAlt, FaCalendarAlt, FaFileMedical, FaUser, FaSignOutAlt, FaStar } from "react-icons/fa";
 import dentalLogo from "../assets/images/60x60modal-logo.png";
 import api from "../api";
-
 function PatientSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-
   useEffect(() => {
     let mounted = true;
-
     const loadProfile = async () => {
       try {
         const response = await api.get("/patient/profile");
@@ -32,27 +19,25 @@ function PatientSidebar() {
         console.error("Patient sidebar profile error:", error);
       }
     };
-
     loadProfile();
-
     const handleDataUpdated = () => loadProfile();
     window.addEventListener("clinic:data-updated", handleDataUpdated);
     window.addEventListener("focus", loadProfile);
-
     return () => {
       mounted = false;
       window.removeEventListener("clinic:data-updated", handleDataUpdated);
       window.removeEventListener("focus", loadProfile);
     };
   }, []);
-
   const handleLogout = async () => {
-    try { await endSession(); navigate('/login'); }
-    catch (error) { window.alert(error.message); }
+    try {
+      await endSession();
+      navigate('/login');
+    } catch (error) {
+      if (!error?.nativeAlertHandled) window.alert(error.message);
+    }
   };
-
-  return (
-    <aside className="patient-sidebar">
+  return <aside className="patient-sidebar">
       {/* LOGO */}
 
       <div className="patient-sidebar-logo">
@@ -70,53 +55,25 @@ function PatientSidebar() {
       <div className="patient-menu">
         <p className="patient-menu-title">MAIN MENU</p>
 
-        <Link
-          to="/patient/dashboard"
-          className={
-            location.pathname === "/patient/dashboard"
-              ? "patient-menu-item active"
-              : "patient-menu-item"
-          }
-        >
+        <Link to="/patient/dashboard" className={location.pathname === "/patient/dashboard" ? "patient-menu-item active" : "patient-menu-item"}>
           <FaTachometerAlt />
 
           <span>Dashboard</span>
         </Link>
 
-        <Link
-          to="/patient/treatments"
-          className={
-            location.pathname === "/patient/treatments"
-              ? "patient-menu-item active"
-              : "patient-menu-item"
-          }
-        >
+        <Link to="/patient/treatments" className={location.pathname === "/patient/treatments" ? "patient-menu-item active" : "patient-menu-item"}>
           <FaFileMedical />
 
           <span>Treatment History</span>
         </Link>
 
-        <Link
-          to="/patient/review"
-          className={
-            location.pathname === "/patient/review"
-              ? "patient-menu-item active"
-              : "patient-menu-item"
-          }
-        >
+        <Link to="/patient/review" className={location.pathname === "/patient/review" ? "patient-menu-item active" : "patient-menu-item"}>
           <FaStar />
 
           <span>Review Clinic</span>
         </Link>
 
-        <Link
-          to="/patient/profile"
-          className={
-            location.pathname === "/patient/profile"
-              ? "patient-menu-item active"
-              : "patient-menu-item"
-          }
-        >
+        <Link to="/patient/profile" className={location.pathname === "/patient/profile" ? "patient-menu-item active" : "patient-menu-item"}>
           <FaUser />
 
           <span>My Profile</span>
@@ -128,15 +85,7 @@ function PatientSidebar() {
       <div className="patient-sidebar-bottom">
         <div className="patient-user">
           <div className="patient-user-icon">
-            {profile?.image ? (
-              <PatientImage
-                image={profile.image}
-                alt={profile.name || "Patient"}
-                className="patient-sidebar-avatar"
-              />
-            ) : (
-              <FaUser />
-            )}
+            {profile?.image ? <PatientImage image={profile.image} alt={profile.name || "Patient"} className="patient-sidebar-avatar" /> : <FaUser />}
           </div>
 
           <div>
@@ -154,8 +103,6 @@ function PatientSidebar() {
           <span>Logout</span>
         </button>
       </div>
-    </aside>
-  );
+    </aside>;
 }
-
 export default PatientSidebar;

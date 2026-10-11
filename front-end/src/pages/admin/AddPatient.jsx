@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
 import "../../css/AddPatient.css";
-
 import { FaUser, FaMapMarkerAlt, FaInfoCircle } from "react-icons/fa";
-
 import { buildFullName } from "../../utils/nameFormatter";
-
 function AddPatient() {
   const navigate = useNavigate();
 
@@ -16,38 +13,30 @@ function AddPatient() {
     lastName: "",
     firstName: "",
     middleName: "",
-
     age: "",
     contactNo: "",
-
     occupation: "",
     gender: "",
-
     address: "",
     city: "",
-
     complaint: "",
-
-    civilStatus: "Single",
+    civilStatus: "Single"
   });
-
   const [image, setImage] = useState(null);
 
   /* HANDLE INPUT CHANGE */
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({
       ...formData,
-
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   /* HANDLE IMAGE */
 
-  const handleImageChange = (e) => {
+  const handleImageChange = e => {
     const selectedImage = e.target.files[0];
-
     if (selectedImage) {
       setImage(selectedImage);
     }
@@ -56,41 +45,27 @@ function AddPatient() {
   /* HANDLE SUBMIT */
 
   const handleSubmit = async () => {
-
     /* BUILD FULL NAME */
 
-    const fullname = buildFullName(
-      formData.lastName,
-      formData.firstName,
-      formData.middleName,
-    );
+    const fullname = buildFullName(formData.lastName, formData.firstName, formData.middleName);
 
     /* CREATE FORM DATA */
 
     const data = new FormData();
-
     data.append("name", fullname);
-
     data.append("age", formData.age);
-
     data.append("phone", formData.contactNo);
-
     data.append("occupation", formData.occupation);
-
     data.append("gender", formData.gender);
 
     /* Send the selected civil status. */
 
     data.append("status", formData.civilStatus);
-
     data.append("complain", formData.complaint);
 
     /* ADDRESS */
 
-    const fullAddress = formData.city
-      ? `${formData.address}, ${formData.city}`
-      : formData.address;
-
+    const fullAddress = formData.city ? `${formData.address}, ${formData.city}` : formData.address;
     data.append("address", fullAddress);
 
     /* IMAGE */
@@ -102,34 +77,24 @@ function AddPatient() {
     /* SEND TO SERVER */
 
     try {
-      await api.post(
-        "/add-patient",
-
-        data,
-
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
-
-
-      alert("Patient Added Successfully!");
+      await api.post("/add-patient", data, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+      window.alert("Patient Added Successfully!");
 
       /* Go to the patient list; it fetches the latest records automatically. */
       navigate("/PatientMngmt");
     } catch (err) {
       console.error("Add patient error:", err);
-
-      alert(err.response?.data?.message || "Unable to add patient.");
+      if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to add patient.");
     }
   };
 
   /* RENDER */
 
-  return (
-    <div className="overlay">
+  return <div className="overlay">
       <div className="modal">
         {/* HEADER */}
         <div className="header">
@@ -157,14 +122,7 @@ function AddPatient() {
               <div className="input-group">
                 <label>Last Name</label>
 
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder="Enter Last Name"
-                  required
-                />
+                <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Enter Last Name" required />
               </div>
 
               {/* FIRST NAME */}
@@ -172,14 +130,7 @@ function AddPatient() {
               <div className="input-group">
                 <label>First Name</label>
 
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder="Enter First Name"
-                  required
-                />
+                <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Enter First Name" required />
               </div>
 
               {/* MIDDLE NAME */}
@@ -187,27 +138,14 @@ function AddPatient() {
               <div className="input-group">
                 <label>Middle Name</label>
 
-                <input
-                  type="text"
-                  name="middleName"
-                  value={formData.middleName}
-                  onChange={handleChange}
-                  placeholder="Enter Middle Name"
-                />
+                <input type="text" name="middleName" value={formData.middleName} onChange={handleChange} placeholder="Enter Middle Name" />
               </div>
             </div>
             {/* AGE */}
             <div>
               <label>Age</label>
 
-              <input
-                type="number"
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
-                placeholder="Enter Age"
-                min="0"
-              />
+              <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Enter Age" min="0" />
             </div>
             {/* GENDER */}
             <div>
@@ -215,24 +153,12 @@ function AddPatient() {
 
               <div className="radio-group">
                 <label>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="Male"
-                    checked={formData.gender === "Male"}
-                    onChange={handleChange}
-                  />
+                  <input type="radio" name="gender" value="Male" checked={formData.gender === "Male"} onChange={handleChange} />
                   Male
                 </label>
 
                 <label>
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="Female"
-                    checked={formData.gender === "Female"}
-                    onChange={handleChange}
-                  />
+                  <input type="radio" name="gender" value="Female" checked={formData.gender === "Female"} onChange={handleChange} />
                   Female
                 </label>
               </div>
@@ -241,35 +167,18 @@ function AddPatient() {
             <div>
               <label>Phone Number</label>
 
-              <input
-                type="text"
-                name="contactNo"
-                value={formData.contactNo}
-                onChange={handleChange}
-                placeholder="Enter Phone Number"
-              />
+              <input type="text" name="contactNo" value={formData.contactNo} onChange={handleChange} placeholder="Enter Phone Number" />
             </div>
             {/* OCCUPATION */}
             <div>
               <label>Occupation</label>
 
-              <input
-                type="text"
-                name="occupation"
-                value={formData.occupation}
-                onChange={handleChange}
-                placeholder="Enter Occupation"
-              />
+              <input type="text" name="occupation" value={formData.occupation} onChange={handleChange} placeholder="Enter Occupation" />
             </div>
             {/* IMAGE */}
             <div className="full-width">
               <label>Upload Patient Image</label>
-              <input
-                type="file"
-                name="patientImg"
-                accept="image/* "
-                onChange={handleImageChange}
-              />{" "}
+              <input type="file" name="patientImg" accept="image/* " onChange={handleImageChange} />{" "}
               <span className="reminder">
                 {" "}
                 *Upload 2x2 Image (2MB max){" "}
@@ -295,13 +204,7 @@ function AddPatient() {
             <div>
               <label>Address</label>
 
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Enter Address"
-              />
+              <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Enter Address" />
             </div>
 
             {/* CITY */}
@@ -309,13 +212,7 @@ function AddPatient() {
             <div>
               <label>City</label>
 
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                placeholder="Enter City"
-              />
+              <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Enter City" />
             </div>
           </div>
         </div>
@@ -337,13 +234,7 @@ function AddPatient() {
             <div>
               <label>Complaint</label>
 
-              <input
-                type="text"
-                name="complaint"
-                value={formData.complaint}
-                onChange={handleChange}
-                placeholder="Enter Complaint"
-              />
+              <input type="text" name="complaint" value={formData.complaint} onChange={handleChange} placeholder="Enter Complaint" />
             </div>
 
             {/* CIVIL STATUS */}
@@ -351,11 +242,7 @@ function AddPatient() {
             <div>
               <label>Civil Status</label>
 
-              <select
-                name="civilStatus"
-                value={formData.civilStatus}
-                onChange={handleChange}
-              >
+              <select name="civilStatus" value={formData.civilStatus} onChange={handleChange}>
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
                 <option value="Widowed">Widowed</option>
@@ -377,8 +264,6 @@ function AddPatient() {
           </button>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 export default AddPatient;

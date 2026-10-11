@@ -10,14 +10,6 @@
   margin-bottom: 25px;
 }
 
-.patient-review-eyebrow {
-  margin: 0 0 7px;
-  color: var(--color-green);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-}
-
 .patient-review-header h1 {
   margin: 0;
   color: var(--color-heading);
@@ -36,23 +28,6 @@
   background: var(--color-white);
   border: 1px solid var(--color-border);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-
-.review-alert {
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  border-radius: 9px;
-  font-size: 13px;
-}
-
-.review-alert-success {
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-
-.review-alert-error {
-  background: var(--color-danger-soft);
-  color: var(--color-danger);
 }
 
 .rating-field,
@@ -141,14 +116,6 @@
   background: var(--color-blue-soft);
   color: var(--color-text);
   font-size: 12px;
-}
-
-.review-status-approved {
-  background: var(--color-success-soft);
-}
-
-.review-status-hidden {
-  background: var(--color-danger-soft);
 }
 
 .review-page-message {

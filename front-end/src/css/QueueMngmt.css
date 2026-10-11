@@ -201,11 +201,6 @@
   font-weight: 700;
 }
 
-.priority.normal {
-  background: #eef5f5;
-  color: var(--color-green-dark);
-}
-
 .priority.urgent {
   background: var(--color-danger-soft);
   color: var(--color-danger);
@@ -227,11 +222,6 @@
 .queue-status.called {
   background: var(--color-blue-soft);
   color: var(--color-primary);
-}
-
-.queue-status.in-treatment {
-  background: var(--color-border);
-  color: var(--color-green-dark);
 }
 
 .queue-status.completed {
@@ -279,7 +269,7 @@
   color: var(--color-green-dark);
 }
 
-.action-complete {
+:where(.queue-page) .action-complete {
   background: var(--color-green-soft);
   color: var(--color-success);
 }
@@ -289,7 +279,7 @@
   color: #737d89;
 }
 
-.action-cancel {
+:where(.queue-page) .action-cancel {
   width: 30px;
   padding: 0 !important;
   background: var(--color-danger-soft);
@@ -303,10 +293,6 @@
   justify-content: center;
   color: var(--color-muted);
   font-size: 13px;
-}
-
-.queue-message.error {
-  color: var(--color-danger);
 }
 
 .queue-empty {
