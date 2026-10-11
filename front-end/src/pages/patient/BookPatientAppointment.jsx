@@ -1,5 +1,9 @@
 import { getAccessToken } from "../../utils/session.js";
-import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
+import {
+  validateSchedule,
+  clinicToday,
+  isSunday,
+} from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
 import SERVICES from "../../config/services";
@@ -22,10 +26,11 @@ function BookPatientAppointment() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-
   const handleChange = (e) => {
     if (e.target.name === "preferred_date" && isSunday(e.target.value)) {
-      window.alert("Appointments are available Monday to Saturday only. Please choose another date.");
+      window.alert(
+        "Appointments are available Monday to Saturday only. Please choose another date.",
+      );
       return;
     }
     setFormData({
@@ -36,8 +41,14 @@ function BookPatientAppointment() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const invalidSchedule = validateSchedule(formData.preferred_date, formData.preferred_time);
-    if (invalidSchedule) { window.alert(invalidSchedule); return; }
+    const invalidSchedule = validateSchedule(
+      formData.preferred_date,
+      formData.preferred_time,
+    );
+    if (invalidSchedule) {
+      window.alert(invalidSchedule);
+      return;
+    }
 
     setMessage("");
     setError("");
@@ -100,7 +111,6 @@ function BookPatientAppointment() {
 
           <p>Schedule your next dental visit with Magno Dental Clinic.</p>
         </div>
-
       </div>
 
       <div className="book-patient-card">
@@ -114,12 +124,11 @@ function BookPatientAppointment() {
 
         {error && <div className="appointment-error">{error}</div>}
 
-        <p>Monday–Saturday. Appointment start times: 10:00 AM–6:00 PM. Approved appointments must be at least 1 hour apart.</p>
         <form onSubmit={handleSubmit}>
           <div className="patient-form-row">
             <div className="patient-form-group">
               <label>
-                Preferred Date
+                Preferred Date (Monday–Saturday)
                 <span>*</span>
               </label>
 
@@ -134,7 +143,7 @@ function BookPatientAppointment() {
 
             <div className="patient-form-group">
               <label>
-                Preferred Time
+                Preferred Time (10:00 AM–6:00 PM)
                 <span>*</span>
               </label>
 
@@ -165,7 +174,9 @@ function BookPatientAppointment() {
               <option value="">Select a service</option>
 
               {SERVICES.map((service) => (
-                <option key={service} value={service}>{service}</option>
+                <option key={service} value={service}>
+                  {service}
+                </option>
               ))}
             </select>
           </div>
