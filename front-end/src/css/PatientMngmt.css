@@ -8,14 +8,116 @@
 .patient-container .patient-card {
   width: 100%;
   min-width: 0;
+  box-sizing: border-box;
   overflow: hidden;
+  padding: 22px;
   background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
   border: 1px solid var(--clinic-blue-border);
-  border-radius: 0px !important;
-  padding: 22px;
+  border-radius: 0 !important;
 }
 
-/* Keep the header and rows on the same compact grid */
+/* Filter toolbar */
+.patient-container .patient-filter-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.patient-container .patient-filter-header h3 {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.patient-container .patient-filter-controls {
+  display: flex;
+  flex: 1 1 540px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Search field */
+.patient-container .patient-filter-controls .search-box {
+  position: relative;
+  display: block;
+  flex: 1 1 260px;
+  min-width: 220px;
+  max-width: 360px;
+  margin: 0;
+}
+
+.patient-container .patient-filter-controls .search-box input {
+  display: block;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 40px 0 12px;
+  border: 1px solid var(--clinic-border);
+  border-radius: 0;
+  background: #fff;
+  color: var(--clinic-heading);
+  font-size: 13px;
+}
+
+.patient-container .search-box input::placeholder {
+  color: #9aabb8;
+}
+
+.patient-container .search-box input:focus {
+  border-color: var(--clinic-blue);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
+  outline: none;
+}
+
+.patient-container .patient-filter-controls .search-icon {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  margin: 0;
+  transform: translateY(-50%);
+  color: var(--clinic-blue-dark);
+  pointer-events: none;
+}
+
+/* Age and sorting dropdowns */
+.patient-container .patient-filter-select {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 140px;
+  height: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--clinic-border);
+  border-radius: 0;
+  background: #fff;
+  color: var(--clinic-heading);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.patient-container .patient-filter-select:last-child {
+  min-width: 190px;
+}
+
+.patient-container .patient-filter-select:focus {
+  border-color: var(--clinic-blue);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
+  outline: none;
+}
+
+/* Patient table */
 .patient-container .table {
   width: 100%;
   max-width: 100%;
@@ -23,7 +125,7 @@
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
 }
 
 .patient-container .table::-webkit-scrollbar {
@@ -32,7 +134,7 @@
 
 .patient-container .table::-webkit-scrollbar-thumb {
   background: #b9d2e4;
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 .patient-container .table::-webkit-scrollbar-track {
@@ -42,6 +144,7 @@
 .patient-container .table-header,
 .patient-container .table-row {
   --patient-grid: 60px 88px 145px 295px 120px 55px 125px 90px 120px 320px;
+
   display: grid;
   grid-template-columns: var(--patient-grid);
   column-gap: 10px;
@@ -55,35 +158,31 @@
   min-height: 46px;
   margin-top: 10px;
   padding: 0 14px 8px;
-  color: var(--color-white);
   border-bottom: 1px solid var(--clinic-blue-border);
+  background: var(--color-primary);
+  color: var(--color-white);
   font-size: 11px;
   font-weight: 700;
-  background: var(--color-primary);
 }
 
 .patient-container .table-row {
   min-height: 78px;
   padding: 9px 14px;
-  color: var(--clinic-text);
-  font-size: 12px;
   border-bottom: 1px solid var(--clinic-border);
   background: #fff;
+  color: var(--clinic-text);
+  font-size: 12px;
 }
 
 .patient-container .table-row:nth-child(odd) {
   background: #f3f8f7;
 }
 
-.patient-container .table-row:nth-child(even) {
-  background: #fff;
-}
-
 .patient-container .table-row:hover {
   background: var(--clinic-blue-light);
 }
 
-/* Keep each cell inside its column */
+/* Table cells */
 .patient-container .table-header > *,
 .patient-container .table-row > * {
   min-width: 0;
@@ -100,21 +199,21 @@
   overflow: hidden;
 }
 
-.patient-container .table-row .name {
-  color: var(--clinic-heading);
-  font-weight: 600;
+.patient-container .table-row .name,
+.patient-container .table-row .muted {
   line-height: 1.35;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
 }
 
+.patient-container .table-row .name {
+  color: var(--clinic-heading);
+  font-weight: 600;
+}
+
 .patient-container .table-row .muted {
   color: var(--clinic-text);
-  line-height: 1.35;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
 }
 
 /* Patient photo */
@@ -126,12 +225,12 @@
 }
 
 .patient-container .avatar {
+  display: block;
   width: 48px;
   height: 48px;
-  display: block;
   object-fit: cover;
-  border-radius: 50%;
   border: 2px solid #dcebf3;
+  border-radius: 50%;
   background: #f7fbfd;
   cursor: pointer;
   transition:
@@ -173,13 +272,14 @@
   margin: 0;
   padding: 0 11px;
   border: 1px solid transparent;
+  border-radius: 0;
   color: #fff !important;
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition:
     transform 0.16s ease,
     background-color 0.16s ease,
@@ -209,7 +309,6 @@
 .patient-container .visit-actions .dental-chart-btn {
   background: var(--clinic-green) !important;
   border-color: var(--clinic-green-dark) !important;
-  color: #fff !important;
 }
 
 .patient-container .visit-actions .dental-chart-btn:hover {
@@ -219,74 +318,15 @@
 .patient-container .visit-actions .create-account-btn {
   width: auto;
   background: #eef3f6;
-  color: var(--clinic-heading) !important;
   border-color: #d7e3ea;
+  color: var(--clinic-heading) !important;
 }
 
 .patient-container .visit-actions .create-account-btn:hover {
   background: #e1ebf0;
 }
 
-/* Search */
-.patient-container .search-box input {
-  width: 245px;
-  min-height: 44px;
-  padding: 0 38px 0 12px;
-  border: 1px solid var(--clinic-border);
-  background: #fff;
-  color: var(--clinic-heading);
-  margin-right: 8px;
-}
-
-.patient-container .search-box input::placeholder {
-  color: #9aabb8;
-}
-
-.patient-container .search-box input:focus {
-  border-color: var(--clinic-blue);
-  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
-  outline: none;
-}
-
-.patient-container .search-icon {
-  color: var(--clinic-blue-dark);
-}
-
-/* Patient search, age filter, and sorting controls */
-.patient-filter-header {
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.patient-filter-controls {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
-
-.patient-filter-select {
-  min-height: 44px;
-  display: block;
-  width: 100%;
-  padding: 0 20px 0 12px;
-  border: 1px solid var(--clinic-border);
-  border-radius: 0;
-  background: #fff;
-  color: var(--clinic-heading);
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.patient-filter-select:focus {
-  border-color: var(--clinic-blue);
-  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
-  outline: none;
-}
-
-/* Footer */
+/* Table footer */
 .patient-container .table-footer {
   display: flex;
   justify-content: space-between;
@@ -307,7 +347,7 @@
   margin: 0;
   padding: 0 12px;
   border: 1px solid var(--clinic-border);
-  border-radius: 0px;
+  border-radius: 0;
   background: #fff;
   color: var(--clinic-heading);
 }
@@ -331,23 +371,34 @@
 
   .patient-container .visit-actions button {
     padding: 0 10px;
-    font-size: 10px;
   }
 }
 
 @media (max-width: 700px) {
-  .patient-filter-controls {
+  .patient-container .patient-filter-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .patient-container .patient-filter-controls {
+    display: grid;
+    flex: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
-    justify-content: flex-end;
-    flex-direction: column-reverse;
+    gap: 10px;
   }
 
-  .patient-filter-controls .search-box {
-    flex: 1 0 100%;
+  .patient-container .patient-filter-controls .search-box {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
   }
 
-  .patient-filter-select {
-    flex: 1 1 50px;
+  .patient-container .patient-filter-select,
+  .patient-container .patient-filter-select:last-child {
+    width: 100%;
+    min-width: 0;
   }
 
   .patient-container .table-footer {
