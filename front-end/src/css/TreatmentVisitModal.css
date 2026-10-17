@@ -226,7 +226,7 @@
   cursor: not-allowed;
 }
 
-/* Align treatment checkboxes with their labels. 
+/*Align treatment checkboxes with their labels. */
 .treatment-modal .treatment-select {
   min-width: 0;
   margin: 8px 0 16px;
@@ -301,7 +301,7 @@
   color: #526476;
   font-size: 13px;
   line-height: 1.5;
-}*/
+}
 
 @media (max-width: 650px) {
   .treatment-modal-overlay {
