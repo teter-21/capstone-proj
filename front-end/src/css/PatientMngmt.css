@@ -269,7 +269,9 @@
 
 .patient-filter-select {
   min-height: 44px;
-  padding: 0 34px 0 12px;
+  display: block;
+  width: 100%;
+  padding: 0 20px 0 12px;
   border: 1px solid var(--clinic-border);
   border-radius: 0;
   background: #fff;
