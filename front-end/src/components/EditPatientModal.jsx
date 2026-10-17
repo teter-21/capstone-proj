@@ -1,3 +1,4 @@
+import { usePermissions } from "../utils/permissions";
 import React, { useState } from "react";
 import api from "../api";
 import "../css/EditPatientModal.css";
@@ -7,11 +8,13 @@ function EditPatientModal({
   onClose,
   onSave
 }) {
+  const can = usePermissions();
   const patientName = splitFullName(patient.name);
   const [formData, setFormData] = useState({
     lastName: patientName.lastName,
     firstName: patientName.firstName,
     middleName: patientName.middleName,
+    birthdate: patient.birthdate || "", is_pwd: Number(patient.is_pwd || 0),
     age: patient.age || "",
     occupation: patient.occupation || "",
     address: patient.address || "",
@@ -38,6 +41,8 @@ function EditPatientModal({
     const data = new FormData();
     data.append("name", fullname);
     data.append("age", formData.age);
+    data.append("birthdate", formData.birthdate);
+    data.append("is_pwd", formData.is_pwd);
     data.append("occupation", formData.occupation);
     data.append("address", formData.address);
     data.append("phone", formData.phone);
@@ -97,7 +102,8 @@ function EditPatientModal({
           <div className="edit-two-column">
             <div className="edit-field">
               <label>Age</label>
-              <input type="number" min="0" name="age" value={formData.age} onChange={handleChange} />
+              <input type="number" min="0" name="age" value={formData.age} onChange={handleChange} /><label>Birthdate (required for automatic senior eligibility)</label><input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+              <label>Registered PWD</label><select value={formData.is_pwd} onChange={event => setFormData(previous => ({ ...previous, is_pwd: Number(event.target.value) }))}><option value={0}>No</option><option value={1}>Yes — verify ID when billing</option></select>
             </div>
 
             <div className="edit-field">
@@ -151,7 +157,7 @@ function EditPatientModal({
 
           <div className="edit-field">
             <label>Complaint</label>
-            <textarea name="complain" rows="3" value={formData.complain} onChange={handleChange} />
+            {can("clinical.manage") && <textarea name="complain" rows="3" value={formData.complain} onChange={handleChange} />}
           </div>
 
           {patient.image && !image && <p className="edit-current-image">

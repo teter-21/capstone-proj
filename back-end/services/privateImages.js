@@ -4,6 +4,7 @@ const fs = require('node:fs/promises');
 const crypto = require('node:crypto');
 const cloudinary = require('../config/cloudinary');
 const db = require('../config/db');
+const { can } = require('./permissions');
 const MAX_BYTES = 2 * 1024 * 1024;
 async function sanitizeImage(buffer) {
   if (!Buffer.isBuffer(buffer) || buffer.length > MAX_BYTES) throw new Error('Invalid image size.');
@@ -77,7 +78,7 @@ async function readCloudImage(ref) {
 async function getPatientImage(req, res) {
   const id = Number(req.params.id);
   if (!Number.isSafeInteger(id) || id < 1 ||
-    (req.user.role !== 'admin' && !(req.user.role === 'patient' && Number(req.user.patient_id) === id)))
+    (!can(req.user, 'patients.read') && !(req.user.role === 'patient' && Number(req.user.patient_id) === id)))
     return res.status(404).json({ message: 'Image not found.' });
   try {
     const [[patient]] = await db.promise().execute('SELECT image FROM patients WHERE id = ? LIMIT 1', [id]);

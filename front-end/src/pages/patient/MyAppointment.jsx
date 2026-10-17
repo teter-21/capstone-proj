@@ -159,7 +159,7 @@ function MyAppointments() {
                   <div>
                     <span className="appointment-label">APPOINTMENT</span>
 
-                    <h2>{appointment.service}</h2>
+                    <h2>{appointment.service} ({appointment.duration_minutes || 60} min)</h2>
                   </div>
 
                   <span className={`appointment-status ${getStatusClass(appointment.status)}`}>
@@ -210,7 +210,7 @@ function MyAppointments() {
                     <div>
                       <small>SERVICE</small>
 
-                      <strong>{appointment.service}</strong>
+                      <strong>{appointment.service} ({appointment.duration_minutes || 60} min)</strong>
                     </div>
                   </div>
                 </div>

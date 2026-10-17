@@ -2,7 +2,7 @@ import { getAccessToken } from "../../utils/session.js";
 import { validateSchedule, clinicToday, isSunday } from "../../utils/appointmentSchedule";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
-import SERVICES from "../../config/services";
+import TreatmentSelect from "../../components/TreatmentSelect";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../css/BookPatientAppointment.css";
@@ -12,7 +12,7 @@ function BookPatientAppointment() {
   const [formData, setFormData] = useState({
     preferred_date: "",
     preferred_time: "",
-    service: "",
+    services: [],
     reason: ""
   });
   const [loading, setLoading] = useState(false);
@@ -33,12 +33,13 @@ function BookPatientAppointment() {
       window.alert(invalidSchedule);
       return;
     }
-    if (!formData.preferred_date || !formData.preferred_time || !formData.service) {
+    if (!formData.preferred_date || !formData.preferred_time || !formData.services.length) {
       window.alert("Please complete the required fields.");
       return;
     }
     try {
-      setLoading(true);
+      if (!formData.services.length) { window.alert("Select at least one treatment."); return; }
+    setLoading(true);
       const token = getAccessToken();
       const response = await axios.post(API_BASE_URL + "/patient/appointment", formData, {
         headers: {
@@ -49,7 +50,7 @@ function BookPatientAppointment() {
       setFormData({
         preferred_date: "",
         preferred_time: "",
-        service: "",
+        services: [],
         reason: ""
       });
     } catch (err) {
@@ -104,13 +105,7 @@ function BookPatientAppointment() {
               <span>*</span>
             </label>
 
-            <select name="service" value={formData.service} onChange={handleChange}>
-              <option value="">Select a service</option>
-
-              {SERVICES.map(service => <option key={service} value={service}>
-                  {service}
-                </option>)}
-            </select>
+            <TreatmentSelect value={formData.services} onChange={services => setFormData(previous => ({ ...previous, services }))} disabled={loading} />
           </div>
 
           <div className="patient-form-group">

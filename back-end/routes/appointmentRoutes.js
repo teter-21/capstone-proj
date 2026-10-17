@@ -1,4 +1,7 @@
-const { bookingLimit, patientBookingLimit } = require("../middleware/persistentLimits");
+const {
+  bookingLimit,
+  patientBookingLimit,
+} = require("../middleware/persistentLimits");
 const express = require("express");
 
 const router = express.Router();
@@ -65,4 +68,10 @@ router.get(
   appointmentController.getMyAppointments,
 );
 
+router.post(
+  "/appointments",
+  auth,
+  admin,
+  appointmentController.createAppointment,
+);
 module.exports = router;

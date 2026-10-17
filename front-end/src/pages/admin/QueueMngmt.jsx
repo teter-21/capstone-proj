@@ -1,13 +1,15 @@
+import { usePermissions } from "../../utils/permissions";
 import { getAccessToken } from "../../utils/session.js";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useState } from "react";
-import SERVICES from "../../config/services";
+import TreatmentSelect from "../../components/TreatmentSelect";
 import axios from "axios";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import { FaUsers, FaWalking, FaCalendarCheck, FaPhone, FaPlay, FaCheck, FaForward, FaTimes, FaUserPlus, FaPlus } from "react-icons/fa";
 import "../../css/QueueMngmt.css";
 import TreatmentVisitModal from "../../components/TreatmentVisitModal";
 function QueueManagement() {
+  const can = usePermissions();
   const [queue, setQueue] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -18,7 +20,7 @@ function QueueManagement() {
   const [walkInForm, setWalkInForm] = useState({
     patient_id: "",
     patient_name: "",
-    service: "",
+    services: [],
     reason: "",
     priority: "Normal"
   });
@@ -83,7 +85,7 @@ function QueueManagement() {
     setWalkInForm({
       patient_id: "",
       patient_name: "",
-      service: "",
+      services: [],
       reason: "",
       priority: "Normal"
     });
@@ -126,7 +128,7 @@ function QueueManagement() {
       window.alert("Please select a patient.");
       return;
     }
-    if (!walkInForm.service) {
+    if (!walkInForm.services.length) {
       window.alert("Please select a service.");
       return;
     }
@@ -135,7 +137,7 @@ function QueueManagement() {
       const response = await axios.post(API_BASE_URL + "/queue/walk-in", {
         patient_id: walkInForm.patient_id,
         patient_name: walkInForm.patient_name,
-        service: walkInForm.service,
+        services: walkInForm.services,
         reason: walkInForm.reason,
         priority: walkInForm.priority
       }, {
@@ -148,7 +150,7 @@ function QueueManagement() {
       setWalkInForm({
         patient_id: "",
         patient_name: "",
-        service: "",
+        services: [],
         reason: "",
         priority: "Normal"
       });
@@ -432,12 +434,12 @@ function QueueManagement() {
                             </button>
                           </>}
 
-                        {item.status === "Called" && <button className="action-start" onClick={() => queueAction(item.id, "start")}>
+                        {can("clinical.manage") && item.status === "Called" && <button className="action-start" onClick={() => queueAction(item.id, "start")}>
                             <FaPlay />
                             Start
                           </button>}
 
-                        {item.status === "In Treatment" && <button className="action-complete" onClick={() => openTreatmentModal(item)}>
+                        {can("clinical.manage") && item.status === "In Treatment" && <button className="action-complete" onClick={() => openTreatmentModal(item)}>
                             <FaCheck />
                             Complete
                           </button>}
@@ -512,13 +514,7 @@ function QueueManagement() {
               <div className="walk-in-form-group">
                 <label>Service</label>
 
-                <select name="service" value={walkInForm.service} onChange={handleWalkInChange} required>
-                  {" "}
-                  <option value="">Select service</option>{" "}
-                  {SERVICES.map(service => <option key={service} value={service}>
-                      {service}
-                    </option>)}{" "}
-                </select>
+                <TreatmentSelect value={walkInForm.services} onChange={services => setWalkInForm(previous => ({ ...previous, services }))} />
               </div>
 
               {/* REASON */}

@@ -5,7 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { buildFullName } from "../../utils/nameFormatter";
 import { FaShieldAlt } from "react-icons/fa";
-import SERVICES from "../../config/services";
+import TreatmentSelect from "../TreatmentSelect";
 function AppointmentForm() {
   const today = clinicToday();
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ function AppointmentForm() {
     phone: "",
     preferred_date: "",
     preferred_time: "",
-    service: "",
+    services: [],
     reason: ""
   });
   const [loading, setLoading] = useState(false);
@@ -48,6 +48,7 @@ function AppointmentForm() {
       window.alert("Please read and agree to the Terms and Conditions before booking.");
       return;
     }
+    if (!formData.services.length) { window.alert("Select at least one treatment."); return; }
     setLoading(true);
     const fullname = buildFullName(formData.lastName, formData.firstName, formData.middleName);
     try {
@@ -57,7 +58,7 @@ function AppointmentForm() {
         phone: formData.phone,
         preferred_date: formData.preferred_date,
         preferred_time: formData.preferred_time,
-        service: formData.service,
+        services: formData.services,
         reason: formData.reason
       });
       window.alert(res.data.message);
@@ -69,7 +70,7 @@ function AppointmentForm() {
         phone: "",
         preferred_date: "",
         preferred_time: "",
-        service: "",
+        services: [],
         reason: ""
       });
       setTermsAccepted(false);
@@ -120,13 +121,7 @@ function AppointmentForm() {
             </div>
           </div>
 
-          <select name="service" value={formData.service} onChange={handleChange} required>
-            <option value="">Select Service</option>
-            <option value="">Select Service</option>
-            {SERVICES.map(service => <option key={service} value={service}>
-                {service}
-              </option>)}
-          </select>
+          <TreatmentSelect value={formData.services} onChange={services => setFormData(previous => ({ ...previous, services }))} disabled={loading} />
 
           <textarea name="reason" rows="5" placeholder="Reason for Visit(e.g., toothache, routine check-up, etc.)" value={formData.reason} onChange={handleChange} />
 

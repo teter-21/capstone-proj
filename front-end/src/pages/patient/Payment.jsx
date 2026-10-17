@@ -213,7 +213,7 @@ function Payments() {
                           </td>
 
                           <td>
-                            {balance > 0 ? <span className="payment-status pending">
+                            {payment.invoice_status === "draft" ? <span>Awaiting invoice</span> : balance > 0 ? <span className="payment-status pending">
                                 Balance Due
                               </span> : <span className="payment-status paid">Paid</span>}
                           </td>

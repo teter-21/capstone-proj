@@ -11,6 +11,7 @@ function load(file, deps) {
       module: m,
       exports: m.exports,
       require(name) {
+        if (['../services/billing', '../services/treatments', '../services/permissions'].includes(name)) return require(name);
         if (name in deps) return deps[name];
         throw Error(name);
       },
@@ -111,7 +112,7 @@ test("report summaries aggregate once and tell the client when the preview is tr
   assert.equal(res.body.details.length, 200);
   assert.equal(res.body.detailsTruncated, true);
   assert.equal(queries.length, 4);
-  for (const query of queries) assert.equal(query.args.length, 3);
+  for (const query of queries) assert.equal(query.args.length, 4);
 });
 test("invalid report dates are rejected before database access", async () => {
   const controller = load("controllers/reportController.js", {

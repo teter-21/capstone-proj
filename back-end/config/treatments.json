@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Dental Check-up",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Teeth Cleaning / Oral Prophylaxis",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Tooth Filling / Dental Fillings",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Tooth Extraction",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Root Canal Treatment",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Teeth Whitening",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Braces Consultation / Dental Retainer",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Dental Crown",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Dental Bridge",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Dentures",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Dental Impaction",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Removable Partial Denture",
+    "duration_minutes": 60
+  },
+  {
+    "name": "Dental Veneers",
+    "duration_minutes": 60
+  }
+]

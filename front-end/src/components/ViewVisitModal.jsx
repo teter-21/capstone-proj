@@ -1,9 +1,11 @@
+import { usePermissions } from "../utils/permissions";
 import { formatDateOnly } from "../utils/dateUtils";
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import "../css/ViewVisitModal.css";
 
 function ViewVisitModal({ patient, onClose }) {
+  const can = usePermissions();
   const [visits, setVisits] = useState([]);
 
   useEffect(() => {
@@ -34,8 +36,7 @@ function ViewVisitModal({ patient, onClose }) {
                 <th>Procedure</th>
                 <th>Complaint</th>
                 <th>Description</th>
-                <th>Paid</th>
-                <th>Balance</th>
+                {can("billing.manage") && <><th>Paid</th><th>Balance</th></>}
               </tr>
             </thead>
 
@@ -49,8 +50,7 @@ function ViewVisitModal({ patient, onClose }) {
                     <td className="procedure">{v.procedure_name || "-"}</td>
                     <td>{v.complain || "-"}</td>
                     <td className="desc">{v.description || "-"}</td>
-                    <td className="paid">₱{v.amount_paid || 0}</td>
-                    <td className="balance">₱{v.balance || 0}</td>
+                    {can("billing.manage") && <><td className="paid">₱{v.amount_paid || 0}</td><td className="balance">{v.invoice_status === "draft" ? "Awaiting invoice" : `₱${v.balance || 0}`}</td></>}
                   </tr>
                 ))
               ) : (

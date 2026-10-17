@@ -2,91 +2,21 @@ const db = require("../config/db");
 
 /* |||| GET ADMIN DASHBOARD SUMMARY |||| */
 
-exports.getDashboardSummary = (req, res) => {
-  const queries = {
-    /* Total registered patients */
-    totalPatients: `
-            SELECT COUNT(*) AS total
-            FROM patients
-        `,
-
-    /* Pending online appointments */
-    pendingAppointments: `
-            SELECT COUNT(*) AS total
-            FROM appointments
-            WHERE status = 'Pending'
-        `,
-
-    /* Today's appointments */
-    todayAppointments: `
-            SELECT COUNT(*) AS total
-            FROM appointments
-            WHERE preferred_date = CURDATE()
-        `,
-
-    /* Total payments */
-    totalRevenue: `
-            SELECT COALESCE(
-                SUM(amount_paid),
-                0
-            ) AS total
-            FROM visits
-        `,
-  };
-
-  db.query(queries.totalPatients, (err, patientsResult) => {
-    if (err) {
-      console.error("Total patients error:", err);
-
-      return res.status(500).json({
-        message: "Unable to load patient statistics.",
-      });
+exports.getDashboardSummary = async (req, res) => {
+  try {
+    const [[counts]] = await db.promise().query(`SELECT
+      (SELECT COUNT(*) FROM patients) AS totalPatients,
+      (SELECT COUNT(*) FROM appointments WHERE status = 'Pending') AS pendingAppointments,
+      (SELECT COUNT(*) FROM appointments WHERE preferred_date = CURDATE()) AS todayAppointments`);
+    if (require('../services/permissions').can(req.user, 'reports.read')) {
+      const [[money]] = await db.promise().query('SELECT COALESCE(SUM(amount_paid),0) AS totalRevenue FROM visits');
+      counts.totalRevenue = money.totalRevenue;
     }
-
-    db.query(queries.pendingAppointments, (err, pendingResult) => {
-      if (err) {
-        console.error("Pending appointments error:", err);
-
-        return res.status(500).json({
-          message: "Unable to load appointment statistics.",
-        });
-      }
-
-      db.query(queries.todayAppointments, (err, todayResult) => {
-        if (err) {
-          console.error("Today's appointments error:", err);
-
-          return res.status(500).json({
-            message: "Unable to load today's appointments.",
-          });
-        }
-
-        db.query(queries.totalRevenue, (err, revenueResult) => {
-          if (err) {
-            console.error("Revenue error:", err);
-
-            return res.status(500).json({
-              message: "Unable to load revenue statistics.",
-            });
-          }
-
-          res.json({
-            totalPatients: patientsResult[0].total,
-
-            pendingAppointments: pendingResult[0].total,
-
-            todayAppointments: todayResult[0].total,
-
-            totalRevenue: revenueResult[0].total,
-          });
-        });
-      });
-    });
-  });
+    return res.json(counts);
+  } catch (error) { return res.status(500).json({ message: 'Unable to load dashboard.' }); }
 };
 
-/* |||| GET MONTHLY REVENUE |||| 
-Returns revenue for the current month and prev 5 months */
+/* GET MONTHLY REVENUE */
 
 exports.getMonthlyRevenue = (req, res) => {
   const sql = `
@@ -136,19 +66,19 @@ exports.getMonthlyRevenue = (req, res) => {
   });
 };
 
-/* |||| GET TOP PROCEDURES ||||
-Gets the most requested procedures for this month */
+/* GET TOP PROCEDURES */
 
 exports.getTopProcedures = (req, res) => {
   const sql = `
 
         SELECT
 
-            procedure_name AS name,
+            item.name AS name,
 
             COUNT(*) AS count
 
-        FROM visits
+        FROM visits v JOIN JSON_TABLE(COALESCE(v.treatment_items, JSON_ARRAY(JSON_OBJECT('name', v.procedure_name))),
+          '$[*]' COLUMNS(name VARCHAR(2000) PATH '$.name')) item ON TRUE
 
         WHERE
 
@@ -172,7 +102,7 @@ exports.getTopProcedures = (req, res) => {
                 )
 
         GROUP BY
-            procedure_name
+            item.name
 
         ORDER BY
             count DESC

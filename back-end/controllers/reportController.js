@@ -23,11 +23,11 @@ exports.getReports = async (req, res) => {
 
   const visitWhere = `
         v.visit_date BETWEEN ? AND ?
-        ${procedure ? "AND v.procedure_name = ?" : ""}
+        ${procedure ? "AND COALESCE(JSON_CONTAINS(v.treatment_items, JSON_OBJECT('name', ?)), v.procedure_name = ?)" : ""}
     `;
 
   const visitParams = procedure
-    ? [startDate, endDate, procedure]
+    ? [startDate, endDate, procedure, procedure]
     : [startDate, endDate];
 
   const summarySql = `SELECT
@@ -46,7 +46,7 @@ exports.getReports = async (req, res) => {
             COALESCE(p.name, 'Unknown Patient') AS patient,
             v.procedure_name AS procedure_name,
             v.amount_paid,
-            v.balance,
+            v.balance, v.invoice_status, v.subtotal, v.discount_amount,
             v.complain,
             v.description
         FROM visits v
@@ -58,13 +58,14 @@ exports.getReports = async (req, res) => {
 
   const procedureSql = `
         SELECT
-            v.procedure_name AS name,
+            item.name AS name,
             COUNT(*) AS value
-        FROM visits v
+        FROM visits v JOIN JSON_TABLE(COALESCE(v.treatment_items, JSON_ARRAY(JSON_OBJECT('name', v.procedure_name))),
+          '$[*]' COLUMNS(name VARCHAR(2000) PATH '$.name')) item ON TRUE
         WHERE ${visitWhere}
             AND v.procedure_name IS NOT NULL
             AND v.procedure_name <> ''
-        GROUP BY v.procedure_name
+        GROUP BY item.name
         ORDER BY value DESC
         LIMIT 8
     `;
@@ -119,10 +120,10 @@ exports.exportReports = (req,res) => {
   const procedure=String(req.query.procedure || "");
   const {Transform,pipeline}=require("node:stream");
   const params=[range.startDate,range.endDate];
-  if(procedure) params.push(procedure);
+  if(procedure) params.push(procedure, procedure);
   const query=db.query(`SELECT v.visit_date,v.visit_time,p.name AS patient,v.procedure_name,
     v.amount_paid,v.balance,v.complain,v.description FROM visits v LEFT JOIN patients p ON p.id=v.patient_id
-    WHERE v.visit_date BETWEEN ? AND ? ${procedure ? "AND v.procedure_name = ?" : ""}
+    WHERE v.visit_date BETWEEN ? AND ? ${procedure ? "AND COALESCE(JSON_CONTAINS(v.treatment_items, JSON_OBJECT('name', ?)), v.procedure_name = ?)" : ""}
     ORDER BY v.visit_date DESC,v.visit_time DESC,v.id DESC`,params);
   const stream=query.stream({highWaterMark:100});
   const keys=["visit_date","visit_time","patient","procedure_name","amount_paid","balance","complain","description"];
@@ -143,11 +144,10 @@ exports.exportReports = (req,res) => {
 /* |||| ADMIN - AVAILABLE PROCEDURES |||| */
 exports.getReportProcedures = (req, res) => {
   const sql = `
-        SELECT DISTINCT procedure_name AS name
-        FROM visits
-        WHERE procedure_name IS NOT NULL
-          AND procedure_name <> ''
-        ORDER BY procedure_name ASC
+        SELECT DISTINCT item.name
+        FROM visits v JOIN JSON_TABLE(COALESCE(v.treatment_items, JSON_ARRAY(JSON_OBJECT('name', v.procedure_name))),
+          '$[*]' COLUMNS(name VARCHAR(2000) PATH '$.name')) item ON TRUE
+        WHERE item.name IS NOT NULL AND item.name <> '' ORDER BY item.name ASC
     `;
 
   db.query(sql, (err, result) => {

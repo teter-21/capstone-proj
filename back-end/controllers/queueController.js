@@ -399,7 +399,10 @@ exports.checkInAppointment = (req, res) => {
 /* |||||| ADD WALK-IN |||||| */
 
 exports.addWalkIn = (req, res) => {
-  const { patient_id, patient_name, service, reason, priority } = req.body;
+  const { patient_id, patient_name, reason, priority } = req.body;
+  let service;
+  try { service = require('../services/treatments').selectTreatments(req.body.services, req.body.service).service; }
+  catch (error) { return res.status(400).json({ message: error.message }); }
 
   /*  VALIDATION  */
 
@@ -795,215 +798,28 @@ exports.completeQueue = (req, res) => {
 
 /* |||||| COMPLETE TREATMENT + CREATE VISIT RECORD |||||| */
 
-exports.completeTreatmentWithVisit = (req, res) => {
-  const id = req.params.id;
-
-  const {
-    visit_date,
-    visit_time,
-    procedure_name,
-    complain,
-    description,
-    amount_paid,
-    balance,
-  } = req.body;
-
-  if (!visit_date || !visit_time || !procedure_name) {
-    return res.status(400).json({
-      message: "Date, time, and procedure are required.",
-    });
-  }
-
-  const getPatientSql = `
-        SELECT
-            id,
-            patient_id,
-            appointment_id,
-            queue_number,
-            patient_name,
-            service,
-            reason,
-            status
-        FROM queue
-        WHERE id = ?
-        LIMIT 1
-    `;
-
-  db.query(getPatientSql, [id], (lookupErr, results) => {
-    if (lookupErr) {
-      console.error("Complete treatment lookup error:", lookupErr);
-
-      return res.status(500).json({
-        message: "Unable to retrieve the treatment patient.",
-      });
-    }
-
-    if (results.length === 0) {
-      return res.status(404).json({
-        message: "Queue patient not found.",
-      });
-    }
-
-    const patient = results[0];
-
-    if (patient.status !== "In Treatment") {
-      return res.status(400).json({
-        message:
-          "Patient must be in treatment before the visit can be completed.",
-      });
-    }
-
-    if (!patient.patient_id) {
-      return res.status(400).json({
-        message: "This queue entry is not linked to a patient record.",
-      });
-    }
-
-    const paid = Number(amount_paid || 0);
-    const remaining = Number(balance || 0);
-
-    if (
-      !Number.isFinite(paid) ||
-      paid < 0 ||
-      !Number.isFinite(remaining) ||
-      remaining < 0
-    ) {
-      return res.status(400).json({
-        message: "Amount paid and balance must be valid non-negative numbers.",
-      });
-    }
-
-    const insertVisitSql = `
-                INSERT INTO visits
-                (
-                    patient_id,
-                    visit_date,
-                    visit_time,
-                    procedure_name,
-                    complain,
-                    description,
-                    amount_paid,
-                    balance
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            `;
-
-    db.query(
-      insertVisitSql,
-      [
-        patient.patient_id,
-        visit_date,
-        visit_time,
-        procedure_name,
-        complain || patient.reason || null,
-        description || null,
-        paid,
-        remaining,
-      ],
-      (visitErr, visitResult) => {
-        if (visitErr) {
-          console.error("Create visit from queue error:", visitErr);
-
-          return res.status(500).json({
-            message: "Unable to save the visit record.",
-          });
-        }
-
-        const updateQueueSql = `
-                        UPDATE queue
-                        SET
-                            status = 'Completed',
-                            completed_at = NOW()
-                        WHERE id = ?
-                        AND status = 'In Treatment'
-                    `;
-
-        db.query(updateQueueSql, [id], (queueErr, queueResult) => {
-          if (queueErr) {
-            console.error("Complete treatment queue update error:", queueErr);
-
-            return res.status(500).json({
-              message:
-                "Visit was saved, but the queue could not be completed. Please verify the queue entry before retrying.",
-            });
-          }
-
-          if (queueResult.affectedRows === 0) {
-            return res.status(400).json({
-              message: "The patient is no longer in treatment.",
-            });
-          }
-
-          const finishAppointment = () => {
-            if (!patient.appointment_id) {
-              return;
-            }
-
-            const appointmentSql = `
-                                    UPDATE appointments
-                                    SET status = 'Completed'
-                                    WHERE id = ?
-                                `;
-
-            db.query(
-              appointmentSql,
-              [patient.appointment_id],
-              (appointmentErr) => {
-                if (appointmentErr) {
-                  console.error(
-                    "Update appointment completion error:",
-                    appointmentErr,
-                  );
-                }
-              },
-            );
-          };
-
-          finishAppointment();
-
-          notificationService
-            .createNotification({
-              patient_id: patient.patient_id,
-
-              title: "Treatment Completed",
-
-              message: `Your treatment has been completed. Visit record #${visitResult.insertId} has been saved.`,
-
-              type: "treatment_completed",
-            })
-            .catch((error) => {
-              console.error("Treatment completion notification error:", error);
-            });
-
-          return res.json({
-            message: "Treatment completed and visit record saved successfully.",
-
-            visit: {
-              id: visitResult.insertId,
-
-              patient_id: patient.patient_id,
-
-              patient_name: patient.patient_name,
-
-              procedure_name: procedure_name,
-
-              amount_paid: paid,
-
-              balance: remaining,
-            },
-
-            queue: {
-              id: patient.id,
-
-              queue_number: patient.queue_number,
-
-              status: "Completed",
-            },
-          });
-        });
-      },
-    );
-  });
+exports.completeTreatmentWithVisit = async (req, res) => {
+  let connection;
+  try {
+    connection = await db.promise().getConnection();
+    await connection.beginTransaction();
+    const [[patient]] = await connection.execute('SELECT * FROM queue WHERE id = ? FOR UPDATE', [req.params.id]);
+    const { fail } = require('../services/billing');
+    if (!patient) fail('Queue patient not found.', 404);
+    if (patient.status !== 'In Treatment') fail('Patient must be in treatment before completion.', 409);
+    if (!patient.patient_id) fail('Link a patient record before completing treatment.');
+    const visitId = await require('../services/visits').createVisit(connection, patient.patient_id, req.body);
+    await connection.execute("UPDATE queue SET status = 'Completed', completed_at = NOW() WHERE id = ?", [patient.id]);
+    if (patient.appointment_id) await connection.execute("UPDATE appointments SET status = 'Completed' WHERE id = ?", [patient.appointment_id]);
+    await connection.execute('INSERT INTO notifications (patient_id, title, message, type) VALUES (?, ?, ?, ?)',
+      [patient.patient_id, 'Treatment Completed', `Your treatment record #${visitId} has been saved.`, 'treatment_completed']);
+    await connection.commit();
+    return res.json({ message: 'Treatment saved. Complete its invoice in Billing.', visit: { id: visitId }, queue: { id: patient.id, status: 'Completed' } });
+  } catch (error) {
+    await connection?.rollback().catch(() => {});
+    console.error('Treatment completion failed:', error.code || error.name);
+    return res.status(error.status || 500).json({ message: error.status ? error.message : 'Unable to save treatment.' });
+  } finally { connection?.release(); }
 };
 
 /* |||||| SKIP PATIENT |||||| */

@@ -2,13 +2,16 @@ const { validateSchedule, checkApprovedConflict, acquireScheduleLock, releaseSch
 const db = require("../config/db");
 const { enqueueAppointmentEmail } = require("../services/emailQueue");
 const { createAdminNotification } = require("../services/notificationService");
+const { selectTreatments } = require("../services/treatments");
 const statuses = ["Pending", "Approved", "Rescheduled", "Completed", "Cancelled"];
 const emailEvents = { Approved: "approved", Cancelled: "cancelled", Rescheduled: "rescheduled" };
 const emailPattern = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
 function validateBooking(data) {
   if (!data.fullname || data.fullname.length > 150 || !emailPattern.test(data.email || "") || data.email.length > 100
-    || !data.phone || data.phone.length > 20 || !data.service || data.service.length > 100) return "Enter valid patient, email, phone and service information.";
-  return validateDateTime(data.preferred_date, data.preferred_time);
+    || !data.phone || data.phone.length > 20 || !data.service || data.service.length > 2000) return "Enter valid patient, email, phone and service information.";
+  const invalid = validateDateTime(data.preferred_date, data.preferred_time);
+  if (invalid) return invalid;
+  return require('../services/appointmentSchedule').validateDuration(data.preferred_time, data.duration_minutes);
 }
 function validateDateTime(date, time) {
   return validateSchedule(date, time);
@@ -37,14 +40,16 @@ async function createBooking(req, res, portal) {
       const [rows] = await connection.execute("SELECT patient_id FROM users WHERE email = ? AND role = 'patient' AND patient_id IS NOT NULL LIMIT 1", [data.email]);
       patientId = rows[0]?.patient_id || null;
     }
+    const selected = selectTreatments(req.body.services, req.body.service);
+    data = { ...data, ...selected };
     const invalid = validateBooking(data);
     if (invalid) { await connection.rollback(); return res.status(400).json({ message: invalid }); }
-    const conflict = await checkApprovedConflict(connection, data.preferred_date, data.preferred_time);
+    const conflict = await checkApprovedConflict(connection, data.preferred_date, data.preferred_time, null, data.duration_minutes);
     if (conflict) { await connection.rollback(); return res.status(409).json({ message: conflict }); }
     const [result] = await connection.execute(`INSERT INTO appointments
-      (patient_id, fullname, email, phone, preferred_date, preferred_time, service, reason, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`, [patientId, data.fullname, data.email, data.phone,
-        data.preferred_date, data.preferred_time, data.service, data.reason || null]);
+      (patient_id, fullname, email, phone, preferred_date, preferred_time, service, reason, status, treatments, duration_minutes)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Pending', ?, ?)`, [patientId, data.fullname, data.email, data.phone,
+        data.preferred_date, data.preferred_time, data.service, data.reason || null, JSON.stringify(data.treatments), data.duration_minutes]);
     await enqueueAppointmentEmail(connection, "submitted", { ...data, id: result.insertId });
     await connection.commit();
     createAdminNotification({ title: "New Appointment Request", message: `${data.fullname} submitted an appointment request for ${data.preferred_date} at ${data.preferred_time}.`, type: "new_appointment" })
@@ -54,7 +59,7 @@ async function createBooking(req, res, portal) {
   } catch (error) {
     if (connection) await connection.rollback().catch(() => {});
     console.error("Appointment creation failed:", error.code || error.name);
-    return res.status(error.status || 500).json({ message: error.status === 503 ? error.message : "Unable to submit appointment. Please try again." });
+    return res.status(error.status || 500).json({ message: [400, 503].includes(error.status) ? error.message : "Unable to submit appointment. Please try again." });
   } finally { await releaseScheduleConnection(connection, scheduleLocked); }
 }
 exports.createAppointment = (req, res) => createBooking(req, res, false);
@@ -102,9 +107,9 @@ async function updateBooking(req, res, reschedule) {
     if (status === "Approved" || reschedule) {
       const date = reschedule ? req.body.preferred_date : appointment.preferred_date;
       const time = reschedule ? req.body.preferred_time : appointment.preferred_time;
-      const invalid = validateDateTime(date, time);
+      const invalid = validateDateTime(date, time) || require("../services/appointmentSchedule").validateDuration(time, appointment.duration_minutes);
       if (invalid) { await connection.rollback(); return res.status(400).json({ message: invalid }); }
-      const conflict = await checkApprovedConflict(connection, date, time, appointment.id);
+      const conflict = await checkApprovedConflict(connection, date, time, appointment.id, appointment.duration_minutes);
       if (conflict) { await connection.rollback(); return res.status(409).json({ message: conflict }); }
     }
     if (status === "Approved" && !appointment.patient_id) {
@@ -132,7 +137,7 @@ async function updateBooking(req, res, reschedule) {
   } catch (error) {
     if (connection) await connection.rollback().catch(() => {});
     console.error("Appointment update failed:", error.code || error.name);
-    return res.status(error.status || 500).json({ message: error.status === 503 ? error.message : "Unable to update appointment." });
+    return res.status(error.status || 500).json({ message: [400, 503].includes(error.status) ? error.message : "Unable to update appointment." });
   } finally { await releaseScheduleConnection(connection, scheduleLocked); }
 }
 exports.updateAppointmentStatus = (req,res) => updateBooking(req,res,false);
@@ -156,6 +161,8 @@ exports.getMyAppointments = (req, res) => {
         a.preferred_date,
         a.preferred_time,
         a.service,
+        a.treatments,
+        a.duration_minutes,
         a.reason,
         a.status,
         a.created_at,

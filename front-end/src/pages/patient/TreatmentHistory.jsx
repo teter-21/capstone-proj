@@ -1,3 +1,4 @@
+import PatientInvoice from "../../components/PatientInvoice";
 import { getAccessToken } from "../../utils/session.js";
 import API_BASE_URL from "../../config/apiBase.js";
 import React, { useEffect, useState } from "react";
@@ -128,6 +129,7 @@ function TreatmentHistory() {
 
               {/* PAYMENT */}
 
+              <PatientInvoice visit={visit} />
               <div className="treatment-payment">
                 <div>
                   <span>Amount Paid</span>

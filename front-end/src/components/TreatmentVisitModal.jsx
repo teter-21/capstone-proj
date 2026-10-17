@@ -1,7 +1,7 @@
 import { getAccessToken } from "../utils/session.js";
 import API_BASE_URL from "../config/apiBase.js";
 import React, { useEffect, useState } from "react";
-import SERVICES from "../config/services";
+import TreatmentSelect from "./TreatmentSelect";
 import axios from "axios";
 import "../css/TreatmentVisitModal.css";
 function getToday() {
@@ -25,7 +25,7 @@ function TreatmentVisitModal({
   const [formData, setFormData] = useState({
     visit_date: getToday(),
     visit_time: getCurrentTime(),
-    procedure_name: patient?.service || "",
+    services: patient?.service ? patient.service.split("; ") : [],
     complain: patient?.reason || "",
     description: "",
     amount_paid: "",
@@ -36,14 +36,13 @@ function TreatmentVisitModal({
     setFormData({
       visit_date: getToday(),
       visit_time: getCurrentTime(),
-      procedure_name: patient?.service || "",
+      services: patient?.service ? patient.service.split("; ") : [],
       complain: patient?.reason || "",
       description: "",
       amount_paid: "",
       balance: ""
     });
   }, [patient]);
-  const procedures = ["Dental Check-up", "Teeth Cleaning", "Tooth Extraction", "Wisdom Tooth Removal", "Tooth Filling", "Root Canal Treatment", "Braces Adjustment", "Teeth Whitening", "Dental Crown", "Dental Bridge", "Dentures", "X-Ray", "Consultation"];
   const handleChange = event => {
     const {
       name,
@@ -56,7 +55,8 @@ function TreatmentVisitModal({
   };
   const handleSubmit = async event => {
     event.preventDefault();
-    if (!formData.visit_date || !formData.visit_time || !formData.procedure_name) {
+    if (saving) return;
+    if (!formData.visit_date || !formData.visit_time || !formData.services.length) {
       window.alert("Please complete the date, time, and procedure.");
       return;
     }
@@ -84,7 +84,7 @@ function TreatmentVisitModal({
   if (!patient) {
     return null;
   }
-  return <div className="treatment-modal-overlay" onMouseDown={onClose}>
+  return <div className="treatment-modal-overlay" onMouseDown={() => { if (!saving) onClose(); }}>
       <div className="treatment-modal" onMouseDown={event => event.stopPropagation()}>
         <div className="treatment-modal-header">
           <div>
@@ -139,13 +139,7 @@ function TreatmentVisitModal({
           <div className="treatment-form-group">
             <label>Procedure</label>
 
-            <select name="procedure_name" value={formData.procedure_name} onChange={handleChange} required>
-              <option value="">Select procedure</option>
-
-              {procedures.map(procedure => <option key={procedure} value={procedure}>
-                  {procedure}
-                </option>)}
-            </select>
+            <TreatmentSelect value={formData.services} onChange={services => setFormData(previous => ({ ...previous, services }))} disabled={saving} />
           </div>
 
           <div className="treatment-form-group">
@@ -160,20 +154,7 @@ function TreatmentVisitModal({
             <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Record the treatment performed, findings, or dentist notes..." rows="4" />
           </div>
 
-          <div className="treatment-form-row">
-            <div className="treatment-form-group">
-              <label>Amount Paid</label>
-
-              <input type="number" min="0" step="0.01" name="amount_paid" value={formData.amount_paid} onChange={handleChange} placeholder="0.00" />
-            </div>
-
-            <div className="treatment-form-group">
-              <label>Balance</label>
-
-              <input type="number" min="0" step="0.01" name="balance" value={formData.balance} onChange={handleChange} placeholder="0.00" />
-            </div>
-          </div>
-
+          <p>Save the treatment first. Billing staff will prepare one invoice for all selected procedures.</p>
           <div className="treatment-form-actions">
             <button type="button" className="treatment-cancel" onClick={onClose} disabled={saving}>
               Cancel

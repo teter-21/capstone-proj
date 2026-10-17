@@ -11,6 +11,7 @@ function controller(connection, queued = []) {
     require: name => ({
       '../config/db': { promise: () => ({ getConnection: async () => connection }) },
       '../services/appointmentSchedule': schedule,
+      '../services/treatments': require('../services/treatments'),
       '../services/emailQueue': { enqueueAppointmentEmail: async (...args) => queued.push(args) },
       '../services/notificationService': { createAdminNotification: async () => {} },
     })[name],
@@ -18,7 +19,7 @@ function controller(connection, queued = []) {
   return m.exports;
 }
 const response = () => ({ code: 200, status(code) { this.code = code; return this; }, json(body) { this.body = body; return this; } });
-const booking = time => ({ fullname: 'Test', email: 'test@example.com', phone: '0917', service: 'Checkup', preferred_date: date, preferred_time: time });
+const booking = time => ({ fullname: 'Test', email: 'test@example.com', phone: '0917', service: 'Dental Check-up', preferred_date: date, preferred_time: time });
 function mock(times = [], acquired = 1) {
   const events = [];
   return {
@@ -152,6 +153,7 @@ test('active-only API filter composes with date range and leaves calendar histor
       require: name => ({
         '../config/db': { promise: () => ({ execute: async (sql,args) => { queries.push({sql,args}); return [[]]; } }) },
         '../services/appointmentSchedule': schedule,
+      '../services/treatments': require('../services/treatments'),
         '../services/emailQueue': {}, '../services/notificationService': {},
       })[name],
     });

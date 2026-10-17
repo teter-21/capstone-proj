@@ -1,16 +1,10 @@
 const multer = require("multer");
 const path = require("path");
 
-/*
- * Store the uploaded image temporarily in memory.
- * It will be uploaded to Cloudinary by the controller.
- */
+/* Store the uploaded image temporarily in memory. */
 const storage = multer.memoryStorage();
 
-/*
- * Accept only common raster image formats.
- * SVG is intentionally excluded.
- */
+/* Accept only common raster image formats. */
 const fileFilter = (req, file, cb) => {
   const allowed = {
     ".jpg": "image/jpeg",

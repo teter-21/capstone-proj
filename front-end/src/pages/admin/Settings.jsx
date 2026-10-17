@@ -166,7 +166,7 @@ function Settings() {
         </section>
       </form>
 
-      {localStorage.getItem("is_main_admin") === "1" && <section className="admin-settings-section">
+      {Number(account?.is_main_admin) === 1 && <section className="admin-settings-section">
           <AdminAccountsSection />
         </section>}
     </div>;

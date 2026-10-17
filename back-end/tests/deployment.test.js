@@ -11,6 +11,7 @@ function moduleUnderTest(file, dependencies, extras = {}) {
       module: { exports },
       exports,
       require(name) {
+        if (['../services/billing', '../services/treatments', '../services/permissions'].includes(name)) return require(name);
         if (!(name in dependencies))
           throw new Error(`Unexpected import: ${name}`);
         return dependencies[name];
@@ -55,9 +56,9 @@ function connectionMock({ failInsert = false, balance = 100 } = {}) {
       events.push(sql);
       if (sql.includes("GET_LOCK")) return [[{ acquired: 1 }]];
       if (sql.includes("RELEASE_LOCK")) return [[{ released: 1 }]];
-      if (sql.includes("SELECT preferred_time FROM appointments")) return [[]];
+      if (sql.includes("SELECT preferred_time, duration_minutes FROM appointments")) return [[]];
       if (sql.includes("FROM visits"))
-        return [[{ id: 1, patient_id: 2, amount_paid: 50, balance }]];
+        return [[{ id: 1, patient_id: 2, amount_paid: 50, balance, invoice_status: "legacy", invoice_version: 0 }]];
       if (sql.includes("INSERT INTO payments") && failInsert)
         throw new Error("insert failed");
       if (sql.includes("FROM users"))
@@ -80,7 +81,7 @@ function connectionMock({ failInsert = false, balance = 100 } = {}) {
               fullname: "Test Patient",
               email: "patient@gmail.com",
               phone: "09170000000",
-              service: "Checkup",
+              service: "Dental Check-up",
               status: "Pending",
               preferred_date: "2099-10-15",
               preferred_time: "10:00:00",
@@ -111,7 +112,7 @@ for (const scenario of [
     });
     const res = response();
     await controller.recordPayment(
-      { body: { visit_id: 1, amount: 20, payment_method: "Cash" } },
+      { body: { visit_id: 1, invoice_version: 0, amount: 20, payment_method: "Cash" } },
       res,
     );
     assert.equal(res.code, scenario.status);
@@ -146,7 +147,7 @@ for (const portal of [false, true]) {
           fullname: "Test Patient",
           email: "patient@gmail.com",
           phone: "09170000000",
-          service: "Checkup",
+          service: "Dental Check-up",
           preferred_date: "2099-10-15",
           preferred_time: "10:00",
         },
@@ -181,7 +182,7 @@ test("queue insert failure rolls back the booking", async () => {
         fullname: "Test",
         email: "patient@gmail.com",
         phone: "0917",
-        service: "Checkup",
+        service: "Dental Check-up",
         preferred_date: "2099-10-15",
         preferred_time: "10:00",
       },
@@ -239,7 +240,7 @@ test("invalid dates are rejected before insertion", async () => {
         fullname: "Test",
         email: "patient@gmail.com",
         phone: "0917",
-        service: "Checkup",
+        service: "Dental Check-up",
         preferred_date: "2099-02-30",
         preferred_time: "10:00",
       },

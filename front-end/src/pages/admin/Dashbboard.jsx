@@ -1,3 +1,4 @@
+import { usePermissions } from "../../utils/permissions";
 import React, { useEffect, useState } from "react";
 import "../../css/Dashboard.css";
 
@@ -19,6 +20,7 @@ import {
 import { Link } from "react-router-dom";
 
 function Dashboard() {
+  const can = usePermissions();
   const [stats, setStats] = useState({
     totalPatients: 0,
 
@@ -125,7 +127,7 @@ function Dashboard() {
 
         {/* REVENUE */}
 
-        <div className="dashboard-stat-card">
+{can("reports.read") &&         <div className="dashboard-stat-card">
           <div className="dashboard-stat-top">
             <div className="dashboard-stat-icon purple">
               <FaMoneyBillWave />
@@ -137,13 +139,13 @@ function Dashboard() {
           <h2>{loading ? "..." : formatCurrency(stats.totalRevenue)}</h2>
 
           <p>Total recorded payments</p>
-        </div>
+        </div>}
       </div>
 
       {/* ANALYTICS */}
 
       <div className="dashboard-grid">
-        <MonthlyGraph />
+        {can("reports.read") && <MonthlyGraph />}
 
         <AppointmentCalendar />
       </div>

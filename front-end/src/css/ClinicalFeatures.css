@@ -1,0 +1,16 @@
+.treatment-select { border: 1px solid #cbd5e1; padding: 16px; margin: 12px 0; min-width: 0; border-radius: 0; }
+.treatment-select label { display: flex !important; align-items: start; gap: 10px; margin: 8px 0; font-weight: 400; }
+.treatment-select input[type="checkbox"] { width: 18px !important; height: 18px; flex: 0 0 18px; margin: 2px 0 !important; padding: 0; }
+.treatment-select small { color: #526476; }
+.invoice-editor { background: white; border: 1px solid #cbd5e1; padding: 24px; margin: 20px 0; border-radius: 0; }
+.invoice-editor label { display: block; margin: 12px 0; }
+.invoice-editor input:not([type="checkbox"]), .invoice-editor select, .invoice-editor textarea { padding: 10px; border: 1px solid #94a3b8; border-radius: 0; width: 100%; }
+.invoice-editor table { width: 100%; border-collapse: collapse; }
+.invoice-editor td, .invoice-editor th { padding: 10px; border-bottom: 1px solid #cbd5e1; text-align: left; }
+.invoice-editor button, .invoice-button { padding: 10px 14px; margin: 6px; border: 1px solid #155e75; border-radius: 0; background: #155e75; color: white; cursor: pointer; }
+.invoice-editor button:disabled { opacity: .5; cursor: wait; }
+.invoice-totals { display: grid; gap: 8px; margin: 16px 0; }
+.staff-role-select { border: 1px solid #94a3b8; border-radius: 0; padding: 8px; max-width: 180px; }
+
+.invoice-editor input[type="checkbox"] { width: 18px; height: 18px; margin-right: 8px; vertical-align: middle; }
+@media (max-width: 600px) { .invoice-editor { padding: 12px; } .invoice-editor td, .invoice-editor th { padding: 6px; } }

@@ -288,7 +288,7 @@ function PatientDashboard() {
                     <td>{formatCurrency(visit.amount_paid)}</td>
                     <td>
                       <span className={Number(visit.balance) > 0 ? "balance-due" : "balance-paid"}>
-                        {formatCurrency(visit.balance)}
+                        {visit.invoice_status === "draft" ? "Awaiting invoice" : formatCurrency(visit.balance)}
                       </span>
                     </td>
                   </tr>)}

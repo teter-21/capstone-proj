@@ -1,3 +1,4 @@
+import "../css/ClinicalFeatures.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { FaUserShield, FaPlus, FaUsers, FaTrash } from "react-icons/fa";
@@ -12,6 +13,7 @@ const emptyForm = {
   email: "",
   password: "",
   confirmPassword: "",
+  staff_role: "front_desk",
 };
 
 function AdminAccountsSection() {
@@ -84,6 +86,7 @@ function AdminAccountsSection() {
           fullname: form.fullname,
           email: form.email,
           password: form.password,
+          staff_role: form.staff_role,
         },
         { headers },
       );
@@ -228,6 +231,7 @@ function AdminAccountsSection() {
               />
             </label>
 
+            <label>Staff role<select className="staff-role-select" name="staff_role" value={form.staff_role} onChange={handleChange}><option value="front_desk">Front Desk</option><option value="dentist">Dentist</option><option value="admin">Admin</option></select></label>
             <button type="submit" disabled={saving}>
               <FaPlus />
               {saving ? "Creating..." : "Create Admin"}
@@ -273,7 +277,14 @@ function AdminAccountsSection() {
                         <td>{admin.email}</td>
                         <td>
                           <span className="admin-role-badge">
-                            {isMainAdmin ? "Main Admin" : "Staff Admin"}
+                            {isMainAdmin ? "Main Admin" : <select aria-label={`Role for ${admin.fullname}`} className="staff-role-select" value={admin.staff_role} disabled={saving} onChange={async event => {
+                              const staff_role = event.target.value;
+                              if (!window.confirm('Change this staff role and end their active sessions?')) return;
+                              setSaving(true);
+                              try { const response = await axios.put(`${API_BASE_URL}/admin-accounts/${admin.id}/role`, { staff_role }, { headers }); window.alert(response.data.message); await loadAdmins({ background: true }); }
+                              catch (error) { if (!error.nativeAlertHandled) window.alert(error.response?.data?.message || 'Unable to update role.'); }
+                              finally { setSaving(false); }
+                            }}><option value="front_desk">Front Desk</option><option value="dentist">Dentist</option><option value="admin">Admin</option></select>}
                           </span>
                         </td>
                         <td>

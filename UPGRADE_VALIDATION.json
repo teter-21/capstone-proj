@@ -1,0 +1,16 @@
+{
+  "automated_tests": {
+    "passed": 81,
+    "failed": 0
+  },
+  "backend_syntax_files": 58,
+  "frontend_build": "passed with placeholder HTTPS API origin",
+  "frontend_lint": {
+    "files": 70,
+    "errors": 0,
+    "warnings": 0
+  },
+  "live_services_changed": false,
+  "real_mysql_migration_tested": false,
+  "browser_end_to_end_tested": false
+}

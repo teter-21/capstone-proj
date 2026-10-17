@@ -44,6 +44,8 @@ app.get("/health/ready", async (req, res) => {
     await db.promise().query("SELECT id FROM auth_sessions LIMIT 1");
     await db.promise().query("SELECT bucket_key FROM security_rate_limits LIMIT 1");
     await db.promise().query("SELECT id FROM email_outbox LIMIT 1");
+    await db.promise().query("SELECT staff_role FROM users LIMIT 1");
+    await db.promise().query("SELECT invoice_version FROM visits LIMIT 1");
     if (!res.headersSent) res.json({ status: "ready" });
   } catch {
     if (!res.headersSent) res.status(503).json({ status: "unavailable" });
@@ -91,6 +93,7 @@ app.use((req, res, next) => {
 app.get('/patient-images/:id', auth, getPatientImage);
 app.use('/uploads', (req, res) => res.status(404).json({ message: 'Not found.' }));
 
+app.get('/treatments', (req, res) => res.json(require('./services/treatments').catalog));
 /* Routes */
 app.use("/", authRoutes);
 app.use("/", patientRoutes);

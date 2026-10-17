@@ -1,3 +1,4 @@
+import { usePermissions } from "../../utils/permissions";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
@@ -5,6 +6,7 @@ import "../../css/AddPatient.css";
 import { FaUser, FaMapMarkerAlt, FaInfoCircle } from "react-icons/fa";
 import { buildFullName } from "../../utils/nameFormatter";
 function AddPatient() {
+  const can = usePermissions();
   const navigate = useNavigate();
 
   /* FORM DATA */
@@ -13,6 +15,7 @@ function AddPatient() {
     lastName: "",
     firstName: "",
     middleName: "",
+    birthdate: "", is_pwd: 0,
     age: "",
     contactNo: "",
     occupation: "",
@@ -54,6 +57,8 @@ function AddPatient() {
     const data = new FormData();
     data.append("name", fullname);
     data.append("age", formData.age);
+    data.append("birthdate", formData.birthdate);
+    data.append("is_pwd", formData.is_pwd);
     data.append("phone", formData.contactNo);
     data.append("occupation", formData.occupation);
     data.append("gender", formData.gender);
@@ -145,7 +150,8 @@ function AddPatient() {
             <div>
               <label>Age</label>
 
-              <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Enter Age" min="0" />
+              <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Enter Age" min="0" /><label>Birthdate (required for automatic senior eligibility)</label><input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+              <label>Registered PWD</label><select value={formData.is_pwd} onChange={event => setFormData(previous => ({ ...previous, is_pwd: Number(event.target.value) }))}><option value={0}>No</option><option value={1}>Yes — verify ID when billing</option></select>
             </div>
             {/* GENDER */}
             <div>
@@ -178,7 +184,7 @@ function AddPatient() {
             {/* IMAGE */}
             <div className="full-width">
               <label>Upload Patient Image</label>
-              <input type="file" name="patientImg" accept="image/* " onChange={handleImageChange} />{" "}
+              <input type="file" name="patientImg" accept="image/jpeg,image/png,image/gif" onChange={handleImageChange} />{" "}
               <span className="reminder">
                 {" "}
                 *Upload 2x2 Image (2MB max){" "}
@@ -234,7 +240,7 @@ function AddPatient() {
             <div>
               <label>Complaint</label>
 
-              <input type="text" name="complaint" value={formData.complaint} onChange={handleChange} placeholder="Enter Complaint" />
+              {can("clinical.manage") && <input type="text" name="complaint" value={formData.complaint} onChange={handleChange} placeholder="Enter Complaint" />}
             </div>
 
             {/* CIVIL STATUS */}

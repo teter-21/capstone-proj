@@ -1,9 +1,15 @@
 const db = require("../config/db");
+const { ageOn, validDate, clinicToday } = require('../services/billing');
+const { can } = require('../services/permissions');
+function demographics(body) {
+  const birthdate = body.birthdate || null;
+  if (birthdate && (!validDate(birthdate) || birthdate > clinicToday() || ageOn(birthdate) > 130)) throw new Error('Enter a valid birthdate.');
+  if (![undefined, 0, 1, '0', '1', false, true].includes(body.is_pwd)) throw new Error('Invalid PWD status.');
+  return { birthdate, is_pwd: body.is_pwd === true || String(body.is_pwd) === '1' ? 1 : 0 };
+}
 const { uploadPrivateImage: uploadToCloudinary } = require("../services/privateImages");
 
-/* =========================================================
-   GET ALL PATIENTS
-========================================================= */
+/* GET ALL PATIENTS */
 
 exports.getPatients = async (req, res) => {
   // Keep the legacy array response for older consumers; new screens request pages.
@@ -20,22 +26,18 @@ exports.getPatients = async (req, res) => {
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
   const sort = Object.hasOwn(sorts, req.query.sort) ? sorts[req.query.sort] : "id DESC";
   try {
-    if (!paginated) { const [rows] = await db.promise().query(`SELECT * FROM patients ${where} ORDER BY ${sort}`,params); return res.json(rows); }
+    if (!paginated) { const [rows] = await db.promise().query(`SELECT *, COALESCE(TIMESTAMPDIFF(YEAR, birthdate, CURDATE()), age) AS age FROM patients ${where} ORDER BY ${sort}`,params); return res.json(rows); }
     const [[count]] = await db.promise().query(`SELECT COUNT(*) AS total FROM patients ${where}`,params);
     const total = Number(count.total);
     const pages = Math.max(1,Math.ceil(total/size));
     const effectivePage = Math.min(page,pages);
-    const columns = req.query.compact === "true" ? "id, name" : "*";
+    const columns = req.query.compact === "true" ? "id, name" : "*, COALESCE(TIMESTAMPDIFF(YEAR, birthdate, CURDATE()), age) AS age";
     const [items] = await db.promise().query(`SELECT ${columns} FROM patients ${where} ORDER BY ${sort} LIMIT ? OFFSET ?`,[...params,size,(effectivePage-1)*size]);
     return res.json({items,total,page:effectivePage,totalPages:pages});
   } catch (error) { console.error("Patient list failed:",error.code); return res.status(500).json({message:"Unable to retrieve patients."}); }
 };
 
-/* =========================================================
-   GET RECENT PATIENTS
-
-   Returns the 5 most recently registered patients.
-========================================================= */
+/* GET RECENT PATIENTS */
 
 exports.getRecentPatients = (req, res) => {
   const sql = `
@@ -77,34 +79,28 @@ exports.getRecentPatients = (req, res) => {
   });
 };
 
-/* =========================================================
-   ADD PATIENT
-========================================================= */
+/* ADD PATIENT */
 
 exports.addPatient = async (req, res) => {
   const { name, age, phone, occupation, status, complain, address } = req.body;
 
-  /*
-   * Validate required fields.
-   */
-  if (!name || !age || !phone || !occupation || !complain || !address) {
+  /* Validate required fields. */
+  if (!name || (!age && !req.body.birthdate) || !phone || !occupation || !address) {
     return res.status(400).json({
       message: "Please complete all required fields.",
     });
   }
 
+  let demographic;
+  try { demographic = demographics(req.body); }
+  catch (error) { return res.status(400).json({ message: error.message }); }
   const civilStatus = status || "Single";
 
   try {
-    /*
-     * Default image value.
-     */
+    /* Default image value. */
     let image = null;
 
-    /*
-     * If the user selected an image,
-     * upload it to Cloudinary.
-     */
+    /* If the user selected an image, */
     if (req.file) {
       const uploadResult = await uploadToCloudinary(req.file.buffer);
 
@@ -112,11 +108,7 @@ exports.addPatient = async (req, res) => {
 
     }
 
-    /*
-     * Save patient information.
-     *
-     * The image column now stores the complete Cloudinary URL.
-     */
+    /* Save patient information. */
     const sql = `
       INSERT INTO patients
       (
@@ -127,14 +119,14 @@ exports.addPatient = async (req, res) => {
         occupation,
         status,
         complain,
-        image
+        image, birthdate, is_pwd
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
       sql,
-      [name, address, phone, age, occupation, civilStatus, complain, image],
+      [name, address, phone, demographic.birthdate ? ageOn(demographic.birthdate) : age, occupation, civilStatus, can(req.user, 'clinical.manage') ? complain : null, image, demographic.birthdate, demographic.is_pwd],
       (err, result) => {
         if (err) {
           console.error("Add patient database error:", err);
@@ -160,19 +152,18 @@ exports.addPatient = async (req, res) => {
   }
 };
 
-/* =========================================================
-   UPDATE PATIENT
-========================================================= */
+/* UPDATE PATIENT */
 
 exports.updatePatient = async (req, res) => {
   const { id } = req.params;
+  let demographic;
+  try { demographic = demographics(req.body); }
+  catch (error) { return res.status(400).json({ message: error.message }); }
 
   const { name, age, occupation, address, phone, gender, status, complain } =
     req.body;
 
-  /*
-   * Patient name is required.
-   */
+  /* Patient name is required. */
   if (!name) {
     return res.status(400).json({
       message: "Patient name is required.",
@@ -180,17 +171,10 @@ exports.updatePatient = async (req, res) => {
   }
 
   try {
-    /*
-     * No image by default.
-     *
-     * If no new image is uploaded,
-     * the existing image remains unchanged.
-     */
+    /* No image by default. */
     let image = null;
 
-    /*
-     * Upload a new image only if one was selected.
-     */
+    /* Upload a new image only if one was selected. */
     if (req.file) {
       const uploadResult = await uploadToCloudinary(req.file.buffer);
 
@@ -198,9 +182,7 @@ exports.updatePatient = async (req, res) => {
 
     }
 
-    /*
-     * Patient fields to update.
-     */
+    /* Patient fields to update. */
     const fields = [
       "name = ?",
       "age = ?",
@@ -209,32 +191,30 @@ exports.updatePatient = async (req, res) => {
       "phone = ?",
       "gender = ?",
       "status = ?",
-      "complain = ?",
+      "birthdate = ?",
+      "is_pwd = ?",
     ];
 
     const values = [
       name,
-      age || null,
+      demographic.birthdate ? ageOn(demographic.birthdate) : age || null,
       occupation || null,
       address || null,
       phone || null,
       gender || null,
       status || null,
-      complain || null,
+      demographic.birthdate,
+      demographic.is_pwd,
     ];
 
-    /*
-     * Only update the image column
-     * if the user uploaded a new image.
-     */
+    /* Only update the image column */
+    if (can(req.user, 'clinical.manage')) { fields.push('complain = ?'); values.push(complain || null); }
     if (image) {
       fields.push("image = ?");
       values.push(image);
     }
 
-    /*
-     * Patient ID for WHERE clause.
-     */
+    /* Patient ID for WHERE clause. */
     values.push(id);
 
     const sql = `
@@ -272,10 +252,7 @@ exports.updatePatient = async (req, res) => {
   }
 };
 
-/* =========================================================
-   PATIENT PORTAL
-   GET MY PROFILE
-========================================================= */
+/* PATIENT PORTAL */
 
 exports.getMyProfile = (req, res) => {
   const patientId = req.user.patient_id;
@@ -333,9 +310,7 @@ exports.getMyProfile = (req, res) => {
   });
 };
 
-/* =========================================================
-   GET MY VISITS
-========================================================= */
+/* GET MY VISITS */
 
 exports.getMyVisits = (req, res) => {
   const patientId = req.user.patient_id;
@@ -345,7 +320,7 @@ exports.getMyVisits = (req, res) => {
       id,
       visit_date,
       visit_time,
-      procedure_name,
+      procedure_name, invoice_status, subtotal, discount_amount, discount_basis, invoice_items,
       complain,
       description,
       amount_paid,
@@ -375,9 +350,7 @@ exports.getMyVisits = (req, res) => {
   });
 };
 
-/* =========================================================
-   GET MY BALANCE
-========================================================= */
+/* GET MY BALANCE */
 
 exports.getMyBalance = (req, res) => {
   const patientId = req.user.patient_id;
@@ -409,9 +382,7 @@ exports.getMyBalance = (req, res) => {
   });
 };
 
-/* =========================================================
-   UPDATE MY PROFILE
-========================================================= */
+/* UPDATE MY PROFILE */
 
 exports.updateMyProfile = (req, res) => {
   const patientId = req.user.patient_id;

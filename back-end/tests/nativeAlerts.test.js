@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const frontend = path.join(__dirname, '../../front-end/src');
 function handler(file, name, globals) {
   const source = fs.readFileSync(path.join(frontend, file), 'utf8');
-  const expression = new RegExp(`const ${name} = async (?:event|e) => \\{([\\s\\S]*?)\\n  \\};`);
+  const expression = new RegExp(`const ${name} = async \\(?(?:event|e)\\)? => \\{([\\s\\S]*?)\\n  \\};`);
   const match = source.match(expression);
   assert.ok(match, `Actual ${name} handler not found in ${file}`);
   const context = { ...globals };
@@ -16,7 +16,7 @@ function handler(file, name, globals) {
 function adminHarness(form, response = { data: { message: 'Admin account created successfully' } }) {
   const events = [];
   const run = handler('components/AdminAccountsSection.jsx', 'handleSubmit', {
-    form, API_BASE_URL: 'https://api.test', headers: {}, emptyForm: {},
+    form, saving: false, API_BASE_URL: 'https://api.test', headers: {}, emptyForm: {},
     window: { alert: message => events.push(['alert', message]) },
     setSaving() {}, setForm: () => events.push(['reset']), loadAdmins: async () => events.push(['refresh']),
     axios: { post: async () => { events.push(['post']); if (response instanceof Error) throw response; return response; } },

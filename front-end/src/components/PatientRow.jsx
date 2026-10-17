@@ -1,9 +1,8 @@
+import { usePermissions } from "../utils/permissions";
 import PatientImage from "./PatientImage.jsx";
 
 import React, { useState } from "react";
-{
-  /* import AddVisitModal from "./AddVisitModal"; */
-}
+
 import ViewVisitModal from "./ViewVisitModal";
 import EditPatientModal from "./EditPatientModal";
 import CreateAccountModal from "./CreateAccountModal";
@@ -13,6 +12,7 @@ import { FaPlus, FaEye, FaEdit, FaTooth, FaUserPlus } from "react-icons/fa";
 import "../css/PatientRow.css";
 
 function PatientRow({ patient, onUpdatePatient, onImageClick }) {
+  const can = usePermissions();
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateAccount, setShowCreateAccount] = useState(false);
@@ -44,33 +44,29 @@ function PatientRow({ patient, onUpdatePatient, onImageClick }) {
 
       {/* ACTION BUTTONS */}
       <span className="visit-actions">
-        {/*  <button className="add-btn" onClick={() => setShowModal(true)}>
-          <FaPlus />
-        </button>
-        commented
-        */}
+        
 
-        <button className="view-btn" onClick={() => setShowViewModal(true)}>
+        {can("clinical.manage") && <button className="view-btn" onClick={() => setShowViewModal(true)}>
           <FaEye />
-        </button>
+        </button>}
 
-        <button
+        {can("clinical.manage") && <button
           className="dental-chart-btn"
           onClick={() => setShowDentalChart(true)}
         >
           <FaTooth />
-        </button>
+        </button>}
 
-        <button className="edit-btn" onClick={() => setShowEditModal(true)}>
+        {can("patients.write") && <button className="edit-btn" onClick={() => setShowEditModal(true)}>
           <FaEdit />
-        </button>
+        </button>}
 
-        <button
+        {can("patients.write") && <button
           className="create-account-btn"
           onClick={() => setShowCreateAccount(true)}
         >
           <FaUserPlus />
-        </button>
+        </button>}
       </span>
 
       {/* MODALS */}
@@ -81,16 +77,7 @@ function PatientRow({ patient, onUpdatePatient, onImageClick }) {
         />
       )}
 
-      {/* 
-      commented 
-      {showModal && (
-        <AddVisitModal
-          patient={patient}
-          onClose={() => setShowModal(false)}
-          onSave={onSaveVisit}
-        />
-      )} 
-      */}
+      
 
       {showEditModal && (
         <EditPatientModal

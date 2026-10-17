@@ -1,3 +1,4 @@
+import { usePermissions } from "../utils/permissions";
 import { endSession } from "../utils/session.js";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -5,6 +6,7 @@ import { FaTachometerAlt, FaUserPlus, FaUsers, FaCog, FaSignOutAlt, FaCalendarAl
 import dentalLogo from "../assets/images/60x60modal-logo.png";
 import api from "../api";
 function Sidebar() {
+  const can = usePermissions();
   const location = useLocation();
   const navigate = useNavigate();
   const [account, setAccount] = useState(null);
@@ -71,7 +73,7 @@ function Sidebar() {
 
         {/* Add Patient */}
 
-        <li className={isActive("/AddPatient") ? "active" : ""}>
+        {can("patients.write") && <li className={isActive("/AddPatient") ? "active" : ""}>
           <Link to="/AddPatient">
             <span className="menu-icon">
               <FaUserPlus />
@@ -79,7 +81,7 @@ function Sidebar() {
 
             <span>Add Patient</span>
           </Link>
-        </li>
+        </li>}
 
         {/* Appointments */}
 
@@ -119,7 +121,7 @@ function Sidebar() {
 
         {/* Patient Reviews */}
 
-        <li className={isActive("/Reviews") ? "active" : ""}>
+        {can("reviews.manage") && <li className={isActive("/Reviews") ? "active" : ""}>
           <Link to="/Reviews">
             <span className="menu-icon">
               <FaStar />
@@ -127,11 +129,11 @@ function Sidebar() {
 
             <span>Reviews</span>
           </Link>
-        </li>
+        </li>}
 
         {/* Reports */}
 
-        <li className={isActive("/Report") ? "active" : ""}>
+        {can("reports.read") && <li className={isActive("/Report") ? "active" : ""}>
           <Link to="/Report">
             <span className="menu-icon">
               <FaChartBar />
@@ -139,11 +141,11 @@ function Sidebar() {
 
             <span>Reports</span>
           </Link>
-        </li>
+        </li>}
 
         {/* Billing */}
 
-        <li className={isActive("/Payment") ? "active" : ""}>
+        {can("billing.manage") && <li className={isActive("/Payment") ? "active" : ""}>
           <Link to="/Payment">
             <span className="menu-icon">
               <FaMoneyBillWave />
@@ -151,7 +153,7 @@ function Sidebar() {
 
             <span>Billing</span>
           </Link>
-        </li>
+        </li>}
       </ul>
 
       {/* SYSTEM */}
@@ -185,7 +187,7 @@ function Sidebar() {
             </h4>
 
             <span>
-              {account?.role === "admin" ? "Administrator" : account?.role || "Administrator"}
+              {account?.is_main_admin ? "Main Admin" : (account?.staff_role || "Staff").replace("_", " ")}
             </span>
           </div>
         </div>

@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const { permissionsFor } = require("../services/permissions");
 const bcrypt = require("bcrypt");
 const { issueSession } = require("../services/sessionSecurity");
 const { passwordError } = require("../services/passwordPolicy");
@@ -58,6 +59,8 @@ exports.login = (req, res) => {
           token,
           mustChangePassword,
           role: user.role,
+          staff_role: user.staff_role,
+          permissions: permissionsFor(user),
           id: user.id,
           is_main_admin: Number(user.is_main_admin || 0),
           fullname: user.fullname,
@@ -211,7 +214,7 @@ exports.getMyAccount = (req, res) => {
   const userId = req.user.id;
 
   db.query(
-    `SELECT id, patient_id, fullname, email, role
+    `SELECT id, patient_id, fullname, email, role, staff_role, is_main_admin
          FROM users
          WHERE id = ?
          LIMIT 1`,
@@ -230,7 +233,7 @@ exports.getMyAccount = (req, res) => {
         });
       }
 
-      res.json(results[0]);
+      res.json({ ...results[0], permissions: permissionsFor(results[0]) });
     },
   );
 };
@@ -396,8 +399,7 @@ exports.forgotPassword = async (req, res) => {
 
         const user = results[0];
 
-        /* The reset email is always taken from the matched database account.
-                   The requester can never choose a different destination email. */
+        /* The reset email is always taken from the matched database account. */
         if (!user.email || user.email.trim().toLowerCase() !== email) {
           return res.json({
             message:

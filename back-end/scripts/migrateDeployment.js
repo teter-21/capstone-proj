@@ -55,6 +55,7 @@ const indexes = [
         console.log("Added index:", index);
       }
     }
+    await require("./migrateFeatures")(client);
     console.log(
       "Deployment migration complete. Existing clinic records retained.",
     );

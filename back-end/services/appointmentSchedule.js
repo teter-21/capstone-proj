@@ -1,5 +1,5 @@
 const DUPLICATE_WARNING = "This time and date already has an appointment. Please choose another time and date.";
-const OVERLAP_WARNING = "Appointments must be at least 1 hour apart. Please choose another time and date.";
+const OVERLAP_WARNING = "The selected treatments overlap an approved appointment. Please choose another time and date.";
 function seconds(time) {
   const [h, m, s = 0] = time.split(":").map(Number);
   return h * 3600 + m * 60 + s;
@@ -14,12 +14,14 @@ function validateSchedule(date, time, now = Date.now()) {
   if (seconds(time) < 36000 || seconds(time) > 64800) return "Appointment start times must be between 10:00 AM and 6:00 PM.";
   return null;
 }
-async function checkApprovedConflict(connection, date, time, excludeId = null) {
-  const [rows] = await connection.execute(`SELECT preferred_time FROM appointments
+async function checkApprovedConflict(connection, date, time, excludeId = null, duration = 60) {
+  const [rows] = await connection.execute(`SELECT preferred_time, duration_minutes FROM appointments
     WHERE status = 'Approved' AND preferred_date = ? AND (? IS NULL OR id <> ?)`, [date, excludeId, excludeId]);
-  const differences = rows.map(row => Math.abs(seconds(row.preferred_time) - seconds(time)));
-  if (differences.includes(0)) return DUPLICATE_WARNING;
-  return differences.some(difference => difference < 3600) ? OVERLAP_WARNING : null;
+  const start = seconds(time);
+  if (rows.some(row => seconds(row.preferred_time) === start)) return DUPLICATE_WARNING;
+  const overlap = rows.some(row => start < seconds(row.preferred_time) + Number(row.duration_minutes || 60) * 60
+    && seconds(row.preferred_time) < start + Number(duration || 60) * 60);
+  return overlap ? OVERLAP_WARNING : null;
 }
 // All application scheduling writes take this same database-scoped lock before
 // opening a transaction, so concurrent approvals cannot pass stale checks.
@@ -45,4 +47,9 @@ async function releaseScheduleConnection(connection, locked) {
   }
   connection.release();
 }
-module.exports = { validateSchedule, checkApprovedConflict, acquireScheduleLock, releaseScheduleConnection, DUPLICATE_WARNING, OVERLAP_WARNING };
+function validateDuration(time, duration = 60) {
+  if (!Number.isInteger(duration) || duration < 1 || seconds(time) + duration * 60 > 19 * 3600)
+    return 'Choose an earlier start so all treatments finish by 7:00 PM.';
+  return null;
+}
+module.exports = { validateDuration, validateSchedule, checkApprovedConflict, acquireScheduleLock, releaseScheduleConnection, DUPLICATE_WARNING, OVERLAP_WARNING };

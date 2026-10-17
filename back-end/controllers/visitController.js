@@ -1,66 +1,18 @@
 const db = require("../config/db");
 
-/*  ADD VISIT  */
-exports.addVisit = (req, res) => {
-  const {
-    patient_id,
-    visit_date,
-    visit_time,
-    procedure_name,
-    complain,
-    description,
-    amount_paid,
-    balance,
-  } = req.body;
-
-  if (!patient_id || !visit_date || !visit_time || !procedure_name) {
-    return res.status(400).json({
-      message: "Please complete all required fields.",
-    });
-  }
-
-  const sql = `
-        INSERT INTO visits
-        (
-            patient_id,
-            visit_date,
-            visit_time,
-            procedure_name,
-            complain,
-            description,
-            amount_paid,
-            balance
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-
-  db.query(
-    sql,
-    [
-      patient_id,
-      visit_date,
-      visit_time,
-      procedure_name,
-      complain,
-      description,
-      amount_paid,
-      balance,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error(err);
-
-        return res.status(500).json({
-          message: "Unable to add visit.",
-        });
-      }
-
-      res.status(201).json({
-        message: "Visit Added Successfully",
-        visitId: result.insertId,
-      });
-    },
-  );
+const { createVisit } = require('../services/visits');
+exports.addVisit = async (req, res) => {
+  let connection;
+  try {
+    connection = await db.promise().getConnection();
+    await connection.beginTransaction();
+    const id = await createVisit(connection, Number(req.body.patient_id), req.body);
+    await connection.commit();
+    return res.status(201).json({ message: 'Visit saved. Complete its invoice in Billing.', visitId: id });
+  } catch (error) {
+    await connection?.rollback().catch(() => {});
+    return res.status(error.status || 500).json({ message: error.status ? error.message : 'Unable to save visit.' });
+  } finally { connection?.release(); }
 };
 
 /*  GET VISITS OF A PATIENT  */
@@ -102,7 +54,7 @@ exports.getMyVisits = (req, res) => {
             patient_id,
             visit_date,
             visit_time,
-            procedure_name,
+            procedure_name, invoice_status, subtotal, discount_amount, discount_basis, invoice_items,
             complain,
             description,
             amount_paid,
@@ -142,7 +94,7 @@ exports.getMyPayments = (req, res) => {
             id,
             visit_date,
             visit_time,
-            procedure_name,
+            procedure_name, invoice_status, subtotal, discount_amount, discount_basis, invoice_items,
             amount_paid,
             balance,
             created_at

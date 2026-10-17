@@ -1,3 +1,5 @@
+import StaffBooking from "../../components/StaffBooking";
+import { usePermissions } from "../../utils/permissions";
 import { validateSchedule, clinicToday, isSunday, compareAppointments } from "../../utils/appointmentSchedule";
 import React, { useEffect, useState } from "react";
 import api from "../../api";
@@ -6,6 +8,8 @@ import { FaCalendarAlt, FaClock, FaUser, FaCheck, FaTimes, FaEdit, FaEye, FaPhon
 import "../../css/AppointmentMngmt.css";
 import { formatDateOnly } from "../../utils/dateUtils";
 function AppointmentMngmt() {
+  const can = usePermissions();
+  const [showBooking, setShowBooking] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -150,7 +154,7 @@ function AppointmentMngmt() {
         return "pending";
     }
   };
-  return <div className="appointment-page">
+  return <div className="appointment-page">{can("appointments.write") && <><button className="invoice-button" onClick={() => setShowBooking(true)}>New appointment</button>{showBooking && <StaffBooking onClose={() => setShowBooking(false)} onSaved={() => window.dispatchEvent(new Event('clinic:data-updated'))} />}</>}
       {/* HEADER */}
 
       <div className="appointment-page-header">
@@ -246,7 +250,7 @@ function AppointmentMngmt() {
 
                     <td>
                       <div className="appointment-service">
-                        {appointment.service}
+                        {appointment.service} ({appointment.duration_minutes || 60} min)
                       </div>
 
                       {appointment.reason && <span className="appointment-reason">
@@ -276,7 +280,7 @@ function AppointmentMngmt() {
 
                         {/* PENDING */}
 
-                        {(!appointment.status || appointment.status === "Pending") && <>
+                        {can("appointments.write") && (!appointment.status || appointment.status === "Pending") && <>
                             <button className="action-approve" title="Approve" onClick={() => updateStatus(appointment.id, "Approved")}>
                               <FaCheck />
                             </button>
@@ -288,7 +292,7 @@ function AppointmentMngmt() {
 
                         {/* APPROVED */}
 
-                        {(appointment.status === "Approved" || appointment.status === "Rescheduled") && <>
+                        {can("appointments.write") && (appointment.status === "Approved" || appointment.status === "Rescheduled") && <>
                             <button className="action-check-in" title="Check In Patient" onClick={() => checkInAppointment(appointment.id)}>
                               <FaUser />
                             </button>
@@ -361,7 +365,7 @@ function AppointmentMngmt() {
               <div className="detail-item full">
                 <label>Service</label>
 
-                <p>{selectedAppointment.service}</p>
+                <p>{selectedAppointment.service} ({selectedAppointment.duration_minutes || 60} min)</p>
               </div>
 
               <div className="detail-item full">
@@ -376,7 +380,7 @@ function AppointmentMngmt() {
                 Close
               </button>
 
-              {(!selectedAppointment.status || selectedAppointment.status === "Pending") && <button className="modal-primary" onClick={() => {
+              {can("appointments.write") && (!selectedAppointment.status || selectedAppointment.status === "Pending") && <button className="modal-primary" onClick={() => {
             updateStatus(selectedAppointment.id, "Approved");
             setShowDetails(false);
           }}>

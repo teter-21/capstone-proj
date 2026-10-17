@@ -51,10 +51,7 @@ const createRateLimiter = ({ windowMs, max, message }) => {
   };
 };
 
-/* Failed-login limiter: maximum 5 failed attempts per IP + email in 15 minutes.
- * A sixth attempt while the window is active returns HTTP 429.
- * Successful login clears the counter through req.clearLoginFailures().
- */
+/* Failed-login limiter: maximum 5 failed attempts per IP + email in 15 minutes. */
 const failedLoginAttempts = new Map();
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_MAX_FAILURES = 5;

@@ -8,4 +8,5 @@ router.get("/admin-accounts", auth, controller.getAdmins);
 router.post("/admin-accounts", auth, controller.createAdmin);
 router.delete("/admin-accounts/:id", auth, controller.deleteAdmin);
 
+router.put("/admin-accounts/:id/role", auth, controller.updateRole);
 module.exports = router;

@@ -1,3 +1,4 @@
+import InvoiceEditor from "../../components/InvoiceEditor";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaMoneyBillWave, FaSearch, FaPlus, FaTimes } from "react-icons/fa";
 import api from "../../api";
@@ -10,6 +11,7 @@ const money = value => Number(value || 0).toLocaleString("en-PH", {
 });
 const formatDate = value => formatDateOnly(value);
 function AdminPayment() {
+  const [invoiceId, setInvoiceId] = useState(null);
   const [records, setRecords] = useState([]);
   const [summary, setSummary] = useState({
     totalVisits: 0,
@@ -95,13 +97,14 @@ function AdminPayment() {
       setSaving(true);
       const response = await api.post("/billing/payments", {
         visit_id: paymentVisit.id,
+        invoice_version: paymentVisit.invoice_version,
         amount,
         payment_method: form.payment_method,
         reference_number: form.reference_number.trim() || null,
         notes: form.notes
       });
       window.alert(response.data?.message || "Payment recorded successfully.");
-      closePayment();
+      setPaymentVisit(null);
       await loadBilling();
     } catch (err) {
       console.error("Record payment error:", err);
@@ -140,6 +143,7 @@ function AdminPayment() {
         </div>
       </div>
 
+      {invoiceId && <InvoiceEditor key={invoiceId} visitId={invoiceId} onClose={() => setInvoiceId(null)} onSaved={() => loadBilling({ background: true })} />}
       <div className="billing-card">
         <div className="billing-toolbar">
           <div>
@@ -200,9 +204,10 @@ function AdminPayment() {
                       </span>
                     </td>
                     <td>
-                      {record.balance > 0 ? <button className="record-payment-btn" onClick={() => openPayment(record)}>
+                      <button className="invoice-button" onClick={() => setInvoiceId(record.id)}>{record.invoice_status === "draft" ? "Prepare invoice" : "View invoice"}</button>
+                      {record.invoice_status !== "draft" && record.balance > 0 ? <button className="record-payment-btn" onClick={() => openPayment(record)}>
                           <FaPlus /> Record Payment
-                        </button> : <span className="paid-label">Fully Paid</span>}
+                        </button> : <span className="paid-label">{record.invoice_status === "draft" ? "Awaiting invoice" : "Fully Paid"}</span>}
                     </td>
                   </tr>)}
             </tbody>

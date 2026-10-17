@@ -15,4 +15,6 @@ router.get(
   paymentController.getBillingSummary,
 );
 
+router.get("/billing/:id/invoice", auth, admin, paymentController.getInvoice);
+router.put("/billing/:id/invoice", auth, admin, paymentController.saveInvoice);
 module.exports = router;

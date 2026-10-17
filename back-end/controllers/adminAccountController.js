@@ -1,5 +1,6 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
+const { roles } = require("../services/permissions");
 const { passwordError } = require("../services/passwordPolicy");
 
 function requireMainAdmin(req, res) {
@@ -22,6 +23,8 @@ exports.createAdmin = async (req, res) => {
     .trim()
     .toLowerCase();
   const password = req.body.password;
+  const staffRole = req.body.staff_role || 'front_desk';
+  if (!Object.hasOwn(roles, staffRole)) return res.status(400).json({ message: 'Choose a valid staff role.' });
 
   if (
     fullname.length < 2 ||
@@ -58,9 +61,9 @@ exports.createAdmin = async (req, res) => {
 
     const [result] = await client.execute(
       `INSERT INTO users
-       (patient_id, fullname, email, password, role, is_main_admin)
-       VALUES (NULL, ?, ?, ?, 'admin', 0)`,
-      [fullname, email, hashedPassword],
+       (patient_id, fullname, email, password, role, is_main_admin, staff_role)
+       VALUES (NULL, ?, ?, ?, 'admin', 0, ?)`,
+      [fullname, email, hashedPassword, staffRole],
     );
 
     return res.status(201).json({
@@ -91,7 +94,7 @@ exports.getAdmins = async (req, res) => {
 
   try {
     const [admins] = await db.promise().query(
-      `SELECT id, fullname, email, role, is_main_admin, created_at
+      `SELECT id, fullname, email, role, is_main_admin, staff_role, created_at
        FROM users
        WHERE role = 'admin'
        ORDER BY is_main_admin DESC, id ASC`,
@@ -195,6 +198,7 @@ exports.deleteAdmin = async (req, res) => {
       throw new Error("Staff account was not deleted.");
     }
 
+    await connection.execute('INSERT INTO access_audit (actor_id, target_id, action, detail) VALUES (?, ?, ?, ?)', [actorId, targetId, 'staff_deleted', 'Access revoked']);
     await connection.commit();
 
     return res.json({
@@ -213,4 +217,28 @@ exports.deleteAdmin = async (req, res) => {
   } finally {
     connection?.release();
   }
+};
+
+exports.updateRole = async (req, res) => {
+  if (!requireMainAdmin(req, res)) return;
+  if (!Object.hasOwn(roles, req.body.staff_role)) return res.status(400).json({ message: 'Choose a valid staff role.' });
+  let connection;
+  try {
+    connection = await db.promise().getConnection();
+    await connection.beginTransaction();
+    const [[target]] = await connection.execute('SELECT id, is_main_admin FROM users WHERE id = ? AND role = \'admin\' FOR UPDATE', [req.params.id]);
+    if (!target || Number(target.is_main_admin) === 1) {
+      await connection.rollback();
+      return res.status(403).json({ message: 'Only staff roles can be changed.' });
+    }
+    await connection.execute('UPDATE users SET staff_role = ? WHERE id = ?', [req.body.staff_role, target.id]);
+    await connection.execute('DELETE FROM auth_sessions WHERE user_id = ?', [target.id]);
+    await connection.execute('INSERT INTO access_audit (actor_id, target_id, action, detail) VALUES (?, ?, ?, ?)', [req.user.id, target.id, 'staff_role_changed', req.body.staff_role]);
+    await connection.commit();
+    return res.json({ message: 'Role updated. Staff must sign in again.' });
+  } catch (error) {
+    await connection?.rollback().catch(() => {});
+    console.error('Role update failed:', error.code || error.name);
+    return res.status(500).json({ message: 'Unable to update role.' });
+  } finally { connection?.release(); }
 };
