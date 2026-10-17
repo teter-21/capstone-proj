@@ -1,278 +1,342 @@
 /* TREATMENT / VISIT RECORD MODAL */
 
 .treatment-modal-overlay {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background: rgba(20, 40, 58, 0.58);
-
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-
-    z-index: 9999;
-
-    overflow-y: auto;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 40, 58, 0.58);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 9999;
+  overflow-y: auto;
 }
 
 .treatment-modal {
-    width: min(650px, calc(100vw - 40px));
-    max-height: calc(100vh - 40px);
-
-    overflow-y: auto;
-
-    background: #ffffff;
-    border: 1px solid #cddfeb;
-    border-radius: 16px;
-
-    box-shadow:
-        0 25px 60px rgba(20, 40, 58, 0.25);
+  width: min(650px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #cddfeb;
+  border-radius: 0px;
+  box-shadow: 0 25px 60px rgba(20, 40, 58, 0.25);
 }
 
 .treatment-modal-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-
-    padding: 22px 24px 18px;
-
-    border-bottom: 1px solid #dbe6ed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid #dbe6ed;
 }
 
 .treatment-modal-label {
-    display: block;
-    margin-bottom: 4px;
+  display: block;
+  margin-bottom: 4px;
 
-    color: #5b9e8a;
+  color: #5b9e8a;
 
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
 }
 
 .treatment-modal-header h2 {
-    margin: 0;
-    color: #24425f;
-    font-size: 20px;
+  margin: 0;
+  color: #24425f;
+  font-size: 20px;
 }
 
 .treatment-modal-header p {
-    margin: 5px 0 0;
-    color: #7d8d9c;
-    font-size: 12px;
+  margin: 5px 0 0;
+  color: #7d8d9c;
+  font-size: 12px;
 }
 
 .treatment-close {
-    width: 34px;
-    height: 34px;
+  width: 34px;
+  height: 34px;
 
-    border: 0;
-    border-radius: 8px;
+  border: 0;
+  border-radius: 0px;
 
-    background: #edf1f4;
-    color: #536a7d;
+  background: #edf1f4;
+  color: #536a7d;
 
-    font-size: 22px;
-    line-height: 1;
+  font-size: 22px;
+  line-height: 1;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .treatment-close:hover {
-    background: #eaf3fa;
-    color: #3d6f9f;
+  background: #eaf3fa;
+  color: #3d6f9f;
 }
 
 .treatment-patient-summary {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
 
-    margin: 18px 24px 0;
+  margin: 18px 24px 0;
 }
 
-.treatment-patient-summary>div {
-    min-width: 0;
-    padding: 12px;
+.treatment-patient-summary > div {
+  min-width: 0;
+  padding: 12px;
 
-    background: #eaf3fa;
-    border: 1px solid #cddfeb;
-    border-radius: 10px;
+  background: #eaf3fa;
+  border: 1px solid #cddfeb;
+  border-radius: 0px;
 }
 
 .treatment-patient-summary span {
-    display: block;
-    margin-bottom: 4px;
+  display: block;
+  margin-bottom: 4px;
 
-    color: #7d8d9c;
-    font-size: 10px;
-    font-weight: 600;
+  color: #7d8d9c;
+  font-size: 10px;
+  font-weight: 600;
 }
 
 .treatment-patient-summary strong {
-    display: block;
+  display: block;
 
-    color: #24425f;
-    font-size: 12px;
+  color: #24425f;
+  font-size: 12px;
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .treatment-form {
-    padding: 20px 24px 24px;
+  padding: 20px 24px 24px;
 }
 
 .treatment-form-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .treatment-form-group {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    margin-bottom: 14px;
+  margin-bottom: 14px;
 }
 
 .treatment-form-group label {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 
-    color: #24425f;
-    font-size: 11px;
-    font-weight: 700;
+  color: #24425f;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .treatment-form-group input,
 .treatment-form-group select,
 .treatment-form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
+  width: 100%;
+  box-sizing: border-box;
 
-    padding: 10px 11px;
+  padding: 10px 11px;
 
-    background: #ffffff;
-    border: 1px solid #dbe6ed;
-    border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #dbe6ed;
+  border-radius: 0px;
 
-    color: #24425f;
+  color: #24425f;
 
-    outline: none;
+  outline: none;
 }
 
 .treatment-form-group input,
 .treatment-form-group select {
-    min-height: 40px;
+  min-height: 40px;
 }
 
 .treatment-form-group textarea {
-    min-height: 95px;
-    resize: vertical;
+  min-height: 95px;
+  resize: vertical;
 }
 
 .treatment-form-group input:focus,
 .treatment-form-group select:focus,
 .treatment-form-group textarea:focus {
-    border-color: #4f86c6;
+  border-color: #4f86c6;
 
-    box-shadow:
-        0 0 0 3px rgba(79, 134, 198, .12);
+  box-shadow: 0 0 0 3px rgba(79, 134, 198, 0.12);
 }
 
 .treatment-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 
-    margin-top: 4px;
-    padding-top: 16px;
+  margin-top: 4px;
+  padding-top: 16px;
 
-    border-top: 1px solid #dbe6ed;
+  border-top: 1px solid #dbe6ed;
 }
 
 .treatment-form-actions button {
-    min-height: 40px;
+  min-height: 40px;
 
-    padding: 0 17px;
+  padding: 0 17px;
 
-    border: 0;
-    border-radius: 8px;
+  border: 0;
+  border-radius: 0px;
 
-    font-size: 12px;
-    font-weight: 700;
+  font-size: 12px;
+  font-weight: 700;
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .treatment-cancel {
-    background: #edf1f4;
-    color: #24425f;
+  background: #edf1f4;
+  color: #24425f;
 }
 
 .treatment-cancel:hover {
-    background: #dfe8ee;
+  background: #dfe8ee;
 }
 
 .treatment-save {
-    background: #5b9e8a;
-    color: #ffffff;
+  background: var(--color-primary);
+  color: #ffffff;
+  border-radius: 0px;
 }
 
 .treatment-save:hover {
-    background: #4a8877;
+  background: var(--color-primary-dark);
 }
 
 .treatment-form-actions button:disabled,
 .treatment-close:disabled {
-    opacity: .6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Align treatment checkboxes with their labels. */
+.treatment-modal .treatment-select {
+  min-width: 0;
+  margin: 8px 0 16px;
+  padding: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 0;
+}
+
+.treatment-modal .treatment-select legend {
+  padding: 0 6px;
+  color: #24425f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.treatment-modal .treatment-select > label {
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center !important;
+  gap: 10px;
+
+  min-height: 28px;
+  margin: 0 0 10px !important;
+  padding: 0;
+
+  color: #24425f;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.treatment-modal .treatment-select input[type="checkbox"] {
+  appearance: auto;
+  -webkit-appearance: auto;
+
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  max-width: 18px;
+  max-height: 18px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  align-self: center;
+
+  accent-color: #2563eb;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.treatment-modal .treatment-select label > span {
+  display: block;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.treatment-modal .treatment-select label small {
+  color: #64748b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.treatment-modal .treatment-select > p {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  color: #526476;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 @media (max-width: 650px) {
+  .treatment-modal-overlay {
+    padding: 10px;
+  }
 
-    .treatment-modal-overlay {
-        padding: 10px;
-    }
+  .treatment-modal {
+    width: calc(100vw - 20px);
+    max-height: calc(100vh - 20px);
+    border-radius: 0px;
+  }
 
-    .treatment-modal {
-        width: calc(100vw - 20px);
-        max-height: calc(100vh - 20px);
-        border-radius: 13px;
-    }
+  .treatment-modal-header {
+    padding: 18px;
+  }
 
-    .treatment-modal-header {
-        padding: 18px;
-    }
+  .treatment-patient-summary {
+    grid-template-columns: 1fr;
+    margin: 14px 18px 0;
+  }
 
-    .treatment-patient-summary {
-        grid-template-columns: 1fr;
-        margin: 14px 18px 0;
-    }
+  .treatment-form {
+    padding: 16px 18px 18px;
+  }
 
-    .treatment-form {
-        padding: 16px 18px 18px;
-    }
+  .treatment-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 
-    .treatment-form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
+  .treatment-form-actions {
+    flex-direction: column-reverse;
+  }
 
-    .treatment-form-actions {
-        flex-direction: column-reverse;
-    }
-
-    .treatment-form-actions button {
-        width: 100%;
-    }
+  .treatment-form-actions button {
+    width: 100%;
+  }
 }

@@ -37,7 +37,7 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .walk-in-button:active {
@@ -541,7 +541,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s ease;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .call-next-button:active {
@@ -856,6 +856,7 @@
 
 .walk-in-patient-search {
   width: 100%;
+  padding: 8px 12px;
 }
 
 .walk-in-patient-results {

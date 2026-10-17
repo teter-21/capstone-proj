@@ -9,8 +9,12 @@ function ProtectedRoute({ children }) {
     return <Navigate to="/login" replace />;
   }
 
-  const settings = localStorage.getItem('role') === 'admin' ? '/Settings' : '/patient/profile';
-  if (localStorage.getItem('must_change_password') === '1' && location.pathname !== settings)
+  const settings =
+    localStorage.getItem("role") === "admin" ? "/Settings" : "/patient/profile";
+  if (
+    localStorage.getItem("must_change_password") === "1" &&
+    location.pathname !== settings
+  )
     return <Navigate to={settings} replace />;
   return children;
 }

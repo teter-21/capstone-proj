@@ -154,21 +154,9 @@
   font-weight: 700;
 }
 
-.review-action.approve:hover {
-  background: var(--color-success-soft);
-  color: var(--color-success);
-}
-.review-action.hide:hover {
-  background: var(--color-warning-soft);
-  color: var(--color-warning);
-}
-.review-action.pending:hover {
+.review-action:hover {
   background: var(--color-blue-soft);
   color: var(--color-primary);
-}
-.review-action.delete:hover {
-  background: var(--color-danger-soft);
-  color: var(--color-danger);
 }
 
 .reviews-admin-empty {

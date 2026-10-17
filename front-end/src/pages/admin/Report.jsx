@@ -1,17 +1,42 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FaDownload, FaFilter, FaSyncAlt } from "react-icons/fa";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, CartesianGrid, Legend } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  CartesianGrid,
+  Legend,
+} from "recharts";
 import api from "../../api";
 import { useAutoRefresh } from "../../utils/useAutoRefresh";
 import "../../css/Report.css";
 import { formatDateOnly } from "../../utils/dateUtils";
-const formatReportDate = value => formatDateOnly(value);
-const COLORS = ["#4f86c6", "#5b9e8a", "#3d6f9f", "#6d9f95", "#789fc1", "#4a8877", "#8bb4d5", "#88b9aa"];
-const pad = number => String(number).padStart(2, "0");
-const formatDate = date => {
+const formatReportDate = (value) => formatDateOnly(value);
+const COLORS = [
+  "#2563EB",
+  "#EA580C",
+  "#7C3AED",
+  "#DC2626",
+  "#0D9488",
+  "#DB2777",
+  "#CA8A04",
+  "#92400E",
+  "#4D7C0F",
+  "#0891B2",
+  "#475569",
+  "#9F1239",
+];
+const pad = (number) => String(number).padStart(2, "0");
+const formatDate = (date) => {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 };
-const getPresetRange = preset => {
+const getPresetRange = (preset) => {
   const today = new Date();
   const end = new Date(today);
   let start = new Date(today);
@@ -24,14 +49,15 @@ const getPresetRange = preset => {
   }
   return {
     startDate: formatDate(start),
-    endDate: formatDate(end)
+    endDate: formatDate(end),
   };
 };
-const currency = value => new Intl.NumberFormat("en-PH", {
-  style: "currency",
-  currency: "PHP"
-}).format(Number(value || 0));
-const dateDisplay = value => {
+const currency = (value) =>
+  new Intl.NumberFormat("en-PH", {
+    style: "currency",
+    currency: "PHP",
+  }).format(Number(value || 0));
+const dateDisplay = (value) => {
   return formatReportDate(value);
 };
 function Report() {
@@ -39,7 +65,7 @@ function Report() {
   const [startDate, setStartDate] = useState(defaultRange.startDate);
   const [endDate, setEndDate] = useState(defaultRange.endDate);
   const [preset, setPreset] = useState("month");
-  const [group, setGroup] = useState("month");
+  const [group, setGroup] = useState("day");
   const [procedure, setProcedure] = useState("");
   const [procedures, setProcedures] = useState([]);
   const [report, setReport] = useState({
@@ -47,11 +73,11 @@ function Report() {
       totalPatients: 0,
       totalVisits: 0,
       totalRevenue: 0,
-      outstandingBalance: 0
+      outstandingBalance: 0,
     },
     revenue: [],
     procedures: [],
-    details: []
+    details: [],
   });
   const [loading, setLoading] = useState(true);
   const loadProcedures = async () => {
@@ -62,9 +88,7 @@ function Report() {
       console.error("Report procedures error:", err);
     }
   };
-  const loadReport = async ({
-    background = false
-  } = {}) => {
+  const loadReport = async ({ background = false } = {}) => {
     if (!startDate || !endDate) return;
     if (startDate > endDate) {
       window.alert("Start date cannot be later than end date.");
@@ -77,14 +101,18 @@ function Report() {
           start_date: startDate,
           end_date: endDate,
           group,
-          procedure
-        }
+          procedure,
+        },
       });
       setReport(response.data);
     } catch (err) {
       console.error("Reports error:", err);
       if (!background) {
-        if (!err?.nativeAlertHandled) window.alert(err.response?.data?.message || "Unable to load the automatic report.");
+        if (!err?.nativeAlertHandled)
+          window.alert(
+            err.response?.data?.message ||
+              "Unable to load the automatic report.",
+          );
       }
     } finally {
       setLoading(false);
@@ -99,7 +127,7 @@ function Report() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate, group, procedure]);
   useAutoRefresh(loadReport);
-  const applyPreset = value => {
+  const applyPreset = (value) => {
     setPreset(value);
     if (value === "custom") return;
     const range = getPresetRange(value);
@@ -119,10 +147,10 @@ function Report() {
         params: {
           start_date: startDate,
           end_date: endDate,
-          procedure
+          procedure,
         },
         responseType: "blob",
-        timeout: 60000
+        timeout: 60000,
       });
       const url = URL.createObjectURL(response.data);
       const link = document.createElement("a");
@@ -134,13 +162,18 @@ function Report() {
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Report export failed:", error);
-      if (!error?.nativeAlertHandled) window.alert("Unable to export the report. Please try again.");
+      if (!error?.nativeAlertHandled)
+        window.alert("Unable to export the report. Please try again.");
     }
   };
   const procedureTotal = useMemo(() => {
-    return report.procedures.reduce((total, item) => total + Number(item.value || 0), 0);
+    return report.procedures.reduce(
+      (total, item) => total + Number(item.value || 0),
+      0,
+    );
   }, [report.procedures]);
-  return <div className="reports">
+  return (
+    <div className="reports">
       {/* HEADER */}
       <div className="reports-header">
         <div>
@@ -151,12 +184,20 @@ function Report() {
         </div>
 
         <div className="reports-header-actions">
-          <button className="report-refresh-btn" onClick={loadReport} disabled={loading}>
+          <button
+            className="report-refresh-btn"
+            onClick={loadReport}
+            disabled={loading}
+          >
             <FaSyncAlt className={loading ? "spin" : ""} />
             Refresh
           </button>
 
-          <button className="export-btn" onClick={exportReport} disabled={!report.details?.length}>
+          <button
+            className="export-btn"
+            onClick={exportReport}
+            disabled={!report.details?.length}
+          >
             <FaDownload />
             Export CSV
           </button>
@@ -167,7 +208,10 @@ function Report() {
       <div className="reports-filters">
         <div className="report-filter-group">
           <label>Period</label>
-          <select value={preset} onChange={event => applyPreset(event.target.value)}>
+          <select
+            value={preset}
+            onChange={(event) => applyPreset(event.target.value)}
+          >
             <option value="week">Last 7 Days</option>
             <option value="month">This Month</option>
             <option value="year">This Year</option>
@@ -177,31 +221,48 @@ function Report() {
 
         <div className="report-filter-group">
           <label>Start Date</label>
-          <input type="date" value={startDate} onChange={event => {
-          setPreset("custom");
-          setStartDate(event.target.value);
-        }} />
+          <input
+            type="date"
+            value={startDate}
+            onChange={(event) => {
+              setPreset("custom");
+              setStartDate(event.target.value);
+            }}
+          />
         </div>
 
         <div className="report-filter-group">
           <label>End Date</label>
-          <input type="date" value={endDate} onChange={event => {
-          setPreset("custom");
-          setEndDate(event.target.value);
-        }} />
+          <input
+            type="date"
+            value={endDate}
+            onChange={(event) => {
+              setPreset("custom");
+              setEndDate(event.target.value);
+            }}
+          />
         </div>
 
         <div className="report-filter-group">
           <label>Procedures</label>
-          <select value={procedure} onChange={event => setProcedure(event.target.value)}>
+          <select
+            value={procedure}
+            onChange={(event) => setProcedure(event.target.value)}
+          >
             <option value="">All Procedures</option>
-            {procedures.map(item => <option key={item.name} value={item.name}>
+            {procedures.map((item) => (
+              <option key={item.name} value={item.name}>
                 {item.name}
-              </option>)}
+              </option>
+            ))}
           </select>
         </div>
 
-        <button className="filter-btn" onClick={loadReport} title="Apply filters">
+        <button
+          className="filter-btn"
+          onClick={loadReport}
+          title="Apply filters"
+        >
           <FaFilter />
           Apply
         </button>
@@ -248,22 +309,33 @@ function Report() {
             </div>
           </div>
 
-          {report.revenue.length === 0 ? <div className="report-no-data">
+          {report.revenue.length === 0 ? (
+            <div className="report-no-data">
               No revenue data for the selected period.
-            </div> : <ResponsiveContainer width="100%" height={280}>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
               <LineChart data={report.revenue}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#dbe6ed" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                <Tooltip formatter={value => [currency(value), "Revenue"]} />
-                <Line type="monotone" dataKey="value" stroke="#4f86c6" strokeWidth={3} dot={{
-              r: 4,
-              fill: "#4f86c6"
-            }} activeDot={{
-              r: 6
-            }} />
+                <Tooltip formatter={(value) => [currency(value), "Revenue"]} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#4f86c6"
+                  strokeWidth={3}
+                  dot={{
+                    r: 4,
+                    fill: "#4f86c6",
+                  }}
+                  activeDot={{
+                    r: 6,
+                  }}
+                />
               </LineChart>
-            </ResponsiveContainer>}
+            </ResponsiveContainer>
+          )}
         </div>
 
         <div className="card report-chart-card">
@@ -274,20 +346,36 @@ function Report() {
             </div>
           </div>
 
-          {report.procedures.length === 0 ? <div className="report-no-data">
+          {report.procedures.length === 0 ? (
+            <div className="report-no-data">
               No procedure data for the selected period.
-            </div> : <ResponsiveContainer width="100%" height={280}>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
               <PieChart>
-                <Pie data={report.procedures} dataKey="value" nameKey="name" outerRadius={88} innerRadius={42} paddingAngle={2} label={({
-              name,
-              percent
-            }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                  {report.procedures.map((entry, index) => <Cell key={`${entry.name}-${index}`} fill={COLORS[index % COLORS.length]} />)}
+                <Pie
+                  data={report.procedures}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={88}
+                  innerRadius={42}
+                  paddingAngle={2}
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                >
+                  {report.procedures.map((entry, index) => (
+                    <Cell
+                      key={`${entry.name}-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
                 </Pie>
                 <Tooltip />
                 <Legend />
               </PieChart>
-            </ResponsiveContainer>}
+            </ResponsiveContainer>
+          )}
         </div>
       </div>
 
@@ -300,7 +388,10 @@ function Report() {
           </div>
 
           <span className="report-record-count">
-            {report.details.length} records{report.detailsTruncated ? " (preview only; CSV includes all matching visits)" : ""}
+            {report.details.length} records
+            {report.detailsTruncated
+              ? " (preview only; CSV includes all matching visits)"
+              : ""}
           </span>
         </div>
 
@@ -318,28 +409,41 @@ function Report() {
             </thead>
 
             <tbody>
-              {loading ? <tr>
+              {loading ? (
+                <tr>
                   <td colSpan="6" className="report-empty">
                     Loading report data...
                   </td>
-                </tr> : report.details.length === 0 ? <tr>
+                </tr>
+              ) : report.details.length === 0 ? (
+                <tr>
                   <td colSpan="6" className="report-empty">
                     No visit records found for the selected filters.
                   </td>
-                </tr> : report.details.map(row => <tr key={row.id}>
+                </tr>
+              ) : (
+                report.details.map((row) => (
+                  <tr key={row.id}>
                     <td>{dateDisplay(row.visit_date)}</td>
                     <td>{row.visit_time || "—"}</td>
                     <td className="patient-name-cell">{row.patient}</td>
                     <td>{row.procedure_name || "—"}</td>
                     <td className="amount-cell">{currency(row.amount_paid)}</td>
-                    <td className={Number(row.balance) > 0 ? "balance-cell" : "amount-cell"}>
+                    <td
+                      className={
+                        Number(row.balance) > 0 ? "balance-cell" : "amount-cell"
+                      }
+                    >
                       {currency(row.balance)}
                     </td>
-                  </tr>)}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }
 export default Report;

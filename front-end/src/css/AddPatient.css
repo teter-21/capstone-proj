@@ -125,6 +125,7 @@ select {
   border: none;
   padding: 12px 18px;
   font-size: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border: 1px solid var(--color-border);
 }
 
@@ -132,6 +133,7 @@ select {
   background-color: transparent;
   border: 1px solid var(--color-danger);
   color: var(--color-danger);
+  box-shadow: none;
 }
 
 .overlay .save {
@@ -141,12 +143,14 @@ select {
   padding: 12px 18px;
   border: 1px solid var(--color-primary);
   font-size: 18px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .overlay .save:active {
   background-color: transparent;
   color: var(--color-green-dark);
   border: 1px solid var(--color-green-dark);
+  box-shadow: none;
 }
 
 :where(.overlay) .name-row {

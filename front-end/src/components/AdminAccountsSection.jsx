@@ -172,7 +172,7 @@ function AdminAccountsSection() {
               <FaUserShield />
             </div>
             <div>
-              <h2>Create Admin Account</h2>
+              <h2>Create Account</h2>
               <p>Add another administrator to the system.</p>
             </div>
           </div>
@@ -231,10 +231,22 @@ function AdminAccountsSection() {
               />
             </label>
 
-            <label>Staff role<select className="staff-role-select" name="staff_role" value={form.staff_role} onChange={handleChange}><option value="front_desk">Front Desk</option><option value="dentist">Dentist</option><option value="admin">Admin</option></select></label>
+            <label>
+              Staff role
+              <select
+                className="staff-role-select"
+                name="staff_role"
+                value={form.staff_role}
+                onChange={handleChange}
+              >
+                <option value="front_desk">Front Desk</option>
+                <option value="dentist">Dentist</option>
+                <option value="admin">Admin</option>
+              </select>
+            </label>
             <button type="submit" disabled={saving}>
               <FaPlus />
-              {saving ? "Creating..." : "Create Admin"}
+              {saving ? "Creating..." : "Create Account"}
             </button>
           </form>
         </section>
@@ -273,18 +285,53 @@ function AdminAccountsSection() {
 
                     return (
                       <tr key={admin.id}>
-                        <td>{admin.fullname}</td>
+                        <td>
+                          #{admin.id}-{admin.fullname}
+                        </td>
                         <td>{admin.email}</td>
                         <td>
                           <span className="admin-role-badge">
-                            {isMainAdmin ? "Main Admin" : <select aria-label={`Role for ${admin.fullname}`} className="staff-role-select" value={admin.staff_role} disabled={saving} onChange={async event => {
-                              const staff_role = event.target.value;
-                              if (!window.confirm('Change this staff role and end their active sessions?')) return;
-                              setSaving(true);
-                              try { const response = await axios.put(`${API_BASE_URL}/admin-accounts/${admin.id}/role`, { staff_role }, { headers }); window.alert(response.data.message); await loadAdmins({ background: true }); }
-                              catch (error) { if (!error.nativeAlertHandled) window.alert(error.response?.data?.message || 'Unable to update role.'); }
-                              finally { setSaving(false); }
-                            }}><option value="front_desk">Front Desk</option><option value="dentist">Dentist</option><option value="admin">Admin</option></select>}
+                            {isMainAdmin ? (
+                              "Main Admin"
+                            ) : (
+                              <select
+                                aria-label={`Role for ${admin.fullname}`}
+                                className="admin-role-select"
+                                value={admin.staff_role}
+                                disabled={saving}
+                                onChange={async (event) => {
+                                  const staff_role = event.target.value;
+                                  if (
+                                    !window.confirm(
+                                      "Change this staff role and end their active sessions?",
+                                    )
+                                  )
+                                    return;
+                                  setSaving(true);
+                                  try {
+                                    const response = await axios.put(
+                                      `${API_BASE_URL}/admin-accounts/${admin.id}/role`,
+                                      { staff_role },
+                                      { headers },
+                                    );
+                                    window.alert(response.data.message);
+                                    await loadAdmins({ background: true });
+                                  } catch (error) {
+                                    if (!error.nativeAlertHandled)
+                                      window.alert(
+                                        error.response?.data?.message ||
+                                          "Unable to update role.",
+                                      );
+                                  } finally {
+                                    setSaving(false);
+                                  }
+                                }}
+                              >
+                                <option value="front_desk">Front Desk</option>
+                                <option value="dentist">Dentist</option>
+                                <option value="admin">Admin</option>
+                              </select>
+                            )}
                           </span>
                         </td>
                         <td>
@@ -305,10 +352,11 @@ function AdminAccountsSection() {
                               disabled={deletingId !== null}
                               aria-label={`Delete account for ${admin.fullname}`}
                             >
-                              <FaTrash />
-                              {deletingId === admin.id
-                                ? "Deleting..."
-                                : "Delete"}
+                              {deletingId === admin.id ? (
+                                "Deleting..."
+                              ) : (
+                                <FaTrash />
+                              )}
                             </button>
                           )}
                         </td>

@@ -3,9 +3,7 @@ function StatCard({ title, value, icon: Icon, color, tag }) {
   return (
     <div className={`stat-card ${color}`}>
       <div className="stat-top">
-        <div className="stat-icon">
-          {createElement(Icon)}
-        </div>
+        <div className="stat-icon">{createElement(Icon)}</div>
         {tag && <span className="stat-tag">{tag}</span>}
       </div>
 

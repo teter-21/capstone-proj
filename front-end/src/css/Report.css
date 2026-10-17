@@ -51,20 +51,24 @@
 .export-btn {
   background: #4f86c6;
   color: #ffffff !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .export-btn:hover:not(:disabled) {
   background: #3d6f9f;
+  box-shadow: none;
 }
 
 .report-refresh-btn {
   background: #eaf3fa;
   color: #3d6f9f !important;
   border: 1px solid #cddfeb;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .report-refresh-btn:hover:not(:disabled) {
   background: #dcecf7;
+  box-shadow: none;
 }
 
 .export-btn:disabled,
@@ -134,10 +138,15 @@
 .filter-btn {
   background: var(--color-primary);
   color: #ffffff !important;
+  border: 1px solid var(--color-primary);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.filter-btn:hover {
-  background: var(--color-primary-dark);
+.filter-btn:active {
+  background: transparent;
+  color: var(--color-primary) !important;
+  border: 1px solid var(--color-primary);
+  box-shadow: none;
 }
 
 /* STATS */
@@ -431,7 +440,7 @@
   }
 
   .card.report-chart-card,
-.card.report-detail-card {
+  .card.report-detail-card {
     padding: 14px;
   }
 
